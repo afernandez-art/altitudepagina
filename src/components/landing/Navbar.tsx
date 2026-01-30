@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import altitudeLogo from "@/assets/altitude-logo.png";
 
 export const Navbar = () => {
   return (
@@ -8,11 +9,8 @@ export const Navbar = () => {
       className="fixed top-0 w-full z-50 glass-nav"
     >
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-        <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-            <span className="text-primary-foreground font-black text-sm">A</span>
-          </div>
-          <span className="text-xl font-black tracking-tighter uppercase">Altitude</span>
+        <div className="flex items-center">
+          <img src={altitudeLogo} alt="Altitude Logistics Group" className="h-8 w-auto" />
         </div>
         
         <div className="hidden md:flex items-center gap-10">
