@@ -2,10 +2,10 @@ import { motion } from "framer-motion";
 import { Check, ArrowRight } from "lucide-react";
 
 const credentials = [
+  "Flota de transporte propia con cobertura nacional",
+  "Depósito fiscal habilitado y centro de fulfillment",
   "Despachantes de aduana propios",
-  "Flota de transporte propia",
-  "Depósito fiscal habilitado",
-  "Sistema de tracking propio",
+  "Sistema de tracking en tiempo real",
   "Atención 24/7 para urgencias"
 ];
 
@@ -27,13 +27,13 @@ export const AboutSection = () => {
             </p>
             <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
               <p>
-                Somos un equipo de profesionales en comercio internacional con más de 
-                12 años de experiencia. Combinamos tecnología con atención personalizada 
-                para que tu carga llegue sin sorpresas.
+                Somos un equipo de profesionales en logística con más de 12 años de 
+                experiencia. Manejamos importaciones, distribución nacional y almacenamiento 
+                con la misma dedicación y eficiencia.
               </p>
               <p>
-                Operamos desde Buenos Aires con cobertura nacional y partners en los 
-                principales puertos del mundo.
+                Operamos desde Buenos Aires con flota propia, depósito habilitado y 
+                cobertura en todo el país. Partners en los principales puertos del mundo.
               </p>
             </div>
 
