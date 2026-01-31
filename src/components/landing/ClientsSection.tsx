@@ -62,8 +62,8 @@ export const ClientsSection = () => {
           <div className="relative p-8 md:p-12 rounded-2xl bg-background border border-border">
             <Quote className="w-12 h-12 text-primary/30 absolute top-6 left-6" />
             <blockquote className="text-xl md:text-2xl font-medium leading-relaxed text-center pt-8">
-              "Desde que trabajamos con Altitude, dejamos de perseguir a 4 proveedores distintos. 
-              Ahora tenemos un solo contacto y visibilidad completa."
+              "Altitude maneja nuestras importaciones, el transporte a todo el país y el stock en su depósito. 
+              Un solo proveedor, un solo contacto, cero dolores de cabeza."
             </blockquote>
             <div className="mt-8 text-center">
               <p className="font-bold">María González</p>

@@ -5,17 +5,17 @@ const benefits = [
   {
     icon: User,
     title: "Un solo contacto",
-    description: "No coordinás entre forwarder, despachante, transportista y depósito. Un equipo, una comunicación."
+    description: "No coordinás entre múltiples proveedores. Ya sea una importación, un envío nacional o tu almacén, tenés un solo equipo."
   },
   {
     icon: MapPin,
     title: "Visibilidad total",
-    description: "Sabés dónde está tu carga en cada momento. Tracking desde origen hasta entrega final."
+    description: "Sabés dónde está tu mercadería en cada momento. Tracking en tiempo real para todas tus operaciones."
   },
   {
     icon: DollarSign,
     title: "Precio cerrado",
-    description: "Cotización integral sin sorpresas. Sabés el costo total antes de embarcar."
+    description: "Cotización integral sin sorpresas. Sabés el costo total de tu operación antes de arrancar."
   }
 ];
 

@@ -11,7 +11,7 @@ export const HeroSection = () => {
           transition={{ delay: 0.2 }}
           className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold tracking-widest uppercase mb-4"
         >
-          Solución Forwarder Global
+          Logística Integral
         </motion.div>
         
         <motion.h1 
@@ -20,9 +20,9 @@ export const HeroSection = () => {
           transition={{ delay: 0.3 }}
           className="text-4xl md:text-7xl font-black tracking-tight leading-[1.1]"
         >
-          <span className="italic text-zinc-500">Optimice su Comercio Exterior:</span>
+          <span className="italic text-zinc-500">Tu carga, nuestra responsabilidad.</span>
           <br />
-          <span>Eficiencia real en cada embarque.</span>
+          <span>De origen a destino, sin intermediarios.</span>
         </motion.h1>
         
         <motion.p 
@@ -31,7 +31,8 @@ export const HeroSection = () => {
           transition={{ delay: 0.4 }}
           className="text-xl text-zinc-400 max-w-2xl mx-auto"
         >
-          Descubra cómo Altitude reduce sus tiempos de tránsito y costos operativos mediante una gestión de carga inteligente.
+          Importaciones, transporte nacional y almacenamiento con un solo operador. 
+          Simplificá tu logística y enfocate en tu negocio.
         </motion.p>
         
         {/* VSL Video Placeholder */}
