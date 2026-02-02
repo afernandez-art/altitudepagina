@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { FileSearch, ArrowRight } from "lucide-react";
+import { FileSearch, ArrowRight, ChevronDown } from "lucide-react";
 import { useState } from "react";
 
 const steps = [
@@ -83,7 +83,8 @@ export const ProcessSection = () => {
                   <span className="text-2xl font-black text-primary group-hover:text-primary-foreground transition-colors">{step.number}</span>
                 </div>
                 <h3 className="text-xl font-bold uppercase tracking-tight mb-2">{step.title}</h3>
-                <p className="text-muted-foreground text-sm mb-2">{step.description}</p>
+                <p className="text-muted-foreground text-sm mb-1">{step.description}</p>
+                <ChevronDown className={`w-4 h-4 mx-auto text-primary/50 transition-transform duration-200 ${expandedStep === step.number ? 'rotate-180' : ''}`} />
 
                 {/* Expanded detail on hover */}
                 <motion.div
@@ -132,8 +133,13 @@ export const ProcessSection = () => {
                     <span className={`text-lg font-black transition-colors ${expandedStep === step.number ? 'text-primary-foreground' : 'text-primary'}`}>{step.number}</span>
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-lg font-bold uppercase tracking-tight">{step.title}</h3>
-                    <p className="text-muted-foreground text-sm">{step.description}</p>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h3 className="text-lg font-bold uppercase tracking-tight">{step.title}</h3>
+                        <p className="text-muted-foreground text-sm">{step.description}</p>
+                      </div>
+                      <ChevronDown className={`w-5 h-5 text-primary/60 transition-transform duration-200 shrink-0 ${expandedStep === step.number ? 'rotate-180' : ''}`} />
+                    </div>
                   </div>
                 </div>
 
