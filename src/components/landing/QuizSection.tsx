@@ -62,7 +62,7 @@ const facturacionOptions = [
 ];
 
 export const QuizSection = () => {
-  const { formData, updateFormData, setCurrentStep } = useLeadMagnet();
+  const { formData, updateFormData, saveToStorage } = useLeadMagnet();
   const [quizStep, setQuizStep] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
 
@@ -93,11 +93,11 @@ export const QuizSection = () => {
     if (!formData.nombre || !formData.email) {
       return;
     }
+    // Save data to localStorage for the new tab
+    saveToStorage();
     setIsCompleted(true);
-    setCurrentStep("vsl");
-    setTimeout(() => {
-      document.getElementById("vsl-section")?.scrollIntoView({ behavior: "smooth" });
-    }, 500);
+    // Open video in new tab
+    window.open("/video-personalizado", "_blank");
   };
 
   const canProceedStep1 = formData.nicho;
@@ -105,7 +105,36 @@ export const QuizSection = () => {
   const canProceedStep3 = formData.facturacion;
 
   if (isCompleted) {
-    return null; // Quiz completed, show VSL instead
+    return (
+      <section id="quiz-section" className="py-20 px-6 bg-gradient-to-b from-secondary/30 to-background">
+        <div className="max-w-xl mx-auto text-center">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-card p-12 rounded-2xl border border-zinc-800"
+          >
+            <div className="w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
+              <Play className="w-10 h-10 text-green-500" />
+            </div>
+            <h2 className="text-2xl font-black mb-4">¡Tu video está listo!</h2>
+            <p className="text-muted-foreground mb-8">
+              Abrimos una nueva pestaña con tu video personalizado.
+              <br />
+              <span className="text-sm">¿No se abrió? Hacé click abajo.</span>
+            </p>
+            <a
+              href="/video-personalizado"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-8 py-4 rounded-xl font-bold hover:bg-primary/90 transition-all"
+            >
+              <Play className="w-5 h-5" />
+              Ver mi Video
+            </a>
+          </motion.div>
+        </div>
+      </section>
+    );
   }
 
   return (

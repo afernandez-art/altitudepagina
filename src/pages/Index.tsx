@@ -3,10 +3,6 @@ import { HeroSection } from "@/components/landing/HeroSection";
 import { ServicesSection } from "@/components/landing/ServicesSection";
 import { WhyAltitudeSection } from "@/components/landing/WhyAltitudeSection";
 import { QuizSection } from "@/components/landing/QuizSection";
-import { DynamicVSLSection } from "@/components/landing/DynamicVSLSection";
-import { QualificationForm2 } from "@/components/landing/QualificationForm2";
-import { ActionPlanSection } from "@/components/landing/ActionPlanSection";
-import { CalendarSection } from "@/components/landing/CalendarSection";
 import { ProcessSection } from "@/components/landing/ProcessSection";
 import { ClientsSection } from "@/components/landing/ClientsSection";
 import { AboutSection } from "@/components/landing/AboutSection";
@@ -32,19 +28,8 @@ const Index = () => {
           <WhyAltitudeSection />
 
           {/* 4. Quiz - Lead Magnet Dinámico */}
+          {/* Al completar, abre /video-personalizado en nueva pestaña */}
           <QuizSection />
-
-          {/* 5. Video Personalizado (se muestra después del quiz) */}
-          <DynamicVSLSection />
-
-          {/* 6. Form 2 - Profundización */}
-          <QualificationForm2 />
-
-          {/* 7. Plan de Acción Personalizado */}
-          <ActionPlanSection />
-
-          {/* 8. Calendario - Agendar llamada */}
-          <CalendarSection />
 
           {/* Resto del contenido */}
           <ProcessSection />
