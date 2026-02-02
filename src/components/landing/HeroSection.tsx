@@ -64,13 +64,13 @@ export const HeroSection = () => {
       }} transition={{
         delay: 0.6
       }} className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-12">
-          <a href="#contacto" className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground px-10 py-5 rounded-xl text-lg font-bold transition-all flex items-center justify-center gap-3">
-            <Calendar className="w-5 h-5" />
-            Agendar Llamada Estratégica
+          <a href="#lead-magnet-form" className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground px-10 py-5 rounded-xl text-lg font-bold transition-all flex items-center justify-center gap-3">
+            <Play className="w-5 h-5" />
+            Ver Video Personalizado
           </a>
-          <button className="w-full sm:w-auto bg-foreground/5 hover:bg-foreground/10 border border-zinc-800 px-10 py-5 rounded-xl text-lg font-bold transition-all">
-            Descargar Presentación
-          </button>
+          <a href="#servicios" className="w-full sm:w-auto bg-foreground/5 hover:bg-foreground/10 border border-zinc-800 px-10 py-5 rounded-xl text-lg font-bold transition-all">
+            Conocer Servicios
+          </a>
         </motion.div>
         
         {/* Trust badges */}
