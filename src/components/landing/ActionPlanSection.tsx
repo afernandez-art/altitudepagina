@@ -286,18 +286,14 @@ export const ActionPlanSection = () => {
             Agendar Llamada Estratégica
             <ArrowRight className="w-4 h-4 md:w-5 md:h-5 group-hover:translate-x-1 transition-transform" />
           </button>
-          <div className="flex gap-3 w-full sm:w-auto">
-            <button className="flex-1 sm:flex-none bg-card border border-zinc-700 hover:border-zinc-500 px-4 md:px-8 py-3 md:py-5 rounded-xl text-sm md:text-lg font-bold transition-all flex items-center justify-center gap-2">
-              <Download className="w-4 h-4 md:w-5 md:h-5" />
-              <span className="hidden sm:inline">Descargar PDF</span>
-              <span className="sm:hidden">PDF</span>
-            </button>
-            <button className="flex-1 sm:flex-none bg-card border border-zinc-700 hover:border-zinc-500 px-4 md:px-8 py-3 md:py-5 rounded-xl text-sm md:text-lg font-bold transition-all flex items-center justify-center gap-2">
-              <Share2 className="w-4 h-4 md:w-5 md:h-5" />
-              <span className="hidden sm:inline">Compartir</span>
-              <span className="sm:hidden">Share</span>
-            </button>
-          </div>
+          <button className="w-full sm:w-auto bg-card border border-zinc-700 hover:border-zinc-500 px-4 md:px-8 py-3 md:py-5 rounded-xl text-sm md:text-lg font-bold transition-all flex items-center justify-center gap-2">
+            <Download className="w-4 h-4 md:w-5 md:h-5" />
+            Descargar PDF
+          </button>
+          <button className="w-full sm:w-auto bg-card border border-zinc-700 hover:border-zinc-500 px-4 md:px-8 py-3 md:py-5 rounded-xl text-sm md:text-lg font-bold transition-all flex items-center justify-center gap-2">
+            <Share2 className="w-4 h-4 md:w-5 md:h-5" />
+            Compartir
+          </button>
         </motion.div>
       </div>
     </section>
