@@ -5,12 +5,12 @@ const steps = [
   {
     number: "01",
     title: "Diagnóstico",
-    description: "Analizamos tu operación"
+    description: "Entendemos tu operación"
   },
   {
     number: "02",
     title: "Propuesta",
-    description: "Solución a medida"
+    description: "Cotización en 24hs"
   },
   {
     number: "03",
@@ -19,8 +19,8 @@ const steps = [
   },
   {
     number: "04",
-    title: "Seguimiento",
-    description: "Tracking en tiempo real"
+    title: "Tu Ejecutivo",
+    description: "Acompañamiento 1 a 1"
   },
   {
     number: "05",
