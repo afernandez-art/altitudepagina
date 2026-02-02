@@ -1,11 +1,12 @@
 import { motion } from "framer-motion";
 import { Quote } from "lucide-react";
+import { useCountUp } from "@/hooks/useCountUp";
 
 const stats = [
-  { value: "+150", label: "Clientes" },
-  { value: "98%", label: "Entregas a tiempo" },
-  { value: "+500", label: "Operaciones/año" },
-  { value: "12", label: "Años" }
+  { value: 150, prefix: "+", suffix: "", label: "Clientes" },
+  { value: 98, prefix: "", suffix: "%", label: "Entregas a tiempo" },
+  { value: 500, prefix: "+", suffix: "", label: "Operaciones/año" },
+  { value: 12, prefix: "", suffix: "", label: "Años" }
 ];
 
 const logos = [
@@ -16,6 +17,22 @@ const logos = [
   "EMPRESA 5",
   "EMPRESA 6"
 ];
+
+interface AnimatedCounterProps {
+  value: number;
+  prefix?: string;
+  suffix?: string;
+}
+
+const AnimatedCounter = ({ value, prefix = "", suffix = "" }: AnimatedCounterProps) => {
+  const { count, elementRef } = useCountUp({ end: value, duration: 2000 });
+  
+  return (
+    <div ref={elementRef} className="text-5xl md:text-6xl font-black text-primary mb-2">
+      {prefix}{count}{suffix}
+    </div>
+  );
+};
 
 export const ClientsSection = () => {
   return (
@@ -83,9 +100,11 @@ export const ClientsSection = () => {
               transition={{ delay: index * 0.1 }}
               className="text-center"
             >
-              <div className="text-5xl md:text-6xl font-black text-primary mb-2">
-                {stat.value}
-              </div>
+              <AnimatedCounter 
+                value={stat.value} 
+                prefix={stat.prefix} 
+                suffix={stat.suffix} 
+              />
               <div className="text-muted-foreground text-sm uppercase tracking-wider">
                 {stat.label}
               </div>
