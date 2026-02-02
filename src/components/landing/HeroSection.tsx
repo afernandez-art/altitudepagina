@@ -64,14 +64,11 @@ export const HeroSection = () => {
         >
           <a 
             href="#contacto" 
-            className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground px-10 py-5 rounded-xl text-lg font-bold transition-all flex items-center justify-center gap-3"
+            className="bg-primary hover:bg-primary/90 text-primary-foreground px-10 py-5 rounded-xl text-lg font-bold transition-all flex items-center justify-center gap-3"
           >
             <Calendar className="w-5 h-5" />
             Agendar Llamada Estratégica
           </a>
-          <button className="w-full sm:w-auto bg-foreground/5 hover:bg-foreground/10 border border-zinc-800 px-10 py-5 rounded-xl text-lg font-bold transition-all">
-            Descargar Presentación
-          </button>
         </motion.div>
         
         {/* Trust badges */}
