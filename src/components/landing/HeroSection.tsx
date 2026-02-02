@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Play, ChevronDown, CheckCircle, Truck, FileCheck, Package, Warehouse } from "lucide-react";
+import { FileSearch, ChevronDown, CheckCircle, Truck, FileCheck, Package, Warehouse } from "lucide-react";
 
 const services = [
   { icon: Package, title: "Forwarding", desc: "Importación desde cualquier origen" },
@@ -90,8 +90,8 @@ export const HeroSection = () => {
                 onClick={scrollToQuiz}
                 className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground px-6 sm:px-8 py-4 rounded-xl text-base sm:text-lg font-bold transition-all flex items-center justify-center gap-2 sm:gap-3 shadow-2xl shadow-primary/20"
               >
-                <Play className="w-5 h-5" />
-                Quiero mi video personalizado
+                <FileSearch className="w-5 h-5" />
+                Quiero mi diagnóstico gratis
               </button>
               <button
                 onClick={scrollToServices}

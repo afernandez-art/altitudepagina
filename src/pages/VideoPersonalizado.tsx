@@ -5,7 +5,7 @@ import { ActionPlanSection } from "@/components/landing/ActionPlanSection";
 import { CalendarSection } from "@/components/landing/CalendarSection";
 import { LeadMagnetProvider, useLeadMagnet } from "@/contexts/LeadMagnetContext";
 import { motion } from "framer-motion";
-import { ArrowLeft, Play } from "lucide-react";
+import { ArrowLeft, FileSearch } from "lucide-react";
 
 const VideoContent = () => {
   const { formData, currentStep, setCurrentStep, loadFromStorage } = useLeadMagnet();
@@ -27,11 +27,11 @@ const VideoContent = () => {
           className="text-center max-w-md"
         >
           <div className="w-16 h-16 md:w-20 md:h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4 md:mb-6">
-            <Play className="w-8 h-8 md:w-10 md:h-10 text-primary" />
+            <FileSearch className="w-8 h-8 md:w-10 md:h-10 text-primary" />
           </div>
-          <h1 className="text-xl md:text-2xl font-bold mb-3 md:mb-4">Video no disponible</h1>
+          <h1 className="text-xl md:text-2xl font-bold mb-3 md:mb-4">Diagnóstico no disponible</h1>
           <p className="text-sm md:text-base text-muted-foreground mb-6 md:mb-8">
-            Para ver tu video personalizado, primero completá el cuestionario en nuestra página principal.
+            Para ver tu diagnóstico personalizado, primero completá el cuestionario en nuestra página principal.
           </p>
           <a
             href="/"
@@ -55,7 +55,7 @@ const VideoContent = () => {
             <span className="text-xs md:text-sm">Volver</span>
           </a>
           <div className="text-xs md:text-sm text-muted-foreground">
-            Video para <span className="text-primary font-semibold">{formData.nombre}</span>
+            Diagnóstico para <span className="text-primary font-semibold">{formData.nombre}</span>
           </div>
         </div>
       </header>

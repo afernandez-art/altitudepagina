@@ -3,7 +3,8 @@ import { useState } from "react";
 import {
   ArrowRight,
   ArrowLeft,
-  Play,
+  FileSearch,
+  CheckCircle,
   ShoppingCart,
   Factory,
   UtensilsCrossed,
@@ -114,11 +115,11 @@ export const QuizSection = () => {
             className="bg-card p-8 sm:p-12 rounded-2xl border border-zinc-800"
           >
             <div className="w-16 h-16 sm:w-20 sm:h-20 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
-              <Play className="w-8 h-8 sm:w-10 sm:h-10 text-green-500" />
+              <CheckCircle className="w-8 h-8 sm:w-10 sm:h-10 text-green-500" />
             </div>
-            <h2 className="text-xl sm:text-2xl font-black mb-4">¡Tu video está listo!</h2>
+            <h2 className="text-xl sm:text-2xl font-black mb-4">¡Tu diagnóstico está listo!</h2>
             <p className="text-muted-foreground mb-8 text-sm sm:text-base">
-              Abrimos una nueva pestaña con tu video personalizado.
+              Abrimos una nueva pestaña con tu diagnóstico personalizado.
               <br />
               <span className="text-xs sm:text-sm">¿No se abrió? Hacé click abajo.</span>
             </p>
@@ -128,8 +129,8 @@ export const QuizSection = () => {
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-bold hover:bg-primary/90 transition-all text-sm sm:text-base"
             >
-              <Play className="w-5 h-5" />
-              Ver mi Video
+              <FileSearch className="w-5 h-5" />
+              Ver mi Diagnóstico
             </a>
           </motion.div>
         </div>
@@ -149,13 +150,13 @@ export const QuizSection = () => {
         >
           <span className="inline-flex items-center gap-2 bg-primary/10 text-primary px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-semibold mb-4">
             <Sparkles className="w-4 h-4" />
-            Video personalizado en 2 minutos
+            Diagnóstico gratis en 2 minutos
           </span>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight mb-3 sm:mb-4">
-            Descubrí tu solución logística ideal
+            Obtené tu diagnóstico logístico personalizado
           </h2>
           <p className="text-muted-foreground text-sm sm:text-base">
-            Respondé 4 preguntas rápidas y te preparamos un video con soluciones para tu negocio
+            Respondé 4 preguntas rápidas y te preparamos un diagnóstico con soluciones para tu negocio
           </p>
         </motion.div>
 
@@ -325,8 +326,8 @@ export const QuizSection = () => {
                   className="space-y-4 sm:space-y-6"
                 >
                   <div>
-                    <h3 className="text-lg sm:text-xl font-bold mb-1">¿A dónde te enviamos tu video?</h3>
-                    <p className="text-xs sm:text-sm text-muted-foreground">Tu video personalizado está casi listo</p>
+                    <h3 className="text-lg sm:text-xl font-bold mb-1">¿A dónde te enviamos tu diagnóstico?</h3>
+                    <p className="text-xs sm:text-sm text-muted-foreground">Tu diagnóstico personalizado está casi listo</p>
                   </div>
                   <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
                     <div>
@@ -379,8 +380,8 @@ export const QuizSection = () => {
                         type="submit"
                         className="flex items-center justify-center gap-2 bg-primary text-primary-foreground px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-bold hover:bg-primary/90 transition-all shadow-lg shadow-primary/20 text-sm sm:text-base"
                       >
-                        <Play className="w-5 h-5" />
-                        Ver mi Video
+                        <FileSearch className="w-5 h-5" />
+                        Ver mi Diagnóstico
                         <ArrowRight className="w-4 h-4" />
                       </button>
                     </div>
@@ -402,7 +403,7 @@ export const QuizSection = () => {
           viewport={{ once: true }}
           className="text-center text-xs sm:text-sm text-muted-foreground mt-6"
         >
-          <span className="text-primary font-semibold">+847 empresas</span> ya vieron su video personalizado
+          <span className="text-primary font-semibold">+847 empresas</span> ya recibieron su diagnóstico gratis
         </motion.p>
       </div>
     </section>
