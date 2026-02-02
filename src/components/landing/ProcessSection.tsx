@@ -1,30 +1,31 @@
 import { motion } from "framer-motion";
+import { FileSearch, ArrowRight } from "lucide-react";
 
 const steps = [
   {
     number: "01",
-    title: "Cotización",
-    description: "En 24hs"
+    title: "Diagnóstico",
+    description: "Analizamos tu operación"
   },
   {
     number: "02",
-    title: "Coordinación",
-    description: "Con tu proveedor"
+    title: "Propuesta",
+    description: "Solución a medida"
   },
   {
     number: "03",
-    title: "Embarque",
-    description: "Track real"
+    title: "Ejecución",
+    description: "Nos encargamos de todo"
   },
   {
     number: "04",
-    title: "Aduana",
-    description: "48hs prom."
+    title: "Seguimiento",
+    description: "Tracking en tiempo real"
   },
   {
     number: "05",
     title: "Entrega",
-    description: "Donde digas"
+    description: "Donde lo necesites"
   }
 ];
 
@@ -42,7 +43,7 @@ export const ProcessSection = () => {
             Cómo trabajamos
           </h2>
           <p className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter">
-            Tu carga en <span className="text-primary">5 pasos</span>
+            Tu operación en <span className="text-primary">5 pasos</span>
           </p>
         </motion.div>
 
@@ -111,6 +112,23 @@ export const ProcessSection = () => {
             ))}
           </div>
         </div>
+
+        {/* CTA al quiz */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mt-16"
+        >
+          <a
+            href="#quiz-section"
+            className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-8 py-4 rounded-xl font-bold hover:bg-primary/90 transition-all shadow-lg shadow-primary/20"
+          >
+            <FileSearch className="w-5 h-5" />
+            Empezar con mi diagnóstico gratis
+            <ArrowRight className="w-5 h-5" />
+          </a>
+        </motion.div>
       </div>
     </section>
   );

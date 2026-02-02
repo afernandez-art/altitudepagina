@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ArrowRight, Calendar } from "lucide-react";
+import { FileSearch, ArrowRight } from "lucide-react";
 
 export const CTASection = () => {
   return (
@@ -14,27 +14,23 @@ export const CTASection = () => {
           {/* Decorative elements */}
           <div className="absolute top-0 right-0 w-64 h-64 bg-primary-foreground/10 rounded-full blur-3xl -mr-32 -mt-32" />
           <div className="absolute bottom-0 left-0 w-48 h-48 bg-primary-foreground/10 rounded-full blur-3xl -ml-24 -mb-24" />
-          
+
           <div className="relative z-10">
-            <h2 className="text-3xl md:text-5xl font-black text-primary-foreground tracking-tighter mb-8">
-              ¿Listo para simplificar tu logística?
+            <h2 className="text-3xl md:text-5xl font-black text-primary-foreground tracking-tighter mb-4">
+              ¿Listo para optimizar tu logística?
             </h2>
-            
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <a
-                href="#contacto"
-                className="inline-flex items-center gap-2 bg-primary-foreground text-primary px-8 py-4 rounded-xl font-bold hover:bg-primary-foreground/90 transition-all shadow-lg"
-              >
-                Solicitar cotización <ArrowRight className="w-5 h-5" />
-              </a>
-              
-              <a
-                href="#contacto"
-                className="inline-flex items-center gap-2 bg-transparent border-2 border-primary-foreground/30 text-primary-foreground px-8 py-4 rounded-xl font-bold hover:bg-primary-foreground/10 transition-all"
-              >
-                <Calendar className="w-5 h-5" /> Agendar llamada
-              </a>
-            </div>
+            <p className="text-primary-foreground/80 text-lg mb-8 max-w-xl mx-auto">
+              Obtené un diagnóstico gratuito con soluciones personalizadas para tu negocio
+            </p>
+
+            <a
+              href="#quiz-section"
+              className="inline-flex items-center gap-3 bg-primary-foreground text-primary px-10 py-5 rounded-xl font-bold hover:bg-primary-foreground/90 transition-all shadow-lg text-lg"
+            >
+              <FileSearch className="w-6 h-6" />
+              Quiero mi diagnóstico gratis
+              <ArrowRight className="w-5 h-5" />
+            </a>
           </div>
         </motion.div>
       </div>

@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ArrowRight, ChevronDown } from "lucide-react";
+import { ArrowRight, ChevronDown, FileSearch } from "lucide-react";
 import { useState } from "react";
 
 const services = [
@@ -94,10 +94,12 @@ export const ServicesSection = () => {
           className="mt-12 text-center"
         >
           <a
-            href="#contacto"
-            className="inline-flex items-center gap-2 text-primary font-semibold text-lg hover:gap-3 transition-all"
+            href="#quiz-section"
+            className="inline-flex items-center gap-3 bg-primary text-primary-foreground px-8 py-4 rounded-xl font-bold hover:bg-primary/90 transition-all shadow-lg shadow-primary/20"
           >
-            Consultá por tu operación <ArrowRight className="w-5 h-5" />
+            <FileSearch className="w-5 h-5" />
+            Obtener mi diagnóstico gratis
+            <ArrowRight className="w-5 h-5" />
           </a>
         </motion.div>
       </div>
