@@ -106,27 +106,27 @@ export const QuizSection = () => {
 
   if (isCompleted) {
     return (
-      <section id="quiz-section" className="py-20 px-6 bg-gradient-to-b from-secondary/30 to-background">
+      <section id="quiz-section" className="py-12 sm:py-20 px-4 sm:px-6 bg-gradient-to-b from-secondary/30 to-background">
         <div className="max-w-xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="bg-card p-12 rounded-2xl border border-zinc-800"
+            className="bg-card p-8 sm:p-12 rounded-2xl border border-zinc-800"
           >
-            <div className="w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
-              <Play className="w-10 h-10 text-green-500" />
+            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
+              <Play className="w-8 h-8 sm:w-10 sm:h-10 text-green-500" />
             </div>
-            <h2 className="text-2xl font-black mb-4">¡Tu video está listo!</h2>
-            <p className="text-muted-foreground mb-8">
+            <h2 className="text-xl sm:text-2xl font-black mb-4">¡Tu video está listo!</h2>
+            <p className="text-muted-foreground mb-8 text-sm sm:text-base">
               Abrimos una nueva pestaña con tu video personalizado.
               <br />
-              <span className="text-sm">¿No se abrió? Hacé click abajo.</span>
+              <span className="text-xs sm:text-sm">¿No se abrió? Hacé click abajo.</span>
             </p>
             <a
               href="/video-personalizado"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-8 py-4 rounded-xl font-bold hover:bg-primary/90 transition-all"
+              className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-bold hover:bg-primary/90 transition-all text-sm sm:text-base"
             >
               <Play className="w-5 h-5" />
               Ver mi Video
@@ -138,23 +138,23 @@ export const QuizSection = () => {
   }
 
   return (
-    <section id="quiz-section" className="py-20 px-6 bg-gradient-to-b from-secondary/30 to-background">
+    <section id="quiz-section" className="py-12 sm:py-20 px-4 sm:px-6 bg-gradient-to-b from-secondary/30 to-background">
       <div className="max-w-3xl mx-auto">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-12"
+          className="text-center mb-8 sm:mb-12"
         >
-          <span className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-semibold mb-4">
+          <span className="inline-flex items-center gap-2 bg-primary/10 text-primary px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-semibold mb-4">
             <Sparkles className="w-4 h-4" />
             Video personalizado en 2 minutos
           </span>
-          <h2 className="text-3xl md:text-4xl font-black tracking-tight mb-4">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight mb-3 sm:mb-4">
             Descubrí tu solución logística ideal
           </h2>
-          <p className="text-muted-foreground">
+          <p className="text-muted-foreground text-sm sm:text-base">
             Respondé 4 preguntas rápidas y te preparamos un video con soluciones para tu negocio
           </p>
         </motion.div>
@@ -167,8 +167,8 @@ export const QuizSection = () => {
           className="bg-card rounded-2xl border border-zinc-800 overflow-hidden"
         >
           {/* Progress bar */}
-          <div className="p-6 border-b border-zinc-800">
-            <div className="flex items-center justify-between text-sm mb-2">
+          <div className="p-4 sm:p-6 border-b border-zinc-800">
+            <div className="flex items-center justify-between text-xs sm:text-sm mb-2">
               <span className="text-muted-foreground">Paso {quizStep + 1} de {totalSteps}</span>
               <span className="text-primary font-medium">{Math.round(progress)}%</span>
             </div>
@@ -176,7 +176,7 @@ export const QuizSection = () => {
           </div>
 
           {/* Quiz Steps */}
-          <div className="p-8">
+          <div className="p-4 sm:p-8">
             <AnimatePresence mode="wait">
               {/* Step 1: Industria */}
               {quizStep === 0 && (
@@ -185,10 +185,10 @@ export const QuizSection = () => {
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -20 }}
-                  className="space-y-6"
+                  className="space-y-4 sm:space-y-6"
                 >
-                  <h3 className="text-xl font-bold">¿En qué industria opera tu empresa?</h3>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  <h3 className="text-lg sm:text-xl font-bold">¿En qué industria opera tu empresa?</h3>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
                     {industriasOptions.map((industria) => {
                       const Icon = industria.icon;
                       const isSelected = formData.nicho === industria.id;
@@ -198,14 +198,14 @@ export const QuizSection = () => {
                           whileHover={{ scale: 1.02 }}
                           whileTap={{ scale: 0.98 }}
                           onClick={() => handleIndustriaSelect(industria.id)}
-                          className={`p-4 rounded-xl border-2 transition-all text-center ${
+                          className={`p-3 sm:p-4 rounded-xl border-2 transition-all text-center ${
                             isSelected
                               ? "border-primary bg-primary/10 text-primary"
                               : "border-zinc-700 hover:border-zinc-500"
                           }`}
                         >
-                          <Icon className="w-8 h-8 mx-auto mb-2" />
-                          <span className="text-sm font-medium">{industria.label}</span>
+                          <Icon className="w-6 h-6 sm:w-8 sm:h-8 mx-auto mb-1 sm:mb-2" />
+                          <span className="text-xs sm:text-sm font-medium">{industria.label}</span>
                         </motion.button>
                       );
                     })}
@@ -220,13 +220,13 @@ export const QuizSection = () => {
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -20 }}
-                  className="space-y-6"
+                  className="space-y-4 sm:space-y-6"
                 >
                   <div>
-                    <h3 className="text-xl font-bold mb-1">¿Cuáles son tus mayores desafíos?</h3>
-                    <p className="text-sm text-muted-foreground">Seleccioná hasta 2 opciones</p>
+                    <h3 className="text-lg sm:text-xl font-bold mb-1">¿Cuáles son tus mayores desafíos?</h3>
+                    <p className="text-xs sm:text-sm text-muted-foreground">Seleccioná hasta 2 opciones</p>
                   </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <div className="grid grid-cols-1 gap-2 sm:gap-3">
                     {desafiosOptions.map((desafio) => {
                       const Icon = desafio.icon;
                       const isSelected = formData.problematicas?.includes(desafio.id);
@@ -238,7 +238,7 @@ export const QuizSection = () => {
                           whileTap={!isDisabled ? { scale: 0.99 } : {}}
                           onClick={() => !isDisabled && handleDesafioToggle(desafio.id)}
                           disabled={isDisabled}
-                          className={`p-4 rounded-xl border-2 transition-all text-left flex items-center gap-3 ${
+                          className={`p-3 sm:p-4 rounded-xl border-2 transition-all text-left flex items-center gap-3 ${
                             isSelected
                               ? "border-primary bg-primary/10"
                               : isDisabled
@@ -246,27 +246,27 @@ export const QuizSection = () => {
                               : "border-zinc-700 hover:border-zinc-500"
                           }`}
                         >
-                          <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
+                          <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center shrink-0 ${
                             isSelected ? "bg-primary text-primary-foreground" : "bg-zinc-800"
                           }`}>
-                            <Icon className="w-5 h-5" />
+                            <Icon className="w-4 h-4 sm:w-5 sm:h-5" />
                           </div>
-                          <span className="font-medium text-sm">{desafio.label}</span>
+                          <span className="font-medium text-xs sm:text-sm">{desafio.label}</span>
                         </motion.button>
                       );
                     })}
                   </div>
-                  <div className="flex justify-between pt-4">
+                  <div className="flex justify-between pt-4 gap-4">
                     <button
                       onClick={() => setQuizStep(0)}
-                      className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+                      className="flex items-center gap-1 sm:gap-2 text-muted-foreground hover:text-foreground transition-colors text-sm"
                     >
-                      <ArrowLeft className="w-4 h-4" /> Anterior
+                      <ArrowLeft className="w-4 h-4" /> <span className="hidden sm:inline">Anterior</span>
                     </button>
                     <button
                       onClick={() => setQuizStep(2)}
                       disabled={!canProceedStep2}
-                      className="flex items-center gap-2 bg-primary text-primary-foreground px-6 py-3 rounded-xl font-bold disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary/90 transition-all"
+                      className="flex items-center gap-2 bg-primary text-primary-foreground px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl font-bold disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary/90 transition-all text-sm"
                     >
                       Siguiente <ArrowRight className="w-4 h-4" />
                     </button>
@@ -281,10 +281,10 @@ export const QuizSection = () => {
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -20 }}
-                  className="space-y-6"
+                  className="space-y-4 sm:space-y-6"
                 >
-                  <h3 className="text-xl font-bold">¿Cuánto importás o facturás por mes?</h3>
-                  <div className="space-y-3">
+                  <h3 className="text-lg sm:text-xl font-bold">¿Cuánto importás o facturás por mes?</h3>
+                  <div className="space-y-2 sm:space-y-3">
                     {facturacionOptions.map((fact) => {
                       const isSelected = formData.facturacion === fact.id;
                       return (
@@ -293,7 +293,7 @@ export const QuizSection = () => {
                           whileHover={{ scale: 1.01 }}
                           whileTap={{ scale: 0.99 }}
                           onClick={() => handleFacturacionSelect(fact.id)}
-                          className={`w-full p-4 rounded-xl border-2 transition-all text-left font-medium ${
+                          className={`w-full p-3 sm:p-4 rounded-xl border-2 transition-all text-left font-medium text-sm sm:text-base ${
                             isSelected
                               ? "border-primary bg-primary/10 text-primary"
                               : "border-zinc-700 hover:border-zinc-500"
@@ -307,9 +307,9 @@ export const QuizSection = () => {
                   <div className="flex justify-between pt-4">
                     <button
                       onClick={() => setQuizStep(1)}
-                      className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+                      className="flex items-center gap-1 sm:gap-2 text-muted-foreground hover:text-foreground transition-colors text-sm"
                     >
-                      <ArrowLeft className="w-4 h-4" /> Anterior
+                      <ArrowLeft className="w-4 h-4" /> <span className="hidden sm:inline">Anterior</span>
                     </button>
                   </div>
                 </motion.div>
@@ -322,15 +322,15 @@ export const QuizSection = () => {
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -20 }}
-                  className="space-y-6"
+                  className="space-y-4 sm:space-y-6"
                 >
                   <div>
-                    <h3 className="text-xl font-bold mb-1">¿A dónde te enviamos tu video?</h3>
-                    <p className="text-sm text-muted-foreground">Tu video personalizado está casi listo</p>
+                    <h3 className="text-lg sm:text-xl font-bold mb-1">¿A dónde te enviamos tu video?</h3>
+                    <p className="text-xs sm:text-sm text-muted-foreground">Tu video personalizado está casi listo</p>
                   </div>
-                  <form onSubmit={handleSubmit} className="space-y-4">
+                  <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
                     <div>
-                      <label className="text-sm font-medium text-muted-foreground mb-1 block">
+                      <label className="text-xs sm:text-sm font-medium text-muted-foreground mb-1 block">
                         Nombre *
                       </label>
                       <input
@@ -338,12 +338,12 @@ export const QuizSection = () => {
                         placeholder="Tu nombre"
                         value={formData.nombre}
                         onChange={(e) => updateFormData({ nombre: e.target.value })}
-                        className="w-full bg-secondary border border-zinc-700 focus:border-primary rounded-xl px-4 py-3 outline-none transition-colors"
+                        className="w-full bg-secondary border border-zinc-700 focus:border-primary rounded-xl px-4 py-3 outline-none transition-colors text-sm sm:text-base"
                         required
                       />
                     </div>
                     <div>
-                      <label className="text-sm font-medium text-muted-foreground mb-1 block">
+                      <label className="text-xs sm:text-sm font-medium text-muted-foreground mb-1 block">
                         Email *
                       </label>
                       <input
@@ -351,12 +351,12 @@ export const QuizSection = () => {
                         placeholder="tu@empresa.com"
                         value={formData.email}
                         onChange={(e) => updateFormData({ email: e.target.value })}
-                        className="w-full bg-secondary border border-zinc-700 focus:border-primary rounded-xl px-4 py-3 outline-none transition-colors"
+                        className="w-full bg-secondary border border-zinc-700 focus:border-primary rounded-xl px-4 py-3 outline-none transition-colors text-sm sm:text-base"
                         required
                       />
                     </div>
                     <div>
-                      <label className="text-sm font-medium text-muted-foreground mb-1 block">
+                      <label className="text-xs sm:text-sm font-medium text-muted-foreground mb-1 block">
                         WhatsApp (opcional)
                       </label>
                       <input
@@ -364,20 +364,20 @@ export const QuizSection = () => {
                         placeholder="+54 9 11 ..."
                         value={formData.whatsapp}
                         onChange={(e) => updateFormData({ whatsapp: e.target.value })}
-                        className="w-full bg-secondary border border-zinc-700 focus:border-primary rounded-xl px-4 py-3 outline-none transition-colors"
+                        className="w-full bg-secondary border border-zinc-700 focus:border-primary rounded-xl px-4 py-3 outline-none transition-colors text-sm sm:text-base"
                       />
                     </div>
-                    <div className="flex justify-between pt-4">
+                    <div className="flex flex-col-reverse sm:flex-row justify-between pt-4 gap-3 sm:gap-4">
                       <button
                         type="button"
                         onClick={() => setQuizStep(2)}
-                        className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+                        className="flex items-center justify-center gap-2 text-muted-foreground hover:text-foreground transition-colors text-sm py-2"
                       >
                         <ArrowLeft className="w-4 h-4" /> Anterior
                       </button>
                       <button
                         type="submit"
-                        className="flex items-center gap-2 bg-primary text-primary-foreground px-8 py-4 rounded-xl font-bold hover:bg-primary/90 transition-all shadow-lg shadow-primary/20"
+                        className="flex items-center justify-center gap-2 bg-primary text-primary-foreground px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-bold hover:bg-primary/90 transition-all shadow-lg shadow-primary/20 text-sm sm:text-base"
                       >
                         <Play className="w-5 h-5" />
                         Ver mi Video
@@ -386,7 +386,7 @@ export const QuizSection = () => {
                     </div>
                     <p className="text-center text-xs text-muted-foreground flex items-center justify-center gap-2 pt-2">
                       <Lock className="w-3 h-3" />
-                      Tus datos están seguros. No compartimos tu información.
+                      Tus datos están seguros.
                     </p>
                   </form>
                 </motion.div>
@@ -400,7 +400,7 @@ export const QuizSection = () => {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          className="text-center text-sm text-muted-foreground mt-6"
+          className="text-center text-xs sm:text-sm text-muted-foreground mt-6"
         >
           <span className="text-primary font-semibold">+847 empresas</span> ya vieron su video personalizado
         </motion.p>

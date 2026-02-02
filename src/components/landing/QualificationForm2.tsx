@@ -53,25 +53,25 @@ export const QualificationForm2 = () => {
     const value = formData[field];
 
     return (
-      <div className="space-y-3">
-        <div className="flex items-center justify-between">
-          <Label className="text-sm font-semibold flex items-center gap-2">
+      <div className="space-y-2 md:space-y-3">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+          <Label className="text-xs md:text-sm font-semibold flex items-center gap-2">
             {icon}
             {label}
           </Label>
           <button
             type="button"
             onClick={() => toggleInputMode(field)}
-            className="flex items-center gap-2 text-xs text-muted-foreground hover:text-primary transition-colors bg-secondary/50 px-3 py-1.5 rounded-lg"
+            className="flex items-center gap-1.5 md:gap-2 text-[10px] md:text-xs text-muted-foreground hover:text-primary transition-colors bg-secondary/50 px-2 md:px-3 py-1 md:py-1.5 rounded-lg w-fit"
           >
             {mode === "text" ? (
               <>
-                <Mic className="w-3 h-3" />
+                <Mic className="w-2.5 h-2.5 md:w-3 md:h-3" />
                 Cambiar a audio
               </>
             ) : (
               <>
-                <Keyboard className="w-3 h-3" />
+                <Keyboard className="w-2.5 h-2.5 md:w-3 md:h-3" />
                 Cambiar a texto
               </>
             )}
@@ -115,25 +115,25 @@ export const QualificationForm2 = () => {
   };
 
   return (
-    <section id="form2-section" className="py-20 px-6 bg-gradient-to-b from-black to-background">
+    <section id="form2-section" className="py-12 md:py-20 px-4 md:px-6 bg-gradient-to-b from-black to-background">
       <div className="max-w-3xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-10"
+          className="text-center mb-8 md:mb-10"
         >
-          <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-semibold mb-4">
-            <FileText className="w-4 h-4" />
+          <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-3 md:px-4 py-1.5 md:py-2 rounded-full text-xs md:text-sm font-semibold mb-3 md:mb-4">
+            <FileText className="w-3 h-3 md:w-4 md:h-4" />
             Paso 2 de 3
           </div>
-          <h2 className="text-3xl md:text-4xl font-black tracking-tight mb-4">
+          <h2 className="text-2xl md:text-4xl font-black tracking-tight mb-3 md:mb-4">
             Contanos un poco más
           </h2>
-          <p className="text-muted-foreground text-lg">
+          <p className="text-muted-foreground text-base md:text-lg">
             Con esta información generamos tu plan de acción personalizado
           </p>
-          <p className="text-sm text-primary mt-2 flex items-center justify-center gap-2">
-            <Mic className="w-4 h-4" />
+          <p className="text-xs md:text-sm text-primary mt-2 flex items-center justify-center gap-2">
+            <Mic className="w-3 h-3 md:w-4 md:h-4" />
             Podés escribir o grabar tu respuesta con audio
           </p>
         </motion.div>
@@ -143,7 +143,7 @@ export const QualificationForm2 = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
           onSubmit={handleSubmit}
-          className="bg-card p-8 rounded-2xl border border-zinc-800 space-y-8"
+          className="bg-card p-5 md:p-8 rounded-xl md:rounded-2xl border border-zinc-800 space-y-6 md:space-y-8"
         >
           {/* Descripción de la operación */}
           {renderInputField(
@@ -173,22 +173,22 @@ export const QualificationForm2 = () => {
           )}
 
           {/* Tiempo de implementación */}
-          <div className="space-y-4">
-            <Label className="text-sm font-semibold flex items-center gap-2">
-              <Clock className="w-4 h-4 text-primary" />
+          <div className="space-y-3 md:space-y-4">
+            <Label className="text-xs md:text-sm font-semibold flex items-center gap-2">
+              <Clock className="w-3 h-3 md:w-4 md:h-4 text-primary" />
               ¿Para cuándo necesitás implementar una solución?
             </Label>
             <RadioGroup
               value={formData.tiempoImplementacion}
               onValueChange={(value) => updateFormData({ tiempoImplementacion: value })}
-              className="grid grid-cols-1 md:grid-cols-2 gap-3"
+              className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-3"
             >
               {tiempoOptions.map((option) => (
                 <div key={option.id} className="flex items-center">
                   <RadioGroupItem value={option.id} id={`tiempo-${option.id}`} className="peer sr-only" />
                   <Label
                     htmlFor={`tiempo-${option.id}`}
-                    className="flex-1 px-4 py-3 text-sm border border-zinc-700 rounded-xl cursor-pointer transition-all hover:border-primary/50 peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary/10 peer-data-[state=checked]:text-primary text-center"
+                    className="flex-1 px-3 md:px-4 py-2.5 md:py-3 text-xs md:text-sm border border-zinc-700 rounded-lg md:rounded-xl cursor-pointer transition-all hover:border-primary/50 peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary/10 peer-data-[state=checked]:text-primary text-center"
                   >
                     {option.label}
                   </Label>
@@ -200,10 +200,10 @@ export const QualificationForm2 = () => {
           {/* Submit */}
           <button
             type="submit"
-            className="w-full bg-primary text-primary-foreground px-8 py-5 rounded-xl text-lg font-bold hover:bg-primary/90 transition-all shadow-2xl shadow-primary/30 flex items-center justify-center gap-3 group"
+            className="w-full bg-primary text-primary-foreground px-6 md:px-8 py-4 md:py-5 rounded-xl text-base md:text-lg font-bold hover:bg-primary/90 transition-all shadow-2xl shadow-primary/30 flex items-center justify-center gap-2 md:gap-3 group"
           >
             Ver mi Plan de Acción
-            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            <ArrowRight className="w-4 h-4 md:w-5 md:h-5 group-hover:translate-x-1 transition-transform" />
           </button>
         </motion.form>
       </div>
