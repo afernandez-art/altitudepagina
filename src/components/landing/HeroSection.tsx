@@ -11,7 +11,7 @@ export const HeroSection = () => {
       behavior: "smooth"
     });
   };
-  return <section className="relative min-h-[100svh] flex items-center px-4 sm:px-6 overflow-hidden pt-8 pb-8">
+  return <section className="relative min-h-[100svh] flex items-center px-4 sm:px-6 overflow-hidden pt-6 pb-8">
       <div className="max-w-4xl mx-auto w-full">
         <div className="text-center space-y-6 sm:space-y-8">
           <motion.div initial={{
