@@ -7,15 +7,12 @@ import {
   User,
   ArrowRight,
   Clock,
-  Target,
-  Zap,
 } from "lucide-react";
-import { useLeadMagnet, industriasOptions, facturacionOptions, desafiosOptions } from "@/contexts/LeadMagnetContext";
+import { useLeadMagnet, industriasOptions, facturacionOptions } from "@/contexts/LeadMagnetContext";
 
 export const DynamicVSLSection = () => {
   const { formData, currentStep, setCurrentStep } = useLeadMagnet();
   const [isPlaying, setIsPlaying] = useState(false);
-  const [videoEnded, setVideoEnded] = useState(false);
 
   const handleContinueToForm = () => {
     setCurrentStep("form2");
@@ -31,9 +28,6 @@ export const DynamicVSLSection = () => {
   // Obtener labels amigables
   const nichoLabel = industriasOptions.find((n) => n.id === formData.nicho)?.label || formData.nicho;
   const factLabel = facturacionOptions.find((f) => f.id === formData.facturacion)?.label || formData.facturacion;
-  const problemasLabels = formData.problematicas.map(p =>
-    desafiosOptions.find(d => d.id === p)?.label || p
-  );
 
   if (currentStep !== "vsl" && currentStep !== "form2" && currentStep !== "action_plan" && currentStep !== "calendar") {
     return null;
@@ -90,81 +84,15 @@ export const DynamicVSLSection = () => {
                 </div>
               </div>
             ) : (
-              /* Video playing state - placeholder for actual video */
+              /* Video playing state - YouTube embed */
               <div className="absolute inset-0">
-                {/*
-                  AQUÍ VA EL VIDEO REAL
-                  Podés reemplazar este div con:
-                  - Un iframe de YouTube/Vimeo
-                  - Un video tag con tu URL
-                  - Un embed de cualquier plataforma
-                */}
-                <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-zinc-900 to-black p-8">
-                  {/* Simulated video content - personalizado */}
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    className="text-center max-w-2xl"
-                  >
-                    <div className="mb-8">
-                      <motion.div
-                        className="w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center"
-                        animate={{ scale: [1, 1.05, 1] }}
-                        transition={{ repeat: Infinity, duration: 2 }}
-                      >
-                        <Target className="w-12 h-12 text-primary" />
-                      </motion.div>
-                      <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">
-                        Diagnóstico para {formData.empresa || formData.nombre}
-                      </h3>
-                      <p className="text-zinc-400 text-lg">
-                        Industria: <span className="text-white font-semibold">{nichoLabel}</span>
-                      </p>
-                    </div>
-
-                    {/* Problemas identificados */}
-                    <div className="bg-zinc-800/50 rounded-xl p-6 mb-8">
-                      <h4 className="text-lg font-bold text-white mb-4 flex items-center justify-center gap-2">
-                        <Zap className="w-5 h-5 text-primary" />
-                        Desafíos que identificamos
-                      </h4>
-                      <div className="flex flex-wrap justify-center gap-2">
-                        {problemasLabels.map((label, i) => (
-                          <span key={i} className="bg-primary/20 text-primary px-4 py-2 rounded-full text-sm font-medium">
-                            {label}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* CTA to continue */}
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 1 }}
-                    >
-                      <p className="text-zinc-400 mb-4">
-                        Completá algunas preguntas más para recibir tu Plan de Acción personalizado
-                      </p>
-                      <button
-                        onClick={handleContinueToForm}
-                        className="bg-primary text-primary-foreground px-8 py-4 rounded-xl font-bold hover:bg-primary/90 transition-all text-base md:text-lg inline-flex items-center gap-2 shadow-2xl shadow-primary/30"
-                      >
-                        Continuar al siguiente paso
-                        <ArrowRight className="w-5 h-5" />
-                      </button>
-                    </motion.div>
-                  </motion.div>
-                </div>
-
-                {/* Si tenés un video real, descomentá esto y comentá el div de arriba:
                 <iframe
-                  src="TU_URL_DE_VIDEO"
+                  src="https://www.youtube.com/embed/NVLgkXylEuQ?autoplay=1&rel=0"
                   className="w-full h-full"
-                  allow="autoplay; fullscreen"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
+                  title="Video diagnóstico personalizado"
                 />
-                */}
               </div>
             )}
           </div>
@@ -187,22 +115,32 @@ export const DynamicVSLSection = () => {
           </motion.div>
         )}
 
-        {/* Skip link - only show before playing */}
-        {!isPlaying && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.6 }}
-            className="text-center"
-          >
+        {/* CTA - different state based on video playing */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.6 }}
+          className="text-center"
+        >
+          {isPlaying ? (
+            /* Show CTA when video is playing */
+            <button
+              onClick={handleContinueToForm}
+              className="bg-primary text-primary-foreground px-8 py-4 rounded-xl font-bold hover:bg-primary/90 transition-all text-base md:text-lg inline-flex items-center gap-2 shadow-2xl shadow-primary/30"
+            >
+              Continuar al siguiente paso
+              <ArrowRight className="w-5 h-5" />
+            </button>
+          ) : (
+            /* Show skip link before playing */
             <button
               onClick={handleContinueToForm}
               className="text-zinc-500 hover:text-zinc-300 text-sm underline underline-offset-4 transition-colors"
             >
               Saltar video y continuar
             </button>
-          </motion.div>
-        )}
+          )}
+        </motion.div>
       </div>
     </section>
   );
