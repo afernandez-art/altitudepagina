@@ -76,7 +76,7 @@ export const HeroSection = () => {
               <Truck className="w-4 h-4 text-primary" />
               Transporte
             </span>
-            
+            <span className="text-zinc-600">•</span>
             <span className="flex items-center gap-1.5">
               <Warehouse className="w-4 h-4 text-primary" />
               Fulfillment
