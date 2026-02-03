@@ -20,15 +20,15 @@ const stats = [
 ];
 
 const logos = [
-  { src: lichytexLogo, alt: "Lichytex" },
-  { src: adlerPelzerLogo, alt: "Adler Pelzer Group" },
-  { src: alstomLogo, alt: "Alstom" },
-  { src: amcorLogo, alt: "Amcor" },
-  { src: billabongLogo, alt: "Billabong" },
-  { src: claroLogo, alt: "Claro" },
-  { src: mapedLogo, alt: "Maped" },
-  { src: nestleLogo, alt: "Nestlé" },
-  { src: telecomLogo, alt: "Telecom" },
+  { src: lichytexLogo, alt: "Lichytex", className: "" },
+  { src: adlerPelzerLogo, alt: "Adler Pelzer Group", className: "scale-150" },
+  { src: alstomLogo, alt: "Alstom", className: "" },
+  { src: amcorLogo, alt: "Amcor", className: "scale-150" },
+  { src: billabongLogo, alt: "Billabong", className: "" },
+  { src: claroLogo, alt: "Claro", className: "" },
+  { src: mapedLogo, alt: "Maped", className: "" },
+  { src: nestleLogo, alt: "Nestlé", className: "" },
+  { src: telecomLogo, alt: "Telecom", className: "scale-150" },
 ];
 
 interface AnimatedCounterProps {
@@ -80,7 +80,7 @@ export const ClientsSection = () => {
               <img 
                 src={logo.src} 
                 alt={logo.alt} 
-                className="max-h-full max-w-full object-contain"
+                className={`max-h-full max-w-full object-contain ${logo.className}`}
               />
             </div>
           ))}
