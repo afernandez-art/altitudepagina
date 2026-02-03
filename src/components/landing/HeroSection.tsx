@@ -1,96 +1,126 @@
 import { motion } from "framer-motion";
-import { Play, Calendar, CheckCircle } from "lucide-react";
+import { FileSearch, ChevronDown, CheckCircle, Truck, FileCheck, Package, Warehouse } from "lucide-react";
+
 export const HeroSection = () => {
-  return <section className="relative py-16 md:py-24 px-6 overflow-hidden pt-32">
-      <div className="max-w-5xl mx-auto text-center space-y-8">
-        
-        
-        <motion.h1 initial={{
-        opacity: 0,
-        y: 30
-      }} animate={{
-        opacity: 1,
-        y: 0
-      }} transition={{
-        delay: 0.3
-      }} className="text-4xl md:text-7xl font-black tracking-tight leading-[1.1]">
-          <span className="italic text-zinc-500">Tu carga, nuestra responsabilidad.</span>
-          <br />
-          <span>De origen a destino, sin intermediarios.</span>
-        </motion.h1>
-        
-        <motion.p initial={{
-        opacity: 0,
-        y: 20
-      }} animate={{
-        opacity: 1,
-        y: 0
-      }} transition={{
-        delay: 0.4
-      }} className="text-xl text-zinc-400 max-w-2xl mx-auto">
-          Importaciones, transporte nacional y almacenamiento con un solo operador. 
-          Simplificá tu logística y enfocate en tu negocio.
-        </motion.p>
-        
-        {/* VSL Video Placeholder */}
-        <motion.div initial={{
-        opacity: 0,
-        scale: 0.95
-      }} animate={{
-        opacity: 1,
-        scale: 1
-      }} transition={{
-        delay: 0.5
-      }} className="relative max-w-4xl mx-auto mt-12 rounded-2xl overflow-hidden border border-zinc-800 bg-secondary aspect-video vsl-shadow group cursor-pointer">
-          <div className="absolute inset-0 bg-zinc-900 flex items-center justify-center">
-            <div className="absolute inset-0 bg-gradient-to-br from-zinc-800 to-zinc-900" />
-            <div className="absolute inset-0 flex items-center justify-center">
-              <motion.div whileHover={{
-              scale: 1.1
-            }} className="w-20 h-20 bg-primary rounded-full flex items-center justify-center shadow-2xl shadow-primary/40 animate-pulse-glow">
-                <Play className="w-8 h-8 text-primary-foreground ml-1" fill="currentColor" />
-              </motion.div>
-            </div>
-          </div>
-        </motion.div>
-        
-        {/* CTAs */}
-        <motion.div initial={{
-        opacity: 0,
-        y: 20
-      }} animate={{
-        opacity: 1,
-        y: 0
-      }} transition={{
-        delay: 0.6
-      }} className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-12">
-          <a href="#lead-magnet-form" className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground px-10 py-5 rounded-xl text-lg font-bold transition-all flex items-center justify-center gap-3">
-            <Play className="w-5 h-5" />
-            Ver Video Personalizado
-          </a>
-          <a href="#servicios" className="w-full sm:w-auto bg-foreground/5 hover:bg-foreground/10 border border-zinc-800 px-10 py-5 rounded-xl text-lg font-bold transition-all">
-            Conocer Servicios
-          </a>
-        </motion.div>
-        
-        {/* Trust badges */}
-        <motion.div initial={{
-        opacity: 0
-      }} animate={{
-        opacity: 1
-      }} transition={{
-        delay: 0.7
-      }} className="pt-8 flex flex-wrap justify-center items-center gap-4 text-zinc-500 text-sm font-medium">
-          <span className="flex items-center gap-1">
-            <CheckCircle className="w-4 h-4 text-green-500" /> Sin compromiso
-          </span>
-          <span className="flex items-center gap-1">
-            <CheckCircle className="w-4 h-4 text-green-500" /> 15 Minutos
-          </span>
-          <span className="flex items-center gap-1">
-            <CheckCircle className="w-4 h-4 text-green-500" /> Solo Directores
-          </span>
-        </motion.div>
+  const scrollToQuiz = () => {
+    document.getElementById("quiz-section")?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const scrollToServices = () => {
+    document.getElementById("servicios")?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  return (
+    <section className="relative min-h-[100svh] flex items-center px-4 sm:px-6 overflow-hidden pt-20 pb-8">
+      <div className="max-w-4xl mx-auto w-full">
+        <div className="text-center space-y-6 sm:space-y-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+          >
+            <span className="inline-flex items-center gap-2 bg-primary/10 text-primary px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-semibold">
+              Logística integral para importadores
+            </span>
+          </motion.div>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1]"
+          >
+            <span className="text-zinc-400">Tu carga,</span>
+            <br />
+            <span>nuestra responsabilidad.</span>
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="text-base sm:text-lg lg:text-xl text-zinc-400 max-w-2xl mx-auto"
+          >
+            De origen a destino, sin intermediarios. Un solo operador para toda tu cadena logística.
+          </motion.p>
+
+          {/* Services inline */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.35 }}
+            className="flex flex-wrap items-center justify-center gap-x-2 sm:gap-x-4 gap-y-2 text-sm sm:text-base text-zinc-300"
+          >
+            <span className="flex items-center gap-1.5">
+              <Package className="w-4 h-4 text-primary" />
+              Forwarder
+            </span>
+            <span className="text-zinc-600">•</span>
+            <span className="flex items-center gap-1.5">
+              <FileCheck className="w-4 h-4 text-primary" />
+              Aduana
+            </span>
+            <span className="text-zinc-600">•</span>
+            <span className="flex items-center gap-1.5">
+              <Truck className="w-4 h-4 text-primary" />
+              Transporte
+            </span>
+            <span className="text-zinc-600">•</span>
+            <span className="flex items-center gap-1.5">
+              <Warehouse className="w-4 h-4 text-primary" />
+              Fulfillment
+            </span>
+          </motion.div>
+
+          {/* CTAs */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center pt-4"
+          >
+            <button
+              onClick={scrollToQuiz}
+              className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground px-6 sm:px-8 py-4 rounded-xl text-base sm:text-lg font-bold transition-all flex items-center justify-center gap-2 sm:gap-3 shadow-2xl shadow-primary/20"
+            >
+              <FileSearch className="w-5 h-5" />
+              Quiero mi diagnóstico gratis
+            </button>
+            <button
+              onClick={scrollToServices}
+              className="w-full sm:w-auto bg-foreground/5 hover:bg-foreground/10 border border-zinc-800 px-6 sm:px-8 py-4 rounded-xl text-base sm:text-lg font-bold transition-all flex items-center justify-center gap-2"
+            >
+              Conocer más
+              <ChevronDown className="w-5 h-5" />
+            </button>
+          </motion.div>
+
+          {/* Trust badges */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+            className="flex flex-wrap justify-center gap-x-4 sm:gap-x-6 gap-y-2 text-zinc-500 text-xs sm:text-sm"
+          >
+            <span className="flex items-center gap-1.5">
+              <CheckCircle className="w-4 h-4 text-green-500" />
+              +12 años
+            </span>
+            <span className="flex items-center gap-1.5">
+              <CheckCircle className="w-4 h-4 text-green-500" />
+              Flota propia
+            </span>
+            <span className="flex items-center gap-1.5">
+              <CheckCircle className="w-4 h-4 text-green-500" />
+              48hs aduana
+            </span>
+          </motion.div>
+        </div>
       </div>
-    </section>;
+
+      {/* Background gradient */}
+      <div className="absolute top-0 right-0 -z-10 w-1/2 h-full bg-gradient-to-l from-primary/5 to-transparent" />
+      <div className="absolute bottom-0 left-1/4 -z-10 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
+    </section>
+  );
 };

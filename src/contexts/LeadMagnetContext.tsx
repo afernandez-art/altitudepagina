@@ -123,6 +123,10 @@ interface LeadMagnetContextType {
   getVideoPlaylist: () => VideoClip[];
   getTotalVideoDuration: () => number;
   resetFlow: () => void;
+
+  // Storage helpers for cross-tab communication
+  saveToStorage: () => void;
+  loadFromStorage: () => void;
 }
 
 const initialFormData: LeadMagnetFormData = {
@@ -211,6 +215,32 @@ export function LeadMagnetProvider({ children }: { children: ReactNode }) {
   const resetFlow = () => {
     setCurrentStep("form1");
     setFormData(initialFormData);
+    localStorage.removeItem("altitude_lead_data");
+  };
+
+  // Save form data to localStorage for cross-tab communication
+  const saveToStorage = () => {
+    const dataToSave = {
+      formData,
+      timestamp: Date.now(),
+    };
+    localStorage.setItem("altitude_lead_data", JSON.stringify(dataToSave));
+  };
+
+  // Load form data from localStorage
+  const loadFromStorage = () => {
+    try {
+      const saved = localStorage.getItem("altitude_lead_data");
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        // Check if data is less than 1 hour old
+        if (parsed.timestamp && Date.now() - parsed.timestamp < 3600000) {
+          setFormData(parsed.formData);
+        }
+      }
+    } catch (error) {
+      console.error("Error loading from storage:", error);
+    }
   };
 
   const selectedVideoClips = getVideoPlaylist();
@@ -226,6 +256,8 @@ export function LeadMagnetProvider({ children }: { children: ReactNode }) {
         getVideoPlaylist,
         getTotalVideoDuration,
         resetFlow,
+        saveToStorage,
+        loadFromStorage,
       }}
     >
       {children}

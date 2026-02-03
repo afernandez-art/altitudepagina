@@ -117,22 +117,22 @@ export const ActionPlanSection = () => {
   }
 
   return (
-    <section id="action-plan-section" className="py-20 px-6 bg-gradient-to-b from-background to-secondary/30">
+    <section id="action-plan-section" className="py-12 md:py-20 px-4 md:px-6 bg-gradient-to-b from-background to-secondary/30">
       <div className="max-w-5xl mx-auto">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-12"
+          className="text-center mb-8 md:mb-12"
         >
-          <div className="inline-flex items-center gap-2 bg-green-500/10 text-green-500 px-4 py-2 rounded-full text-sm font-semibold mb-4">
-            <CheckCircle className="w-4 h-4" />
+          <div className="inline-flex items-center gap-2 bg-green-500/10 text-green-500 px-3 md:px-4 py-1.5 md:py-2 rounded-full text-xs md:text-sm font-semibold mb-3 md:mb-4">
+            <CheckCircle className="w-3 h-3 md:w-4 md:h-4" />
             Plan Generado
           </div>
-          <h2 className="text-3xl md:text-5xl font-black tracking-tight mb-4">
+          <h2 className="text-2xl md:text-5xl font-black tracking-tight mb-3 md:mb-4">
             Tu Plan de Acción Personalizado
           </h2>
-          <p className="text-xl text-muted-foreground">
+          <p className="text-base md:text-xl text-muted-foreground">
             Preparado exclusivamente para{" "}
             <span className="text-primary font-semibold">
               {formData.empresa || formData.nombre}
@@ -145,34 +145,34 @@ export const ActionPlanSection = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="grid md:grid-cols-3 gap-4 mb-12"
+          className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4 mb-8 md:mb-12"
         >
-          <div className="bg-card p-6 rounded-xl border border-zinc-800">
-            <div className="flex items-center gap-3 mb-2">
-              <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-                <Building className="w-5 h-5 text-primary" />
+          <div className="bg-card p-4 md:p-6 rounded-lg md:rounded-xl border border-zinc-800">
+            <div className="flex items-center gap-2 md:gap-3 mb-2">
+              <div className="w-8 h-8 md:w-10 md:h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                <Building className="w-4 h-4 md:w-5 md:h-5 text-primary" />
               </div>
-              <span className="text-sm text-muted-foreground">Industria</span>
+              <span className="text-xs md:text-sm text-muted-foreground">Industria</span>
             </div>
-            <p className="text-lg font-semibold">{nichoLabel}</p>
+            <p className="text-base md:text-lg font-semibold">{nichoLabel}</p>
           </div>
-          <div className="bg-card p-6 rounded-xl border border-zinc-800">
-            <div className="flex items-center gap-3 mb-2">
-              <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-                <DollarSign className="w-5 h-5 text-primary" />
+          <div className="bg-card p-4 md:p-6 rounded-lg md:rounded-xl border border-zinc-800">
+            <div className="flex items-center gap-2 md:gap-3 mb-2">
+              <div className="w-8 h-8 md:w-10 md:h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                <DollarSign className="w-4 h-4 md:w-5 md:h-5 text-primary" />
               </div>
-              <span className="text-sm text-muted-foreground">Facturación</span>
+              <span className="text-xs md:text-sm text-muted-foreground">Facturación</span>
             </div>
-            <p className="text-lg font-semibold">{factLabel}</p>
+            <p className="text-base md:text-lg font-semibold">{factLabel}</p>
           </div>
-          <div className="bg-card p-6 rounded-xl border border-zinc-800">
-            <div className="flex items-center gap-3 mb-2">
-              <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-                <AlertTriangle className="w-5 h-5 text-primary" />
+          <div className="bg-card p-4 md:p-6 rounded-lg md:rounded-xl border border-zinc-800">
+            <div className="flex items-center gap-2 md:gap-3 mb-2">
+              <div className="w-8 h-8 md:w-10 md:h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                <AlertTriangle className="w-4 h-4 md:w-5 md:h-5 text-primary" />
               </div>
-              <span className="text-sm text-muted-foreground">Desafíos identificados</span>
+              <span className="text-xs md:text-sm text-muted-foreground">Desafíos identificados</span>
             </div>
-            <p className="text-lg font-semibold">{formData.problematicas.length} áreas de mejora</p>
+            <p className="text-base md:text-lg font-semibold">{formData.problematicas.length} áreas de mejora</p>
           </div>
         </motion.div>
 
@@ -181,28 +181,28 @@ export const ActionPlanSection = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="mb-12"
+          className="mb-8 md:mb-12"
         >
-          <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
-            <Zap className="w-5 h-5 text-primary" />
+          <h3 className="text-lg md:text-xl font-bold mb-4 md:mb-6 flex items-center gap-2">
+            <Zap className="w-4 h-4 md:w-5 md:h-5 text-primary" />
             Soluciones para tus Desafíos
           </h3>
-          <div className="grid md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
             {solucionesPersonalizadas.map((solucion, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.3 + index * 0.1 }}
-                className="bg-card p-6 rounded-xl border border-zinc-800 hover:border-primary/50 transition-all"
+                className="bg-card p-4 md:p-6 rounded-lg md:rounded-xl border border-zinc-800 hover:border-primary/50 transition-all"
               >
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary shrink-0">
+                <div className="flex items-start gap-3 md:gap-4">
+                  <div className="w-10 h-10 md:w-12 md:h-12 bg-primary/10 rounded-lg md:rounded-xl flex items-center justify-center text-primary shrink-0">
                     {solucion.icono}
                   </div>
                   <div>
-                    <h4 className="font-bold mb-1">{solucion.titulo}</h4>
-                    <p className="text-sm text-muted-foreground">{solucion.descripcion}</p>
+                    <h4 className="font-bold mb-1 text-sm md:text-base">{solucion.titulo}</h4>
+                    <p className="text-xs md:text-sm text-muted-foreground">{solucion.descripcion}</p>
                   </div>
                 </div>
               </motion.div>
@@ -215,26 +215,26 @@ export const ActionPlanSection = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="mb-12"
+          className="mb-8 md:mb-12"
         >
-          <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
-            <Package className="w-5 h-5 text-primary" />
+          <h3 className="text-lg md:text-xl font-bold mb-4 md:mb-6 flex items-center gap-2">
+            <Package className="w-4 h-4 md:w-5 md:h-5 text-primary" />
             Servicios Recomendados
           </h3>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 md:gap-4">
             {serviciosRecomendados.map((servicio, index) => (
               <motion.div
                 key={servicio.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 + index * 0.1 }}
-                className="bg-gradient-to-br from-zinc-800/50 to-zinc-900/50 p-5 rounded-xl border border-zinc-700 hover:border-primary/50 transition-all group"
+                className="bg-gradient-to-br from-zinc-800/50 to-zinc-900/50 p-3 md:p-5 rounded-lg md:rounded-xl border border-zinc-700 hover:border-primary/50 transition-all group"
               >
-                <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary mb-4 group-hover:bg-primary group-hover:text-primary-foreground transition-all">
+                <div className="w-10 h-10 md:w-12 md:h-12 bg-primary/10 rounded-lg md:rounded-xl flex items-center justify-center text-primary mb-3 md:mb-4 group-hover:bg-primary group-hover:text-primary-foreground transition-all">
                   {servicio.icono}
                 </div>
-                <h4 className="font-bold mb-2">{servicio.titulo}</h4>
-                <p className="text-sm text-muted-foreground">{servicio.descripcion}</p>
+                <h4 className="font-bold mb-1 md:mb-2 text-sm md:text-base">{servicio.titulo}</h4>
+                <p className="text-xs md:text-sm text-muted-foreground line-clamp-3">{servicio.descripcion}</p>
               </motion.div>
             ))}
           </div>
@@ -246,10 +246,10 @@ export const ActionPlanSection = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6 }}
-            className="bg-secondary/50 p-6 rounded-xl border border-zinc-800 mb-12"
+            className="bg-secondary/50 p-4 md:p-6 rounded-lg md:rounded-xl border border-zinc-800 mb-8 md:mb-12"
           >
-            <h3 className="text-lg font-bold mb-4">Lo que nos contaste</h3>
-            <div className="space-y-4 text-sm">
+            <h3 className="text-base md:text-lg font-bold mb-3 md:mb-4">Lo que nos contaste</h3>
+            <div className="space-y-3 md:space-y-4 text-xs md:text-sm">
               {formData.descripcionOperacion && (
                 <div>
                   <p className="text-muted-foreground mb-1">Tu operación:</p>
@@ -277,21 +277,21 @@ export const ActionPlanSection = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4"
+          className="flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-4"
         >
           <button
             onClick={handleAgendarLlamada}
-            className="w-full sm:w-auto bg-primary text-primary-foreground px-10 py-5 rounded-xl text-lg font-bold hover:bg-primary/90 transition-all shadow-2xl shadow-primary/30 flex items-center justify-center gap-3 group"
+            className="w-full sm:w-auto bg-primary text-primary-foreground px-6 md:px-10 py-4 md:py-5 rounded-xl text-base md:text-lg font-bold hover:bg-primary/90 transition-all shadow-2xl shadow-primary/30 flex items-center justify-center gap-2 md:gap-3 group"
           >
             Agendar Llamada Estratégica
-            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            <ArrowRight className="w-4 h-4 md:w-5 md:h-5 group-hover:translate-x-1 transition-transform" />
           </button>
-          <button className="w-full sm:w-auto bg-card border border-zinc-700 hover:border-zinc-500 px-8 py-5 rounded-xl text-lg font-bold transition-all flex items-center justify-center gap-2">
-            <Download className="w-5 h-5" />
+          <button className="w-full sm:w-auto bg-card border border-zinc-700 hover:border-zinc-500 px-4 md:px-8 py-3 md:py-5 rounded-xl text-sm md:text-lg font-bold transition-all flex items-center justify-center gap-2">
+            <Download className="w-4 h-4 md:w-5 md:h-5" />
             Descargar PDF
           </button>
-          <button className="w-full sm:w-auto bg-card border border-zinc-700 hover:border-zinc-500 px-8 py-5 rounded-xl text-lg font-bold transition-all flex items-center justify-center gap-2">
-            <Share2 className="w-5 h-5" />
+          <button className="w-full sm:w-auto bg-card border border-zinc-700 hover:border-zinc-500 px-4 md:px-8 py-3 md:py-5 rounded-xl text-sm md:text-lg font-bold transition-all flex items-center justify-center gap-2">
+            <Share2 className="w-4 h-4 md:w-5 md:h-5" />
             Compartir
           </button>
         </motion.div>

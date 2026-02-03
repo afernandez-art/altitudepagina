@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { User, MapPin, DollarSign, ArrowRight } from "lucide-react";
+import { User, MapPin, DollarSign, ArrowRight, FileSearch } from "lucide-react";
 
 const benefits = [
   {
@@ -58,11 +58,18 @@ export const WhyAltitudeSection = () => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mt-16"
+          className="text-center mt-16 flex flex-col sm:flex-row items-center justify-center gap-4"
         >
           <a
+            href="#quiz-section"
+            className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-8 py-4 rounded-xl font-bold hover:bg-primary/90 transition-all shadow-lg shadow-primary/20"
+          >
+            <FileSearch className="w-5 h-5" />
+            Quiero mi diagnóstico gratis
+          </a>
+          <a
             href="#proceso"
-            className="inline-flex items-center gap-2 text-primary font-semibold hover:gap-3 transition-all"
+            className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground font-semibold transition-all"
           >
             Ver cómo funciona <ArrowRight className="w-5 h-5" />
           </a>
