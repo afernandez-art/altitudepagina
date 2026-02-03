@@ -70,17 +70,17 @@ export const ClientsSection = () => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="flex flex-wrap justify-center items-center gap-8 md:gap-12 mb-12 sm:mb-16"
+          className="grid grid-cols-3 md:grid-cols-5 gap-6 md:gap-8 mb-12 sm:mb-16 max-w-4xl mx-auto"
         >
           {logos.map((logo, index) => (
             <div
               key={index}
-              className="h-12 md:h-16 px-4 flex items-center justify-center opacity-80 hover:opacity-100 transition-all duration-300"
+              className="h-14 md:h-16 p-3 flex items-center justify-center bg-white/90 rounded-xl opacity-90 hover:opacity-100 hover:scale-105 transition-all duration-300"
             >
               <img 
                 src={logo.src} 
                 alt={logo.alt} 
-                className="max-h-full max-w-[120px] md:max-w-[150px] object-contain"
+                className="max-h-full max-w-full object-contain"
               />
             </div>
           ))}
