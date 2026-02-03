@@ -10,7 +10,7 @@ import billabongLogo from "@/assets/logos/billabong.png";
 import claroLogo from "@/assets/logos/claro.png";
 import mapedLogo from "@/assets/logos/maped.png";
 import nestleLogo from "@/assets/logos/nestle.png";
-import telecomLogo from "@/assets/logos/telecom.jpg";
+import telecomLogo from "@/assets/logos/telecom.png";
 
 const stats = [
   { value: 150, prefix: "+", suffix: "", label: "Clientes" },
