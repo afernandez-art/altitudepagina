@@ -39,13 +39,13 @@ export const ProcessSection = () => {
   const [expandedStep, setExpandedStep] = useState<string | null>(null);
 
   return (
-    <section className="py-32 px-6" id="proceso">
+    <section className="py-20 sm:py-24 px-6" id="proceso">
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-20"
+          className="text-center mb-12 sm:mb-16"
         >
           <h2 className="text-sm font-bold text-primary tracking-[0.2em] uppercase mb-4">
             Cómo trabajamos

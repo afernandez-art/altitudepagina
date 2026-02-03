@@ -36,7 +36,7 @@ const AnimatedCounter = ({ value, prefix = "", suffix = "" }: AnimatedCounterPro
 
 export const ClientsSection = () => {
   return (
-    <section className="py-32 px-6 bg-card/50" id="clientes">
+    <section className="py-20 sm:py-24 px-6 bg-card/50" id="clientes">
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -57,7 +57,7 @@ export const ClientsSection = () => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="flex flex-wrap justify-center items-center gap-8 md:gap-12 mb-20"
+          className="flex flex-wrap justify-center items-center gap-8 md:gap-12 mb-12 sm:mb-16"
         >
           {logos.map((logo, index) => (
             <div
@@ -74,7 +74,7 @@ export const ClientsSection = () => {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="max-w-4xl mx-auto mb-20"
+          className="max-w-4xl mx-auto mb-12 sm:mb-16"
         >
           <div className="relative p-8 md:p-12 rounded-2xl bg-background border border-border">
             <Quote className="w-12 h-12 text-primary/30 absolute top-6 left-6" />

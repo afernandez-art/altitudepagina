@@ -20,7 +20,7 @@ const team = [
 
 export const TeamSection = () => {
   return (
-    <section className="py-32 px-6 bg-card/50" id="equipo">
+    <section className="py-20 sm:py-24 px-6 bg-card/50" id="equipo">
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

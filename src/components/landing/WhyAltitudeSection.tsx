@@ -21,13 +21,13 @@ const benefits = [
 
 export const WhyAltitudeSection = () => {
   return (
-    <section className="py-32 px-6 bg-card/50" id="por-que">
+    <section className="py-20 sm:py-24 px-6 bg-card/50" id="por-que">
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-20"
+          className="text-center mb-12 sm:mb-16"
         >
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter">
             ¿Por qué trabajar con un{" "}
