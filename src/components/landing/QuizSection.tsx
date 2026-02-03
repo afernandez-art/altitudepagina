@@ -15,57 +15,27 @@ import {
   Package,
   Lock,
   Sparkles,
-  DollarSign,
-  AlertTriangle,
-  Clock,
-  TrendingDown,
-  Eye,
-  FileWarning,
-  UserX,
-  Rocket,
-  HelpCircle,
-  Warehouse,
 } from "lucide-react";
-import { useLeadMagnet } from "@/contexts/LeadMagnetContext";
+import { useLeadMagnet, industriasOptions, desafiosOptions, facturacionOptions } from "@/contexts/LeadMagnetContext";
 import { Progress } from "@/components/ui/progress";
 
-// Opciones de industria con iconos
-const industriasOptions = [
-  { id: "ecommerce", label: "E-commerce", icon: ShoppingCart },
-  { id: "industrial", label: "Industrial", icon: Factory },
-  { id: "alimentos", label: "Alimentos", icon: UtensilsCrossed },
-  { id: "farmaceutico", label: "Farmacéutico", icon: Pill },
-  { id: "textil", label: "Textil / Moda", icon: Shirt },
-  { id: "tecnologia", label: "Tecnología", icon: Cpu },
-  { id: "automotriz", label: "Automotriz", icon: Car },
-  { id: "otro", label: "Otro", icon: Package },
-];
-
-// Opciones de desafíos con iconos
-const desafiosOptions = [
-  { id: "costos-altos", label: "Costos logísticos muy altos", icon: DollarSign },
-  { id: "tiempos-entrega", label: "Tiempos impredecibles", icon: Clock },
-  { id: "falta-visibilidad", label: "Falta de visibilidad/tracking", icon: Eye },
-  { id: "problemas-aduana", label: "Problemas con aduana", icon: FileWarning },
-  { id: "operador-actual", label: "Mal servicio actual", icon: UserX },
-  { id: "escalar-operacion", label: "Necesito escalar", icon: Rocket },
-  { id: "primera-importacion", label: "Primera importación", icon: HelpCircle },
-  { id: "almacenamiento", label: "Necesito fulfillment", icon: Warehouse },
-];
-
-// Opciones de facturación
-const facturacionOptions = [
-  { id: "menos-50k", label: "Menos de USD 50k/mes" },
-  { id: "50-200k", label: "USD 50k - 200k/mes" },
-  { id: "200-500k", label: "USD 200k - 500k/mes" },
-  { id: "500k-1m", label: "USD 500k - 1M/mes" },
-  { id: "mas-1m", label: "Más de USD 1M/mes" },
-];
+// Iconos para las industrias
+const industriaIcons: Record<string, React.ComponentType<{ className?: string }>> = {
+  ecommerce: ShoppingCart,
+  industrial: Factory,
+  alimentos: UtensilsCrossed,
+  farmaceutico: Pill,
+  textil: Shirt,
+  tecnologia: Cpu,
+  automotriz: Car,
+  otro: Package,
+};
 
 export const QuizSection = () => {
   const { formData, updateFormData, saveToStorage } = useLeadMagnet();
   const [quizStep, setQuizStep] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const totalSteps = 4;
   const progress = ((quizStep + 1) / totalSteps) * 100;
@@ -89,11 +59,46 @@ export const QuizSection = () => {
     setTimeout(() => setQuizStep(3), 300);
   };
 
+  // Validaciones
+  const validateName = (name: string): boolean => {
+    const words = name.trim().split(/\s+/);
+    return words.length >= 2 && words.every(w => w.length >= 1);
+  };
+
+  const validateEmail = (email: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const validateWhatsApp = (phone: string): boolean => {
+    // Acepta formatos con código de país: +54 9 11 1234-5678, +541112345678, etc.
+    const phoneRegex = /^\+?[\d\s\-()]{10,20}$/;
+    return phoneRegex.test(phone.replace(/\s/g, ''));
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.nombre || !formData.email) {
+
+    const newErrors: Record<string, string> = {};
+
+    if (!formData.nombre || !validateName(formData.nombre)) {
+      newErrors.nombre = "Ingresá tu nombre completo (nombre y apellido)";
+    }
+
+    if (!formData.email || !validateEmail(formData.email)) {
+      newErrors.email = "Ingresá un email válido";
+    }
+
+    if (!formData.whatsapp || !validateWhatsApp(formData.whatsapp)) {
+      newErrors.whatsapp = "Ingresá un número válido con código de país";
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
       return;
     }
+
+    setErrors({});
     // Save data to localStorage for the new tab
     saveToStorage();
     setIsCompleted(true);
@@ -101,9 +106,7 @@ export const QuizSection = () => {
     window.open("/video-personalizado", "_blank");
   };
 
-  const canProceedStep1 = formData.nicho;
   const canProceedStep2 = formData.problematicas && formData.problematicas.length > 0;
-  const canProceedStep3 = formData.facturacion;
 
   if (isCompleted) {
     return (
@@ -191,7 +194,7 @@ export const QuizSection = () => {
                   <h3 className="text-lg sm:text-xl font-bold">¿En qué industria opera tu empresa?</h3>
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
                     {industriasOptions.map((industria) => {
-                      const Icon = industria.icon;
+                      const Icon = industriaIcons[industria.id] || Package;
                       const isSelected = formData.nicho === industria.id;
                       return (
                         <motion.button
@@ -224,12 +227,11 @@ export const QuizSection = () => {
                   className="space-y-4 sm:space-y-6"
                 >
                   <div>
-                    <h3 className="text-lg sm:text-xl font-bold mb-1">¿Cuáles son tus mayores desafíos?</h3>
-                    <p className="text-xs sm:text-sm text-muted-foreground">Seleccioná hasta 2 opciones</p>
+                    <h3 className="text-lg sm:text-xl font-bold mb-1">¿Cuáles son tus principales dolores logísticos hoy?</h3>
+                    <p className="text-xs sm:text-sm text-muted-foreground">Elegí hasta 2 opciones</p>
                   </div>
                   <div className="grid grid-cols-1 gap-2 sm:gap-3">
                     {desafiosOptions.map((desafio) => {
-                      const Icon = desafio.icon;
                       const isSelected = formData.problematicas?.includes(desafio.id);
                       const isDisabled = !isSelected && formData.problematicas?.length >= 2;
                       return (
@@ -247,12 +249,7 @@ export const QuizSection = () => {
                               : "border-zinc-700 hover:border-zinc-500"
                           }`}
                         >
-                          <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center shrink-0 ${
-                            isSelected ? "bg-primary text-primary-foreground" : "bg-zinc-800"
-                          }`}>
-                            <Icon className="w-4 h-4 sm:w-5 sm:h-5" />
-                          </div>
-                          <span className="font-medium text-xs sm:text-sm">{desafio.label}</span>
+                          <span className="font-medium text-sm sm:text-base">{desafio.label}</span>
                         </motion.button>
                       );
                     })}
@@ -284,7 +281,7 @@ export const QuizSection = () => {
                   exit={{ opacity: 0, x: -20 }}
                   className="space-y-4 sm:space-y-6"
                 >
-                  <h3 className="text-lg sm:text-xl font-bold">¿Cuánto importás o facturás por mes?</h3>
+                  <h3 className="text-lg sm:text-xl font-bold">¿Cuál es tu facturación mensual aproximada?</h3>
                   <div className="space-y-2 sm:space-y-3">
                     {facturacionOptions.map((fact) => {
                       const isSelected = formData.facturacion === fact.id;
@@ -326,22 +323,30 @@ export const QuizSection = () => {
                   className="space-y-4 sm:space-y-6"
                 >
                   <div>
-                    <h3 className="text-lg sm:text-xl font-bold mb-1">¿A dónde te enviamos tu diagnóstico?</h3>
+                    <h3 className="text-lg sm:text-xl font-bold mb-1">¿Dónde te enviamos tu diagnóstico personalizado?</h3>
                     <p className="text-xs sm:text-sm text-muted-foreground">Tu diagnóstico personalizado está casi listo</p>
                   </div>
                   <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
                     <div>
                       <label className="text-xs sm:text-sm font-medium text-muted-foreground mb-1 block">
-                        Nombre *
+                        Nombre completo *
                       </label>
                       <input
                         type="text"
-                        placeholder="Tu nombre"
+                        placeholder="Juan Pérez"
                         value={formData.nombre}
-                        onChange={(e) => updateFormData({ nombre: e.target.value })}
-                        className="w-full bg-secondary border border-zinc-700 focus:border-primary rounded-xl px-4 py-3 outline-none transition-colors text-sm sm:text-base"
+                        onChange={(e) => {
+                          updateFormData({ nombre: e.target.value });
+                          if (errors.nombre) setErrors(prev => ({ ...prev, nombre: '' }));
+                        }}
+                        className={`w-full bg-secondary border rounded-xl px-4 py-3 outline-none transition-colors text-sm sm:text-base ${
+                          errors.nombre ? 'border-red-500' : 'border-zinc-700 focus:border-primary'
+                        }`}
                         required
                       />
+                      {errors.nombre && (
+                        <p className="text-red-500 text-xs mt-1">{errors.nombre}</p>
+                      )}
                     </div>
                     <div>
                       <label className="text-xs sm:text-sm font-medium text-muted-foreground mb-1 block">
@@ -349,24 +354,41 @@ export const QuizSection = () => {
                       </label>
                       <input
                         type="email"
-                        placeholder="tu@empresa.com"
+                        placeholder="juan@empresa.com"
                         value={formData.email}
-                        onChange={(e) => updateFormData({ email: e.target.value })}
-                        className="w-full bg-secondary border border-zinc-700 focus:border-primary rounded-xl px-4 py-3 outline-none transition-colors text-sm sm:text-base"
+                        onChange={(e) => {
+                          updateFormData({ email: e.target.value });
+                          if (errors.email) setErrors(prev => ({ ...prev, email: '' }));
+                        }}
+                        className={`w-full bg-secondary border rounded-xl px-4 py-3 outline-none transition-colors text-sm sm:text-base ${
+                          errors.email ? 'border-red-500' : 'border-zinc-700 focus:border-primary'
+                        }`}
                         required
                       />
+                      {errors.email && (
+                        <p className="text-red-500 text-xs mt-1">{errors.email}</p>
+                      )}
                     </div>
                     <div>
                       <label className="text-xs sm:text-sm font-medium text-muted-foreground mb-1 block">
-                        WhatsApp (opcional)
+                        WhatsApp *
                       </label>
                       <input
                         type="tel"
-                        placeholder="+54 9 11 ..."
+                        placeholder="+54 9 11 1234-5678"
                         value={formData.whatsapp}
-                        onChange={(e) => updateFormData({ whatsapp: e.target.value })}
-                        className="w-full bg-secondary border border-zinc-700 focus:border-primary rounded-xl px-4 py-3 outline-none transition-colors text-sm sm:text-base"
+                        onChange={(e) => {
+                          updateFormData({ whatsapp: e.target.value });
+                          if (errors.whatsapp) setErrors(prev => ({ ...prev, whatsapp: '' }));
+                        }}
+                        className={`w-full bg-secondary border rounded-xl px-4 py-3 outline-none transition-colors text-sm sm:text-base ${
+                          errors.whatsapp ? 'border-red-500' : 'border-zinc-700 focus:border-primary'
+                        }`}
+                        required
                       />
+                      {errors.whatsapp && (
+                        <p className="text-red-500 text-xs mt-1">{errors.whatsapp}</p>
+                      )}
                     </div>
                     <div className="flex flex-col-reverse sm:flex-row justify-between pt-4 gap-3 sm:gap-4">
                       <button
@@ -381,7 +403,7 @@ export const QuizSection = () => {
                         className="flex items-center justify-center gap-2 bg-primary text-primary-foreground px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-bold hover:bg-primary/90 transition-all shadow-lg shadow-primary/20 text-sm sm:text-base"
                       >
                         <FileSearch className="w-5 h-5" />
-                        Ver mi Diagnóstico
+                        Ver mi diagnóstico
                         <ArrowRight className="w-4 h-4" />
                       </button>
                     </div>

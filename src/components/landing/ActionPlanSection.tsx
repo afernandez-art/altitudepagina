@@ -14,12 +14,19 @@ import {
   Warehouse,
   Download,
   Share2,
+  Clock,
 } from "lucide-react";
 import {
   useLeadMagnet,
-  nichosOptions,
+  industriasOptions,
   facturacionOptions,
-  problematicasOptions,
+  desafiosOptions,
+  operacionOptions,
+  frustracionOptions,
+  objetivoOptions,
+  urgenciaOptions,
+  getLabel,
+  getLabels,
 } from "@/contexts/LeadMagnetContext";
 
 // Mapeo de problemáticas a soluciones
@@ -29,12 +36,12 @@ const solucionesPorProblematica: Record<string, { titulo: string; descripcion: s
     descripcion: "Consolidación de carga, rutas optimizadas y negociación con carriers para reducir hasta 30% tus costos logísticos.",
     icono: <DollarSign className="w-5 h-5" />,
   },
-  "tiempos-entrega": {
+  "tiempos-impredecibles": {
     titulo: "Tiempos Predecibles",
     descripcion: "Sistema de tracking en tiempo real + coordinación proactiva para cumplir plazos de entrega.",
     icono: <TrendingUp className="w-5 h-5" />,
   },
-  "falta-visibilidad": {
+  "sin-visibilidad": {
     titulo: "Visibilidad Total",
     descripcion: "Dashboard personalizado con tracking de cada envío, alertas automáticas y reportes en tiempo real.",
     icono: <Target className="w-5 h-5" />,
@@ -44,12 +51,12 @@ const solucionesPorProblematica: Record<string, { titulo: string; descripcion: s
     descripcion: "Equipo especializado en aduana con promedio de despacho de 48hs. Documentación pre-clasificada.",
     icono: <FileCheck className="w-5 h-5" />,
   },
-  "operador-actual": {
+  "mal-servicio": {
     titulo: "Transición Sin Fricciones",
     descripcion: "Proceso de onboarding en 72hs. Tomamos tu operación actual y la mejoramos sin interrupciones.",
     icono: <Zap className="w-5 h-5" />,
   },
-  "escalar-operacion": {
+  "escalar": {
     titulo: "Escalabilidad Garantizada",
     descripcion: "Infraestructura flexible que crece con vos. Desde 1 pallet hasta containers completos.",
     icono: <TrendingUp className="w-5 h-5" />,
@@ -59,7 +66,7 @@ const solucionesPorProblematica: Record<string, { titulo: string; descripcion: s
     descripcion: "Te acompañamos paso a paso en tu primera operación. Asesoramiento en documentación, clasificación y costos.",
     icono: <Package className="w-5 h-5" />,
   },
-  "almacenamiento": {
+  "necesito-fulfillment": {
     titulo: "Fulfillment Integral",
     descripcion: "Almacenamiento, picking, packing y distribución desde nuestro centro logístico en AMBA.",
     icono: <Warehouse className="w-5 h-5" />,
@@ -97,8 +104,10 @@ const serviciosRecomendados = [
 export const ActionPlanSection = () => {
   const { formData, currentStep, setCurrentStep } = useLeadMagnet();
 
-  const nichoLabel = nichosOptions.find((n) => n.id === formData.nicho)?.label || "Tu industria";
-  const factLabel = facturacionOptions.find((f) => f.id === formData.facturacion)?.label || "";
+  const nichoLabel = getLabel(industriasOptions, formData.nicho);
+  const factLabel = getLabel(facturacionOptions, formData.facturacion);
+  const objetivoLabel = getLabel(objetivoOptions, formData.objetivoPrincipal);
+  const urgenciaLabel = getLabel(urgenciaOptions, formData.urgencia);
 
   // Obtener soluciones personalizadas basadas en las problemáticas seleccionadas
   const solucionesPersonalizadas = formData.problematicas
@@ -145,7 +154,7 @@ export const ActionPlanSection = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4 mb-8 md:mb-12"
+          className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-8 md:mb-12"
         >
           <div className="bg-card p-4 md:p-6 rounded-lg md:rounded-xl border border-zinc-800">
             <div className="flex items-center gap-2 md:gap-3 mb-2">
@@ -154,7 +163,7 @@ export const ActionPlanSection = () => {
               </div>
               <span className="text-xs md:text-sm text-muted-foreground">Industria</span>
             </div>
-            <p className="text-base md:text-lg font-semibold">{nichoLabel}</p>
+            <p className="text-sm md:text-lg font-semibold">{nichoLabel}</p>
           </div>
           <div className="bg-card p-4 md:p-6 rounded-lg md:rounded-xl border border-zinc-800">
             <div className="flex items-center gap-2 md:gap-3 mb-2">
@@ -163,16 +172,25 @@ export const ActionPlanSection = () => {
               </div>
               <span className="text-xs md:text-sm text-muted-foreground">Facturación</span>
             </div>
-            <p className="text-base md:text-lg font-semibold">{factLabel}</p>
+            <p className="text-sm md:text-lg font-semibold">{factLabel}</p>
           </div>
           <div className="bg-card p-4 md:p-6 rounded-lg md:rounded-xl border border-zinc-800">
             <div className="flex items-center gap-2 md:gap-3 mb-2">
               <div className="w-8 h-8 md:w-10 md:h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-                <AlertTriangle className="w-4 h-4 md:w-5 md:h-5 text-primary" />
+                <Target className="w-4 h-4 md:w-5 md:h-5 text-primary" />
               </div>
-              <span className="text-xs md:text-sm text-muted-foreground">Desafíos identificados</span>
+              <span className="text-xs md:text-sm text-muted-foreground">Objetivo</span>
             </div>
-            <p className="text-base md:text-lg font-semibold">{formData.problematicas.length} áreas de mejora</p>
+            <p className="text-sm md:text-lg font-semibold">{objetivoLabel}</p>
+          </div>
+          <div className="bg-card p-4 md:p-6 rounded-lg md:rounded-xl border border-zinc-800">
+            <div className="flex items-center gap-2 md:gap-3 mb-2">
+              <div className="w-8 h-8 md:w-10 md:h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                <Clock className="w-4 h-4 md:w-5 md:h-5 text-primary" />
+              </div>
+              <span className="text-xs md:text-sm text-muted-foreground">Urgencia</span>
+            </div>
+            <p className="text-sm md:text-lg font-semibold">{urgenciaLabel.replace(/^[^\s]+\s/, '')}</p>
           </div>
         </motion.div>
 
@@ -240,8 +258,8 @@ export const ActionPlanSection = () => {
           </div>
         </motion.div>
 
-        {/* Resumen de lo que contaste */}
-        {(formData.descripcionOperacion || formData.desafiosPrincipales || formData.objetivos) && (
+        {/* Resumen de la operación y frustraciones */}
+        {(formData.operacionTags.length > 0 || formData.frustracionTags.length > 0 || formData.operacionDetalle || formData.frustracionDetalle) && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -249,23 +267,35 @@ export const ActionPlanSection = () => {
             className="bg-secondary/50 p-4 md:p-6 rounded-lg md:rounded-xl border border-zinc-800 mb-8 md:mb-12"
           >
             <h3 className="text-base md:text-lg font-bold mb-3 md:mb-4">Lo que nos contaste</h3>
-            <div className="space-y-3 md:space-y-4 text-xs md:text-sm">
-              {formData.descripcionOperacion && (
+            <div className="space-y-4 text-xs md:text-sm">
+              {formData.operacionTags.length > 0 && (
                 <div>
-                  <p className="text-muted-foreground mb-1">Tu operación:</p>
-                  <p className="italic">"{formData.descripcionOperacion}"</p>
+                  <p className="text-muted-foreground mb-2">Tu operación actual:</p>
+                  <div className="flex flex-wrap gap-2">
+                    {getLabels(operacionOptions, formData.operacionTags).map((label, i) => (
+                      <span key={i} className="bg-zinc-800 px-3 py-1 rounded-full text-xs">
+                        {label}
+                      </span>
+                    ))}
+                  </div>
+                  {formData.operacionDetalle && (
+                    <p className="italic mt-2 text-muted-foreground">"{formData.operacionDetalle}"</p>
+                  )}
                 </div>
               )}
-              {formData.desafiosPrincipales && (
+              {formData.frustracionTags.length > 0 && (
                 <div>
-                  <p className="text-muted-foreground mb-1">Tu mayor desafío:</p>
-                  <p className="italic">"{formData.desafiosPrincipales}"</p>
-                </div>
-              )}
-              {formData.objetivos && (
-                <div>
-                  <p className="text-muted-foreground mb-1">Tus objetivos:</p>
-                  <p className="italic">"{formData.objetivos}"</p>
+                  <p className="text-muted-foreground mb-2">Tus frustraciones actuales:</p>
+                  <div className="flex flex-wrap gap-2">
+                    {getLabels(frustracionOptions, formData.frustracionTags).map((label, i) => (
+                      <span key={i} className="bg-zinc-800 px-3 py-1 rounded-full text-xs">
+                        {label}
+                      </span>
+                    ))}
+                  </div>
+                  {formData.frustracionDetalle && (
+                    <p className="italic mt-2 text-muted-foreground">"{formData.frustracionDetalle}"</p>
+                  )}
                 </div>
               )}
             </div>

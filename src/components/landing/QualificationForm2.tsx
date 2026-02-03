@@ -1,118 +1,68 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
-import { ArrowRight, FileText, Target, Clock, MessageSquare, Mic, Keyboard } from "lucide-react";
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { useLeadMagnet } from "@/contexts/LeadMagnetContext";
-import { AudioRecorder } from "@/components/ui/AudioRecorder";
-
-const tiempoOptions = [
-  { id: "inmediato", label: "Inmediato (próximos 15 días)" },
-  { id: "1-mes", label: "En el próximo mes" },
-  { id: "2-3-meses", label: "En 2-3 meses" },
-  { id: "evaluando", label: "Solo estoy evaluando opciones" },
-];
-
-type InputMode = "text" | "audio";
+import { ArrowRight, ArrowLeft, FileText, Building2, ChevronDown, ChevronUp } from "lucide-react";
+import { useLeadMagnet, operacionOptions, frustracionOptions, objetivoOptions, urgenciaOptions } from "@/contexts/LeadMagnetContext";
+import { Progress } from "@/components/ui/progress";
 
 export const QualificationForm2 = () => {
-  const { formData, updateFormData, currentStep, setCurrentStep } = useLeadMagnet();
-  const [inputModes, setInputModes] = useState<Record<string, InputMode>>({
-    descripcionOperacion: "text",
-    desafiosPrincipales: "text",
-    objetivos: "text",
-  });
+  const { formData, updateFormData, currentStep, setCurrentStep, submitToWebhook, saveToStorage } = useLeadMagnet();
+  const [formStep, setFormStep] = useState(0);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showOperacionDetalle, setShowOperacionDetalle] = useState(false);
+  const [showFrustracionDetalle, setShowFrustracionDetalle] = useState(false);
 
-  const toggleInputMode = (field: string) => {
-    setInputModes(prev => ({
-      ...prev,
-      [field]: prev[field] === "text" ? "audio" : "text",
-    }));
+  const totalSteps = 5;
+  const progress = ((formStep + 1) / totalSteps) * 100;
+
+  // Toggle handlers for multi-select chips
+  const handleOperacionToggle = (id: string) => {
+    const current = formData.operacionTags || [];
+    if (current.includes(id)) {
+      updateFormData({ operacionTags: current.filter((t) => t !== id) });
+    } else {
+      updateFormData({ operacionTags: [...current, id] });
+    }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleFrustracionToggle = (id: string) => {
+    const current = formData.frustracionTags || [];
+    if (current.includes(id)) {
+      updateFormData({ frustracionTags: current.filter((t) => t !== id) });
+    } else {
+      updateFormData({ frustracionTags: [...current, id] });
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!formData.urgencia) return;
+
+    setIsSubmitting(true);
+
+    // Save to storage before submitting
+    saveToStorage();
+
+    // Submit to webhook
+    await submitToWebhook();
+
+    setIsSubmitting(false);
     setCurrentStep("action_plan");
+
     setTimeout(() => {
       document.getElementById("action-plan-section")?.scrollIntoView({ behavior: "smooth" });
     }, 100);
   };
 
+  // Validation helpers
+  const canProceedStep0 = formData.empresa && formData.empresa.trim().length > 0;
+  const canProceedStep1 = formData.operacionTags && formData.operacionTags.length > 0;
+  const canProceedStep2 = formData.frustracionTags && formData.frustracionTags.length > 0;
+  const canProceedStep3 = formData.objetivoPrincipal;
+  const canSubmit = formData.urgencia;
+
   if (currentStep !== "form2" && currentStep !== "action_plan" && currentStep !== "calendar") {
     return null;
   }
-
-  const renderInputField = (
-    field: "descripcionOperacion" | "desafiosPrincipales" | "objetivos",
-    label: string,
-    icon: React.ReactNode,
-    placeholder: string,
-    audioPlaceholder: string
-  ) => {
-    const mode = inputModes[field];
-    const value = formData[field];
-
-    return (
-      <div className="space-y-2 md:space-y-3">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-          <Label className="text-xs md:text-sm font-semibold flex items-center gap-2">
-            {icon}
-            {label}
-          </Label>
-          <button
-            type="button"
-            onClick={() => toggleInputMode(field)}
-            className="flex items-center gap-1.5 md:gap-2 text-[10px] md:text-xs text-muted-foreground hover:text-primary transition-colors bg-secondary/50 px-2 md:px-3 py-1 md:py-1.5 rounded-lg w-fit"
-          >
-            {mode === "text" ? (
-              <>
-                <Mic className="w-2.5 h-2.5 md:w-3 md:h-3" />
-                Cambiar a audio
-              </>
-            ) : (
-              <>
-                <Keyboard className="w-2.5 h-2.5 md:w-3 md:h-3" />
-                Cambiar a texto
-              </>
-            )}
-          </button>
-        </div>
-
-        {mode === "text" ? (
-          <textarea
-            placeholder={placeholder}
-            value={value}
-            onChange={(e) => updateFormData({ [field]: e.target.value })}
-            rows={3}
-            className="w-full border border-zinc-700 focus:border-primary rounded-xl p-4 text-sm placeholder:text-muted-foreground/50 transition-all outline-none bg-transparent resize-none"
-          />
-        ) : (
-          <div className="space-y-3">
-            <AudioRecorder
-              placeholder={audioPlaceholder}
-              onTranscript={(text) => {
-                // Append to existing text or replace
-                const currentValue = formData[field];
-                const newValue = currentValue ? `${currentValue} ${text}` : text;
-                updateFormData({ [field]: newValue });
-              }}
-            />
-            {value && (
-              <div className="bg-secondary/30 border border-zinc-700 rounded-xl p-4">
-                <p className="text-xs text-muted-foreground mb-2">Texto transcrito (podés editarlo):</p>
-                <textarea
-                  value={value}
-                  onChange={(e) => updateFormData({ [field]: e.target.value })}
-                  rows={3}
-                  className="w-full bg-transparent text-sm outline-none resize-none"
-                />
-              </div>
-            )}
-          </div>
-        )}
-      </div>
-    );
-  };
 
   return (
     <section id="form2-section" className="py-12 md:py-20 px-4 md:px-6 bg-gradient-to-b from-black to-background">
@@ -127,85 +77,328 @@ export const QualificationForm2 = () => {
             Paso 2 de 3
           </div>
           <h2 className="text-2xl md:text-4xl font-black tracking-tight mb-3 md:mb-4">
-            Contanos un poco más
+            Contanos un poco más para personalizar tu Plan de Acción
           </h2>
-          <p className="text-muted-foreground text-base md:text-lg">
-            Con esta información generamos tu plan de acción personalizado
-          </p>
-          <p className="text-xs md:text-sm text-primary mt-2 flex items-center justify-center gap-2">
-            <Mic className="w-3 h-3 md:w-4 md:h-4" />
-            Podés escribir o grabar tu respuesta con audio
+          <p className="text-muted-foreground text-sm md:text-base">
+            Con esta información generamos recomendaciones específicas para tu negocio
           </p>
         </motion.div>
 
-        <motion.form
+        <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          onSubmit={handleSubmit}
-          className="bg-card p-5 md:p-8 rounded-xl md:rounded-2xl border border-zinc-800 space-y-6 md:space-y-8"
+          className="bg-card rounded-xl md:rounded-2xl border border-zinc-800 overflow-hidden"
         >
-          {/* Descripción de la operación */}
-          {renderInputField(
-            "descripcionOperacion",
-            "Describí brevemente tu operación actual",
-            <MessageSquare className="w-4 h-4 text-primary" />,
-            "Ej: Importamos productos electrónicos desde China, vendemos en Mercado Libre y distribuimos a minoristas en AMBA...",
-            "Contanos sobre tu operación actual..."
-          )}
-
-          {/* Desafíos principales */}
-          {renderInputField(
-            "desafiosPrincipales",
-            "¿Cuál es el mayor desafío que enfrentás hoy?",
-            <Target className="w-4 h-4 text-primary" />,
-            "Ej: Los tiempos de aduana son muy largos y me generan roturas de stock...",
-            "Contanos cuál es tu mayor desafío..."
-          )}
-
-          {/* Objetivos */}
-          {renderInputField(
-            "objetivos",
-            "¿Qué resultado te gustaría lograr con nosotros?",
-            <Target className="w-4 h-4 text-primary" />,
-            "Ej: Reducir los tiempos de entrega, tener visibilidad en tiempo real, bajar costos operativos...",
-            "Contanos qué te gustaría lograr..."
-          )}
-
-          {/* Tiempo de implementación */}
-          <div className="space-y-3 md:space-y-4">
-            <Label className="text-xs md:text-sm font-semibold flex items-center gap-2">
-              <Clock className="w-3 h-3 md:w-4 md:h-4 text-primary" />
-              ¿Para cuándo necesitás implementar una solución?
-            </Label>
-            <RadioGroup
-              value={formData.tiempoImplementacion}
-              onValueChange={(value) => updateFormData({ tiempoImplementacion: value })}
-              className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-3"
-            >
-              {tiempoOptions.map((option) => (
-                <div key={option.id} className="flex items-center">
-                  <RadioGroupItem value={option.id} id={`tiempo-${option.id}`} className="peer sr-only" />
-                  <Label
-                    htmlFor={`tiempo-${option.id}`}
-                    className="flex-1 px-3 md:px-4 py-2.5 md:py-3 text-xs md:text-sm border border-zinc-700 rounded-lg md:rounded-xl cursor-pointer transition-all hover:border-primary/50 peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary/10 peer-data-[state=checked]:text-primary text-center"
-                  >
-                    {option.label}
-                  </Label>
-                </div>
-              ))}
-            </RadioGroup>
+          {/* Progress bar */}
+          <div className="p-4 sm:p-6 border-b border-zinc-800">
+            <div className="flex items-center justify-between text-xs sm:text-sm mb-2">
+              <span className="text-muted-foreground">Pregunta {formStep + 1} de {totalSteps}</span>
+              <span className="text-primary font-medium">{Math.round(progress)}%</span>
+            </div>
+            <Progress value={progress} className="h-2" />
           </div>
 
-          {/* Submit */}
-          <button
-            type="submit"
-            className="w-full bg-primary text-primary-foreground px-6 md:px-8 py-4 md:py-5 rounded-xl text-base md:text-lg font-bold hover:bg-primary/90 transition-all shadow-2xl shadow-primary/30 flex items-center justify-center gap-2 md:gap-3 group"
-          >
-            Ver mi Plan de Acción
-            <ArrowRight className="w-4 h-4 md:w-5 md:h-5 group-hover:translate-x-1 transition-transform" />
-          </button>
-        </motion.form>
+          <div className="p-5 md:p-8">
+            <AnimatePresence mode="wait">
+              {/* Pregunta 1: Empresa */}
+              {formStep === 0 && (
+                <motion.div
+                  key="step0"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  className="space-y-4 md:space-y-6"
+                >
+                  <div>
+                    <h3 className="text-lg md:text-xl font-bold flex items-center gap-2 mb-1">
+                      <Building2 className="w-5 h-5 text-primary" />
+                      ¿Cuál es el nombre de tu empresa?
+                    </h3>
+                  </div>
+                  <input
+                    type="text"
+                    placeholder="TechCorp SRL"
+                    value={formData.empresa}
+                    onChange={(e) => updateFormData({ empresa: e.target.value })}
+                    className="w-full bg-secondary border border-zinc-700 focus:border-primary rounded-xl px-4 py-3 md:py-4 outline-none transition-colors text-sm md:text-base"
+                    autoFocus
+                  />
+                  <div className="flex justify-end pt-4">
+                    <button
+                      onClick={() => setFormStep(1)}
+                      disabled={!canProceedStep0}
+                      className="flex items-center gap-2 bg-primary text-primary-foreground px-5 md:px-6 py-2.5 md:py-3 rounded-xl font-bold disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary/90 transition-all text-sm"
+                    >
+                      Siguiente <ArrowRight className="w-4 h-4" />
+                    </button>
+                  </div>
+                </motion.div>
+              )}
+
+              {/* Pregunta 2: Operación actual */}
+              {formStep === 1 && (
+                <motion.div
+                  key="step1"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  className="space-y-4 md:space-y-6"
+                >
+                  <div>
+                    <h3 className="text-lg md:text-xl font-bold mb-1">¿Cómo es tu operación logística hoy?</h3>
+                    <p className="text-xs md:text-sm text-muted-foreground">Seleccioná todo lo que aplique</p>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {operacionOptions.map((option) => {
+                      const isSelected = formData.operacionTags?.includes(option.id);
+                      return (
+                        <button
+                          key={option.id}
+                          onClick={() => handleOperacionToggle(option.id)}
+                          className={`px-3 md:px-4 py-2 rounded-full border-2 transition-all text-xs md:text-sm font-medium ${
+                            isSelected
+                              ? "border-primary bg-primary/10 text-primary"
+                              : "border-zinc-700 hover:border-zinc-500"
+                          }`}
+                        >
+                          {option.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {/* Textarea opcional colapsable */}
+                  <div>
+                    <button
+                      type="button"
+                      onClick={() => setShowOperacionDetalle(!showOperacionDetalle)}
+                      className="flex items-center gap-2 text-xs md:text-sm text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      {showOperacionDetalle ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                      Agregar detalles (opcional)
+                    </button>
+                    {showOperacionDetalle && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        className="mt-3"
+                      >
+                        <textarea
+                          placeholder="Ej: Traemos 2 containers por mes de Shenzhen, principalmente electrónica..."
+                          value={formData.operacionDetalle}
+                          onChange={(e) => updateFormData({ operacionDetalle: e.target.value })}
+                          rows={3}
+                          maxLength={500}
+                          className="w-full bg-secondary border border-zinc-700 focus:border-primary rounded-xl px-4 py-3 outline-none transition-colors text-sm resize-none"
+                        />
+                      </motion.div>
+                    )}
+                  </div>
+
+                  <div className="flex justify-between pt-4 gap-4">
+                    <button
+                      onClick={() => setFormStep(0)}
+                      className="flex items-center gap-1 md:gap-2 text-muted-foreground hover:text-foreground transition-colors text-sm"
+                    >
+                      <ArrowLeft className="w-4 h-4" /> <span className="hidden sm:inline">Anterior</span>
+                    </button>
+                    <button
+                      onClick={() => setFormStep(2)}
+                      disabled={!canProceedStep1}
+                      className="flex items-center gap-2 bg-primary text-primary-foreground px-5 md:px-6 py-2.5 md:py-3 rounded-xl font-bold disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary/90 transition-all text-sm"
+                    >
+                      Siguiente <ArrowRight className="w-4 h-4" />
+                    </button>
+                  </div>
+                </motion.div>
+              )}
+
+              {/* Pregunta 3: Mayor frustración */}
+              {formStep === 2 && (
+                <motion.div
+                  key="step2"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  className="space-y-4 md:space-y-6"
+                >
+                  <div>
+                    <h3 className="text-lg md:text-xl font-bold mb-1">¿Qué es lo que más te frustra o genera problemas hoy?</h3>
+                    <p className="text-xs md:text-sm text-muted-foreground">Seleccioná los principales</p>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {frustracionOptions.map((option) => {
+                      const isSelected = formData.frustracionTags?.includes(option.id);
+                      return (
+                        <button
+                          key={option.id}
+                          onClick={() => handleFrustracionToggle(option.id)}
+                          className={`px-3 md:px-4 py-2 rounded-full border-2 transition-all text-xs md:text-sm font-medium ${
+                            isSelected
+                              ? "border-primary bg-primary/10 text-primary"
+                              : "border-zinc-700 hover:border-zinc-500"
+                          }`}
+                        >
+                          {option.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {/* Textarea opcional colapsable */}
+                  <div>
+                    <button
+                      type="button"
+                      onClick={() => setShowFrustracionDetalle(!showFrustracionDetalle)}
+                      className="flex items-center gap-2 text-xs md:text-sm text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      {showFrustracionDetalle ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                      Contanos más (opcional)
+                    </button>
+                    {showFrustracionDetalle && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        className="mt-3"
+                      >
+                        <textarea
+                          placeholder="Ej: El mes pasado tardaron 3 semanas en liberar un container..."
+                          value={formData.frustracionDetalle}
+                          onChange={(e) => updateFormData({ frustracionDetalle: e.target.value })}
+                          rows={3}
+                          maxLength={500}
+                          className="w-full bg-secondary border border-zinc-700 focus:border-primary rounded-xl px-4 py-3 outline-none transition-colors text-sm resize-none"
+                        />
+                      </motion.div>
+                    )}
+                  </div>
+
+                  <div className="flex justify-between pt-4 gap-4">
+                    <button
+                      onClick={() => setFormStep(1)}
+                      className="flex items-center gap-1 md:gap-2 text-muted-foreground hover:text-foreground transition-colors text-sm"
+                    >
+                      <ArrowLeft className="w-4 h-4" /> <span className="hidden sm:inline">Anterior</span>
+                    </button>
+                    <button
+                      onClick={() => setFormStep(3)}
+                      disabled={!canProceedStep2}
+                      className="flex items-center gap-2 bg-primary text-primary-foreground px-5 md:px-6 py-2.5 md:py-3 rounded-xl font-bold disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary/90 transition-all text-sm"
+                    >
+                      Siguiente <ArrowRight className="w-4 h-4" />
+                    </button>
+                  </div>
+                </motion.div>
+              )}
+
+              {/* Pregunta 4: Objetivo principal */}
+              {formStep === 3 && (
+                <motion.div
+                  key="step3"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  className="space-y-4 md:space-y-6"
+                >
+                  <div>
+                    <h3 className="text-lg md:text-xl font-bold mb-1">¿Qué te gustaría lograr en los próximos 6 meses?</h3>
+                    <p className="text-xs md:text-sm text-muted-foreground">Elegí tu prioridad principal</p>
+                  </div>
+                  <div className="space-y-2 md:space-y-3">
+                    {objetivoOptions.map((option) => {
+                      const isSelected = formData.objetivoPrincipal === option.id;
+                      return (
+                        <button
+                          key={option.id}
+                          onClick={() => {
+                            updateFormData({ objetivoPrincipal: option.id });
+                            setTimeout(() => setFormStep(4), 300);
+                          }}
+                          className={`w-full p-3 md:p-4 rounded-xl border-2 transition-all text-left font-medium text-sm md:text-base ${
+                            isSelected
+                              ? "border-primary bg-primary/10 text-primary"
+                              : "border-zinc-700 hover:border-zinc-500"
+                          }`}
+                        >
+                          {option.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                  <div className="flex justify-between pt-4">
+                    <button
+                      onClick={() => setFormStep(2)}
+                      className="flex items-center gap-1 md:gap-2 text-muted-foreground hover:text-foreground transition-colors text-sm"
+                    >
+                      <ArrowLeft className="w-4 h-4" /> <span className="hidden sm:inline">Anterior</span>
+                    </button>
+                  </div>
+                </motion.div>
+              )}
+
+              {/* Pregunta 5: Urgencia */}
+              {formStep === 4 && (
+                <motion.div
+                  key="step4"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  className="space-y-4 md:space-y-6"
+                >
+                  <div>
+                    <h3 className="text-lg md:text-xl font-bold mb-1">¿Para cuándo necesitás implementar mejoras?</h3>
+                  </div>
+                  <div className="space-y-2 md:space-y-3">
+                    {urgenciaOptions.map((option) => {
+                      const isSelected = formData.urgencia === option.id;
+                      return (
+                        <button
+                          key={option.id}
+                          onClick={() => updateFormData({ urgencia: option.id })}
+                          className={`w-full p-3 md:p-4 rounded-xl border-2 transition-all text-left font-medium text-sm md:text-base ${
+                            isSelected
+                              ? "border-primary bg-primary/10 text-primary"
+                              : "border-zinc-700 hover:border-zinc-500"
+                          }`}
+                        >
+                          {option.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                  <div className="flex flex-col-reverse sm:flex-row justify-between pt-4 gap-3 sm:gap-4">
+                    <button
+                      onClick={() => setFormStep(3)}
+                      className="flex items-center justify-center gap-2 text-muted-foreground hover:text-foreground transition-colors text-sm py-2"
+                    >
+                      <ArrowLeft className="w-4 h-4" /> Anterior
+                    </button>
+                    <button
+                      onClick={handleSubmit}
+                      disabled={!canSubmit || isSubmitting}
+                      className="flex items-center justify-center gap-2 bg-primary text-primary-foreground px-6 md:px-8 py-3 md:py-4 rounded-xl font-bold hover:bg-primary/90 transition-all shadow-2xl shadow-primary/30 disabled:opacity-50 disabled:cursor-not-allowed text-sm md:text-base"
+                    >
+                      {isSubmitting ? (
+                        <>
+                          <div className="w-5 h-5 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
+                          Generando...
+                        </>
+                      ) : (
+                        <>
+                          Generar mi Plan de Acción
+                          <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </motion.div>
       </div>
     </section>
   );
