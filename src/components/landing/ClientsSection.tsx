@@ -75,7 +75,7 @@ export const ClientsSection = () => {
           {logos.map((logo, index) => (
             <div
               key={index}
-              className="h-12 md:h-16 px-4 flex items-center justify-center grayscale hover:grayscale-0 opacity-70 hover:opacity-100 transition-all duration-300"
+              className="h-12 md:h-16 px-4 flex items-center justify-center opacity-80 hover:opacity-100 transition-all duration-300"
             >
               <img 
                 src={logo.src} 
