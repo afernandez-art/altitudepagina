@@ -2,6 +2,16 @@ import { motion } from "framer-motion";
 import { Quote } from "lucide-react";
 import { useCountUp } from "@/hooks/useCountUp";
 
+import lichytexLogo from "@/assets/logos/lichytex.png";
+import adlerPelzerLogo from "@/assets/logos/adler-pelzer.png";
+import alstomLogo from "@/assets/logos/alstom.png";
+import amcorLogo from "@/assets/logos/amcor.png";
+import billabongLogo from "@/assets/logos/billabong.png";
+import claroLogo from "@/assets/logos/claro.png";
+import mapedLogo from "@/assets/logos/maped.png";
+import nestleLogo from "@/assets/logos/nestle.png";
+import telecomLogo from "@/assets/logos/telecom.jpg";
+
 const stats = [
   { value: 150, prefix: "+", suffix: "", label: "Clientes" },
   { value: 98, prefix: "", suffix: "%", label: "Entregas a tiempo" },
@@ -10,12 +20,15 @@ const stats = [
 ];
 
 const logos = [
-  "EMPRESA 1",
-  "EMPRESA 2",
-  "EMPRESA 3",
-  "EMPRESA 4",
-  "EMPRESA 5",
-  "EMPRESA 6"
+  { src: lichytexLogo, alt: "Lichytex" },
+  { src: adlerPelzerLogo, alt: "Adler Pelzer Group" },
+  { src: alstomLogo, alt: "Alstom" },
+  { src: amcorLogo, alt: "Amcor" },
+  { src: billabongLogo, alt: "Billabong" },
+  { src: claroLogo, alt: "Claro" },
+  { src: mapedLogo, alt: "Maped" },
+  { src: nestleLogo, alt: "Nestlé" },
+  { src: telecomLogo, alt: "Telecom" },
 ];
 
 interface AnimatedCounterProps {
@@ -62,9 +75,13 @@ export const ClientsSection = () => {
           {logos.map((logo, index) => (
             <div
               key={index}
-              className="w-32 h-16 rounded-lg bg-muted/50 flex items-center justify-center text-muted-foreground text-xs font-mono opacity-60 hover:opacity-100 transition-opacity"
+              className="h-12 md:h-16 px-4 flex items-center justify-center grayscale hover:grayscale-0 opacity-70 hover:opacity-100 transition-all duration-300"
             >
-              {logo}
+              <img 
+                src={logo.src} 
+                alt={logo.alt} 
+                className="max-h-full max-w-[120px] md:max-w-[150px] object-contain"
+              />
             </div>
           ))}
         </motion.div>
