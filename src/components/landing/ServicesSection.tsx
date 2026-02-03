@@ -5,12 +5,12 @@ import { useState } from "react";
 const services = [
   {
     number: "01",
-    title: "Forwarding Internacional",
+    title: "Forwarder Internacional",
     description: "Coordinamos tu carga marítima y aérea desde China, USA, Europa y Latinoamérica. Seguimiento en tiempo real desde origen."
   },
   {
     number: "02",
-    title: "Despacho de Aduana",
+    title: "Estudio Aduanero",
     description: "Clasificación arancelaria, documentación y liberación en 48hs promedio. Despachantes propios, sin intermediarios."
   },
   {

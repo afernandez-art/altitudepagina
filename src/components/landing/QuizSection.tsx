@@ -153,7 +153,7 @@ export const QuizSection = () => {
             Diagnóstico gratis en 2 minutos
           </span>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight mb-3 sm:mb-4">
-            Obtené tu diagnóstico logístico personalizado
+            Obtené tu diagnóstico personalizado
           </h2>
           <p className="text-muted-foreground text-sm sm:text-base">
             Respondé 4 preguntas rápidas y te preparamos un diagnóstico con soluciones para tu negocio
