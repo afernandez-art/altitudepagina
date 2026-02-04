@@ -2,23 +2,15 @@ import { motion } from "framer-motion";
 import {
   CheckCircle,
   MessageCircle,
-  Calendar,
-  ArrowRight,
-  Clock,
   FileText,
   Sparkles,
+  Calendar,
+  ArrowRight,
 } from "lucide-react";
 import { useLeadMagnet } from "@/contexts/LeadMagnetContext";
 
 export const ActionPlanSection = () => {
-  const { formData, currentStep, setCurrentStep } = useLeadMagnet();
-
-  const handleAgendarLlamada = () => {
-    setCurrentStep("calendar");
-    setTimeout(() => {
-      document.getElementById("calendar-section")?.scrollIntoView({ behavior: "smooth" });
-    }, 100);
-  };
+  const { formData, currentStep } = useLeadMagnet();
 
   if (currentStep !== "action_plan" && currentStep !== "calendar") {
     return null;
@@ -82,78 +74,60 @@ export const ActionPlanSection = () => {
             <Sparkles className="w-5 h-5 text-primary" />
             En tu WhatsApp vas a recibir:
           </h3>
-          <ul className="space-y-3">
+          <ul className="space-y-4">
             <li className="flex items-start gap-3">
-              <div className="w-6 h-6 bg-primary/10 rounded-full flex items-center justify-center shrink-0 mt-0.5">
-                <FileText className="w-3.5 h-3.5 text-primary" />
+              <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center shrink-0">
+                <FileText className="w-4 h-4 text-primary" />
               </div>
               <div>
-                <p className="font-medium">Diagnóstico de tu operación</p>
-                <p className="text-sm text-muted-foreground">Análisis basado en tus respuestas</p>
+                <p className="font-medium">Tu Plan de Acción personalizado</p>
+                <p className="text-sm text-muted-foreground">Diagnóstico + soluciones específicas para tu operación</p>
               </div>
             </li>
             <li className="flex items-start gap-3">
-              <div className="w-6 h-6 bg-primary/10 rounded-full flex items-center justify-center shrink-0 mt-0.5">
-                <CheckCircle className="w-3.5 h-3.5 text-primary" />
+              <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center shrink-0">
+                <Calendar className="w-4 h-4 text-primary" />
               </div>
               <div>
-                <p className="font-medium">Soluciones específicas</p>
-                <p className="text-sm text-muted-foreground">Recomendaciones para tus desafíos</p>
-              </div>
-            </li>
-            <li className="flex items-start gap-3">
-              <div className="w-6 h-6 bg-primary/10 rounded-full flex items-center justify-center shrink-0 mt-0.5">
-                <Clock className="w-3.5 h-3.5 text-primary" />
-              </div>
-              <div>
-                <p className="font-medium">Próximos pasos</p>
-                <p className="text-sm text-muted-foreground">Acciones concretas para mejorar tu logística</p>
+                <p className="font-medium">Link para agendar llamada</p>
+                <p className="text-sm text-muted-foreground">15 minutos con un especialista para revisar tu plan</p>
               </div>
             </li>
           </ul>
         </motion.div>
 
-        {/* CTA to calendar */}
+        {/* Reminder box */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8 }}
-          className="bg-gradient-to-br from-primary/10 to-primary/5 rounded-2xl border border-primary/20 p-6 md:p-8 text-center"
+          className="bg-green-500/10 border border-green-500/20 rounded-xl p-4 md:p-6 text-center"
         >
-          <Calendar className="w-12 h-12 text-primary mx-auto mb-4" />
-          <h3 className="text-xl md:text-2xl font-bold mb-2">
-            ¿Querés profundizar con un especialista?
-          </h3>
-          <p className="text-muted-foreground mb-6">
-            Agendá una llamada de 15 minutos para revisar tu Plan de Acción juntos
-          </p>
-          <button
-            onClick={handleAgendarLlamada}
-            className="bg-primary text-primary-foreground px-8 py-4 rounded-xl font-bold hover:bg-primary/90 transition-all text-base md:text-lg inline-flex items-center gap-2 shadow-2xl shadow-primary/30 group"
-          >
-            Agendar llamada gratis
-            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-          </button>
-          <p className="text-xs text-muted-foreground mt-4">
-            Sin compromiso · 100% gratis
+          <div className="flex items-center justify-center gap-2 text-green-500 font-medium mb-2">
+            <MessageCircle className="w-5 h-5" />
+            Revisá tu WhatsApp
+          </div>
+          <p className="text-sm text-muted-foreground">
+            El mensaje llega en los próximos minutos. Si no lo recibís, revisá la carpeta de spam o contactanos.
           </p>
         </motion.div>
 
-        {/* WhatsApp reminder */}
+        {/* Contact link */}
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1 }}
           className="text-center text-sm text-muted-foreground mt-6"
         >
-          ¿No recibiste el mensaje? Revisá tu WhatsApp en unos minutos o{" "}
+          ¿Problemas?{" "}
           <a
             href={`https://wa.me/5491112345678?text=Hola! Completé el diagnóstico y no recibí mi Plan de Acción. Mi email es ${formData.email}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-primary hover:underline"
+            className="text-primary hover:underline inline-flex items-center gap-1"
           >
-            contactanos
+            Contactanos por WhatsApp
+            <ArrowRight className="w-3 h-3" />
           </a>
         </motion.p>
       </div>
