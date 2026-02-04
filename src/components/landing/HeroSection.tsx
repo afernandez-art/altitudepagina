@@ -3,31 +3,24 @@ import { FileSearch, ChevronDown, CheckCircle, Truck, FileCheck, Package, Wareho
 
 export const HeroSection = () => {
   const scrollToQuiz = () => {
-    document.getElementById("quiz-section")?.scrollIntoView({ behavior: "smooth" });
+    document.getElementById("quiz-section")?.scrollIntoView({
+      behavior: "smooth"
+    });
   };
-
   const scrollToServices = () => {
-    document.getElementById("servicios")?.scrollIntoView({ behavior: "smooth" });
+    document.getElementById("servicios")?.scrollIntoView({
+      behavior: "smooth"
+    });
   };
 
   return (
-    <section className="relative min-h-[100svh] flex items-center px-4 sm:px-6 overflow-hidden pt-20 pb-8">
-      <div className="max-w-4xl mx-auto w-full">
-        <div className="text-center space-y-6 sm:space-y-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-          >
-            <span className="inline-flex items-center gap-2 bg-primary/10 text-primary px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-semibold">
-              Logística integral para importadores
-            </span>
-          </motion.div>
-
+    <section className="relative min-h-[85svh] flex items-center px-4 sm:px-6 overflow-hidden pt-24 pb-12">
+      <div className="max-w-3xl mx-auto w-full">
+        <div className="text-center space-y-5 sm:space-y-6">
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
+            transition={{ delay: 0.1 }}
             className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1]"
           >
             <span className="text-zinc-400">Tu carga,</span>
@@ -38,7 +31,7 @@ export const HeroSection = () => {
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
+            transition={{ delay: 0.2 }}
             className="text-base sm:text-lg lg:text-xl text-zinc-400 max-w-2xl mx-auto"
           >
             De origen a destino, sin intermediarios. Un solo operador para toda tu cadena logística.
@@ -48,7 +41,7 @@ export const HeroSection = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.35 }}
+            transition={{ delay: 0.25 }}
             className="flex flex-wrap items-center justify-center gap-x-2 sm:gap-x-4 gap-y-2 text-sm sm:text-base text-zinc-300"
           >
             <span className="flex items-center gap-1.5">
@@ -76,7 +69,7 @@ export const HeroSection = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
+            transition={{ delay: 0.3 }}
             className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center pt-4"
           >
             <button
@@ -99,7 +92,7 @@ export const HeroSection = () => {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
+            transition={{ delay: 0.4 }}
             className="flex flex-wrap justify-center gap-x-4 sm:gap-x-6 gap-y-2 text-zinc-500 text-xs sm:text-sm"
           >
             <span className="flex items-center gap-1.5">

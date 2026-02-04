@@ -5,12 +5,12 @@ import { useState } from "react";
 const services = [
   {
     number: "01",
-    title: "Forwarding Internacional",
+    title: "Forwarder Internacional",
     description: "Coordinamos tu carga marítima y aérea desde China, USA, Europa y Latinoamérica. Seguimiento en tiempo real desde origen."
   },
   {
     number: "02",
-    title: "Despacho de Aduana",
+    title: "Estudio Aduanero",
     description: "Clasificación arancelaria, documentación y liberación en 48hs promedio. Despachantes propios, sin intermediarios."
   },
   {
@@ -29,13 +29,13 @@ export const ServicesSection = () => {
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
 
   return (
-    <section className="py-32 px-6" id="servicios">
+    <section className="py-20 sm:py-24 px-6" id="servicios">
       <div className="max-w-7xl mx-auto">
         <motion.h2 
           initial={{ opacity: 0, x: -20 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
-          className="text-sm font-bold text-primary tracking-[0.2em] uppercase mb-16"
+          className="text-sm font-bold text-primary tracking-[0.2em] uppercase mb-10 sm:mb-12"
         >
           Nuestros Servicios
         </motion.h2>

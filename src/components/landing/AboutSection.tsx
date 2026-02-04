@@ -11,7 +11,7 @@ const credentials = [
 
 export const AboutSection = () => {
   return (
-    <section className="py-32 px-6" id="nosotros">
+    <section className="py-20 sm:py-24 px-6" id="nosotros">
       <div className="max-w-7xl mx-auto">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           <motion.div
@@ -38,13 +38,13 @@ export const AboutSection = () => {
             </div>
 
             <motion.a
-              href="#contacto"
+              href="#quiz-section"
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               className="inline-flex items-center gap-2 text-primary font-semibold mt-8 hover:gap-3 transition-all"
             >
-              Hablá con nosotros <ArrowRight className="w-5 h-5" />
+              Obtené tu diagnóstico gratis <ArrowRight className="w-5 h-5" />
             </motion.a>
           </motion.div>
 

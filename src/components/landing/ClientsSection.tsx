@@ -2,6 +2,16 @@ import { motion } from "framer-motion";
 import { Quote } from "lucide-react";
 import { useCountUp } from "@/hooks/useCountUp";
 
+import lichytexLogo from "@/assets/logos/lichytex.png";
+import adlerPelzerLogo from "@/assets/logos/adler-pelzer.png";
+import alstomLogo from "@/assets/logos/alstom.png";
+import amcorLogo from "@/assets/logos/amcor.png";
+import billabongLogo from "@/assets/logos/billabong.png";
+import claroLogo from "@/assets/logos/claro.png";
+import mapedLogo from "@/assets/logos/maped.png";
+import nestleLogo from "@/assets/logos/nestle.png";
+import telecomLogo from "@/assets/logos/telecom.png";
+
 const stats = [
   { value: 150, prefix: "+", suffix: "", label: "Clientes" },
   { value: 98, prefix: "", suffix: "%", label: "Entregas a tiempo" },
@@ -10,12 +20,15 @@ const stats = [
 ];
 
 const logos = [
-  "EMPRESA 1",
-  "EMPRESA 2",
-  "EMPRESA 3",
-  "EMPRESA 4",
-  "EMPRESA 5",
-  "EMPRESA 6"
+  { src: lichytexLogo, alt: "Lichytex", className: "" },
+  { src: adlerPelzerLogo, alt: "Adler Pelzer Group", className: "scale-150" },
+  { src: alstomLogo, alt: "Alstom", className: "" },
+  { src: amcorLogo, alt: "Amcor", className: "scale-150" },
+  { src: billabongLogo, alt: "Billabong", className: "" },
+  { src: claroLogo, alt: "Claro", className: "" },
+  { src: mapedLogo, alt: "Maped", className: "" },
+  { src: nestleLogo, alt: "Nestlé", className: "" },
+  { src: telecomLogo, alt: "Telecom", className: "scale-150" },
 ];
 
 interface AnimatedCounterProps {
@@ -36,7 +49,7 @@ const AnimatedCounter = ({ value, prefix = "", suffix = "" }: AnimatedCounterPro
 
 export const ClientsSection = () => {
   return (
-    <section className="py-32 px-6 bg-card/50" id="clientes">
+    <section className="py-20 sm:py-24 px-6 bg-card/50" id="clientes">
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -57,14 +70,18 @@ export const ClientsSection = () => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="flex flex-wrap justify-center items-center gap-8 md:gap-12 mb-20"
+          className="grid grid-cols-3 md:grid-cols-5 gap-6 md:gap-8 mb-12 sm:mb-16 max-w-4xl mx-auto"
         >
           {logos.map((logo, index) => (
             <div
               key={index}
-              className="w-32 h-16 rounded-lg bg-muted/50 flex items-center justify-center text-muted-foreground text-xs font-mono opacity-60 hover:opacity-100 transition-opacity"
+              className="h-14 md:h-16 p-3 flex items-center justify-center bg-white/90 rounded-xl opacity-90 hover:opacity-100 hover:scale-105 transition-all duration-300"
             >
-              {logo}
+              <img 
+                src={logo.src} 
+                alt={logo.alt} 
+                className={`max-h-full max-w-full object-contain ${logo.className}`}
+              />
             </div>
           ))}
         </motion.div>
@@ -74,7 +91,7 @@ export const ClientsSection = () => {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="max-w-4xl mx-auto mb-20"
+          className="max-w-4xl mx-auto mb-12 sm:mb-16"
         >
           <div className="relative p-8 md:p-12 rounded-2xl bg-background border border-border">
             <Quote className="w-12 h-12 text-primary/30 absolute top-6 left-6" />
