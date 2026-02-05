@@ -4,7 +4,6 @@ import {
   ArrowRight,
   ArrowLeft,
   FileText,
-  ChevronDown,
   Lock,
 } from "lucide-react";
 import {
@@ -32,14 +31,14 @@ const getQuestionsConfig = (situacion: SituacionType | "") => {
           {
             id: "experiencia",
             title: "Experiencia importando",
-            type: "select" as const,
+            type: "single" as const,
             options: experienciaOptions,
             field: "experiencia" as const,
           },
           {
             id: "origen",
             title: "¿Desde dónde importas principalmente?",
-            type: "select" as const,
+            type: "single" as const,
             options: origenOptions,
             field: "origen" as const,
           },
@@ -52,7 +51,7 @@ const getQuestionsConfig = (situacion: SituacionType | "") => {
             field: "mejoras" as const,
           },
         ],
-        totalSteps: 6, // 3 specific + urgencia + contact
+        totalSteps: 6,
       };
     case "contenedor-compartido":
       return {
@@ -60,21 +59,21 @@ const getQuestionsConfig = (situacion: SituacionType | "") => {
           {
             id: "origen",
             title: "¿Desde dónde importas principalmente?",
-            type: "select" as const,
+            type: "single" as const,
             options: origenOptions,
             field: "origen" as const,
           },
           {
             id: "volumen",
             title: "¿Cuánto volumen aproximado necesitas importar?",
-            type: "select" as const,
+            type: "single" as const,
             options: volumenOptions,
             field: "volumen" as const,
           },
           {
             id: "etapa",
             title: "¿En qué etapa está tu importación?",
-            type: "select" as const,
+            type: "single" as const,
             options: etapaOptions,
             field: "etapa" as const,
           },
@@ -87,7 +86,7 @@ const getQuestionsConfig = (situacion: SituacionType | "") => {
           {
             id: "espacio",
             title: "¿Cuánto espacio aproximado necesitas?",
-            type: "select" as const,
+            type: "single" as const,
             options: espacioOptions,
             field: "espacio" as const,
           },
@@ -102,7 +101,7 @@ const getQuestionsConfig = (situacion: SituacionType | "") => {
           {
             id: "frecuencia",
             title: "¿Con qué frecuencia realizas despachos?",
-            type: "select" as const,
+            type: "single" as const,
             options: frecuenciaOptions,
             field: "frecuencia" as const,
           },
@@ -115,14 +114,14 @@ const getQuestionsConfig = (situacion: SituacionType | "") => {
           {
             id: "experiencia",
             title: "Experiencia importando",
-            type: "select" as const,
+            type: "single" as const,
             options: experienciaOptions,
             field: "experiencia" as const,
           },
           {
             id: "origen",
             title: "¿Desde dónde importas principalmente?",
-            type: "select" as const,
+            type: "single" as const,
             options: origenOptions,
             field: "origen" as const,
           },
@@ -152,8 +151,6 @@ export const QualificationForm2 = () => {
   const specificQuestions = config.questions;
   const totalSteps = config.totalSteps;
 
-  // Total steps: specific questions (3) + urgencia (1) + contact (1) = 5
-  // But we'll use 6 total with 0-based index
   const progress = ((formStep + 1) / totalSteps) * 100;
 
   // Validaciones
@@ -182,12 +179,10 @@ export const QualificationForm2 = () => {
     }
   };
 
-  // Handle select
-  const handleSelectChange = (field: string, value: string) => {
+  // Handle single select (button click)
+  const handleSingleSelect = (field: string, value: string) => {
     updateFormData({ [field]: value });
-    if (value) {
-      setTimeout(() => setFormStep(prev => prev + 1), 300);
-    }
+    setTimeout(() => setFormStep(prev => prev + 1), 300);
   };
 
   // Validation for current step
@@ -309,42 +304,60 @@ export const QualificationForm2 = () => {
                           )}
                         </div>
 
-                        {question.type === "select" && (
-                          <div className="relative">
-                            <select
-                              value={formData[question.field as keyof typeof formData] as string || ""}
-                              onChange={(e) => handleSelectChange(question.field, e.target.value)}
-                              className="w-full bg-secondary border border-zinc-700 rounded-xl px-4 py-4 outline-none transition-colors focus:border-primary appearance-none cursor-pointer text-sm md:text-base"
-                            >
-                              <option value="">Selecciona una opción...</option>
-                              {question.options.map((opt) => (
-                                <option key={opt.id} value={opt.id}>
-                                  {opt.label}
-                                </option>
-                              ))}
-                            </select>
-                            <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground pointer-events-none" />
-                          </div>
-                        )}
-
-                        {question.type === "checkbox" && (
+                        {question.type === "single" && (
                           <>
-                            <div className="flex flex-wrap gap-2">
+                            <div className="space-y-2 sm:space-y-3">
                               {question.options.map((opt) => {
-                                const fieldValue = formData[question.field as keyof typeof formData];
-                                const isSelected = Array.isArray(fieldValue) && fieldValue.includes(opt.id);
+                                const isSelected = formData[question.field as keyof typeof formData] === opt.id;
                                 return (
-                                  <button
+                                  <motion.button
                                     key={opt.id}
-                                    onClick={() => handleCheckboxToggle(question.field as "mejoras" | "serviciosAdicionales" | "tercerizar", opt.id)}
-                                    className={`px-3 md:px-4 py-2 rounded-full border-2 transition-all text-xs md:text-sm font-medium ${
+                                    whileHover={{ scale: 1.01 }}
+                                    whileTap={{ scale: 0.99 }}
+                                    onClick={() => handleSingleSelect(question.field, opt.id)}
+                                    className={`w-full p-3 sm:p-4 rounded-xl border-2 transition-all text-left text-sm sm:text-base ${
                                       isSelected
                                         ? "border-primary bg-primary/10 text-primary"
                                         : "border-zinc-700 hover:border-zinc-500"
                                     }`}
                                   >
                                     {opt.label}
-                                  </button>
+                                  </motion.button>
+                                );
+                              })}
+                            </div>
+                            <div className="flex justify-start pt-4">
+                              <button
+                                onClick={() => setFormStep(prev => prev - 1)}
+                                disabled={formStep === 0}
+                                className="flex items-center gap-1 md:gap-2 text-muted-foreground hover:text-foreground transition-colors text-sm disabled:opacity-50"
+                              >
+                                <ArrowLeft className="w-4 h-4" /> <span className="hidden sm:inline">Anterior</span>
+                              </button>
+                            </div>
+                          </>
+                        )}
+
+                        {question.type === "checkbox" && (
+                          <>
+                            <div className="space-y-2 sm:space-y-3">
+                              {question.options.map((opt) => {
+                                const fieldValue = formData[question.field as keyof typeof formData];
+                                const isSelected = Array.isArray(fieldValue) && fieldValue.includes(opt.id);
+                                return (
+                                  <motion.button
+                                    key={opt.id}
+                                    whileHover={{ scale: 1.01 }}
+                                    whileTap={{ scale: 0.99 }}
+                                    onClick={() => handleCheckboxToggle(question.field as "mejoras" | "serviciosAdicionales" | "tercerizar", opt.id)}
+                                    className={`w-full p-3 sm:p-4 rounded-xl border-2 transition-all text-left text-sm sm:text-base ${
+                                      isSelected
+                                        ? "border-primary bg-primary/10 text-primary"
+                                        : "border-zinc-700 hover:border-zinc-500"
+                                    }`}
+                                  >
+                                    {opt.label}
+                                  </motion.button>
                                 );
                               })}
                             </div>
@@ -366,18 +379,6 @@ export const QualificationForm2 = () => {
                             </div>
                           </>
                         )}
-
-                        {question.type === "select" && (
-                          <div className="flex justify-start pt-4">
-                            <button
-                              onClick={() => setFormStep(prev => prev - 1)}
-                              disabled={formStep === 0}
-                              className="flex items-center gap-1 md:gap-2 text-muted-foreground hover:text-foreground transition-colors text-sm disabled:opacity-50"
-                            >
-                              <ArrowLeft className="w-4 h-4" /> <span className="hidden sm:inline">Anterior</span>
-                            </button>
-                          </div>
-                        )}
                       </>
                     );
                   })()}
@@ -397,20 +398,25 @@ export const QualificationForm2 = () => {
                     <h3 className="text-lg md:text-xl font-bold mb-1">¿Cuándo necesitas comenzar?</h3>
                   </div>
 
-                  <div className="relative">
-                    <select
-                      value={formData.urgencia}
-                      onChange={(e) => handleSelectChange("urgencia", e.target.value)}
-                      className="w-full bg-secondary border border-zinc-700 rounded-xl px-4 py-4 outline-none transition-colors focus:border-primary appearance-none cursor-pointer text-sm md:text-base"
-                    >
-                      <option value="">Selecciona una opción...</option>
-                      {urgenciaOptions.map((opt) => (
-                        <option key={opt.id} value={opt.id}>
+                  <div className="space-y-2 sm:space-y-3">
+                    {urgenciaOptions.map((opt) => {
+                      const isSelected = formData.urgencia === opt.id;
+                      return (
+                        <motion.button
+                          key={opt.id}
+                          whileHover={{ scale: 1.01 }}
+                          whileTap={{ scale: 0.99 }}
+                          onClick={() => handleSingleSelect("urgencia", opt.id)}
+                          className={`w-full p-3 sm:p-4 rounded-xl border-2 transition-all text-left text-sm sm:text-base ${
+                            isSelected
+                              ? "border-primary bg-primary/10 text-primary"
+                              : "border-zinc-700 hover:border-zinc-500"
+                          }`}
+                        >
                           {opt.label}
-                        </option>
-                      ))}
-                    </select>
-                    <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground pointer-events-none" />
+                        </motion.button>
+                      );
+                    })}
                   </div>
 
                   <div className="flex justify-start pt-4">

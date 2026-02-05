@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   ArrowRight,
   ArrowLeft,
@@ -7,7 +7,6 @@ import {
   CheckCircle,
   Lock,
   Sparkles,
-  ChevronDown,
 } from "lucide-react";
 import {
   useLeadMagnet,
@@ -24,6 +23,7 @@ export const QuizSection = () => {
   const [quizStep, setQuizStep] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
   const [showNichoOtro, setShowNichoOtro] = useState(false);
+  const [pendingSave, setPendingSave] = useState(false);
 
   const totalSteps = 4;
   const progress = ((quizStep + 1) / totalSteps) * 100;
@@ -33,8 +33,18 @@ export const QuizSection = () => {
     ? problematicasPorSituacion[formData.situacion]
     : [];
 
+  // Effect to save and redirect after facturacion is set
+  useEffect(() => {
+    if (pendingSave && formData.facturacion) {
+      saveToStorage();
+      setIsCompleted(true);
+      setPendingSave(false);
+      window.open("/video-personalizado", "_blank");
+    }
+  }, [pendingSave, formData.facturacion, saveToStorage]);
+
   const handleNichoSelect = (id: string) => {
-    updateFormData({ nicho: id });
+    updateFormData({ nicho: id, nichoOtro: "" });
     if (id === "otro") {
       setShowNichoOtro(true);
     } else {
@@ -45,12 +55,13 @@ export const QuizSection = () => {
 
   const handleNichoOtroSubmit = () => {
     if (formData.nichoOtro.trim()) {
+      setShowNichoOtro(false);
       setTimeout(() => setQuizStep(1), 300);
     }
   };
 
   const handleSituacionSelect = (id: SituacionType) => {
-    updateFormData({ situacion: id, problematica: "" }); // Reset problematica when changing situacion
+    updateFormData({ situacion: id, problematica: "" });
     setTimeout(() => setQuizStep(2), 300);
   };
 
@@ -61,16 +72,8 @@ export const QuizSection = () => {
 
   const handleFacturacionSelect = (id: string) => {
     updateFormData({ facturacion: id });
-    // Save data to localStorage for the new tab
-    setTimeout(() => {
-      saveToStorage();
-      setIsCompleted(true);
-      // Open video in new tab
-      window.open("/video-personalizado", "_blank");
-    }, 300);
+    setPendingSave(true);
   };
-
-  const canProceedStep1 = formData.nicho && (formData.nicho !== "otro" || formData.nichoOtro.trim());
 
   if (isCompleted) {
     return (
@@ -155,22 +158,27 @@ export const QuizSection = () => {
                   exit={{ opacity: 0, x: -20 }}
                   className="space-y-4 sm:space-y-6"
                 >
-                  <h3 className="text-lg sm:text-xl font-bold">¿Qué tipo de productos importas/vendes?</h3>
+                  <h3 className="text-lg sm:text-xl font-bold">¿En qué rubro o nicho se encuentra tu negocio?</h3>
 
-                  <div className="relative">
-                    <select
-                      value={formData.nicho}
-                      onChange={(e) => handleNichoSelect(e.target.value)}
-                      className="w-full bg-secondary border border-zinc-700 rounded-xl px-4 py-4 outline-none transition-colors focus:border-primary appearance-none cursor-pointer text-sm sm:text-base"
-                    >
-                      <option value="">Selecciona una opción...</option>
-                      {nichoOptions.map((nicho) => (
-                        <option key={nicho.id} value={nicho.id}>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
+                    {nichoOptions.map((nicho) => {
+                      const isSelected = formData.nicho === nicho.id;
+                      return (
+                        <motion.button
+                          key={nicho.id}
+                          whileHover={{ scale: 1.01 }}
+                          whileTap={{ scale: 0.99 }}
+                          onClick={() => handleNichoSelect(nicho.id)}
+                          className={`p-3 sm:p-4 rounded-xl border-2 transition-all text-left text-sm sm:text-base ${
+                            isSelected
+                              ? "border-primary bg-primary/10 text-primary"
+                              : "border-zinc-700 hover:border-zinc-500"
+                          }`}
+                        >
                           {nicho.label}
-                        </option>
-                      ))}
-                    </select>
-                    <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground pointer-events-none" />
+                        </motion.button>
+                      );
+                    })}
                   </div>
 
                   {/* Campo para "Otro" */}
@@ -182,7 +190,7 @@ export const QuizSection = () => {
                     >
                       <input
                         type="text"
-                        placeholder="Especifica qué tipo de productos..."
+                        placeholder="Especifica en qué rubro estás..."
                         value={formData.nichoOtro}
                         onChange={(e) => updateFormData({ nichoOtro: e.target.value })}
                         className="w-full bg-secondary border border-zinc-700 rounded-xl px-4 py-3 outline-none transition-colors focus:border-primary text-sm sm:text-base"
@@ -255,20 +263,25 @@ export const QuizSection = () => {
                 >
                   <h3 className="text-lg sm:text-xl font-bold">¿Cuál es tu principal desafío?</h3>
 
-                  <div className="relative">
-                    <select
-                      value={formData.problematica}
-                      onChange={(e) => handleProblematicaSelect(e.target.value)}
-                      className="w-full bg-secondary border border-zinc-700 rounded-xl px-4 py-4 outline-none transition-colors focus:border-primary appearance-none cursor-pointer text-sm sm:text-base"
-                    >
-                      <option value="">Selecciona una opción...</option>
-                      {currentProblematicas.map((prob) => (
-                        <option key={prob.id} value={prob.id}>
+                  <div className="space-y-2 sm:space-y-3">
+                    {currentProblematicas.map((prob) => {
+                      const isSelected = formData.problematica === prob.id;
+                      return (
+                        <motion.button
+                          key={prob.id}
+                          whileHover={{ scale: 1.01 }}
+                          whileTap={{ scale: 0.99 }}
+                          onClick={() => handleProblematicaSelect(prob.id)}
+                          className={`w-full p-3 sm:p-4 rounded-xl border-2 transition-all text-left text-sm sm:text-base ${
+                            isSelected
+                              ? "border-primary bg-primary/10 text-primary"
+                              : "border-zinc-700 hover:border-zinc-500"
+                          }`}
+                        >
                           {prob.label}
-                        </option>
-                      ))}
-                    </select>
-                    <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground pointer-events-none" />
+                        </motion.button>
+                      );
+                    })}
                   </div>
 
                   <div className="flex justify-start pt-4">
@@ -293,20 +306,25 @@ export const QuizSection = () => {
                 >
                   <h3 className="text-lg sm:text-xl font-bold">¿Cuál es tu facturación mensual aproximada?</h3>
 
-                  <div className="relative">
-                    <select
-                      value={formData.facturacion}
-                      onChange={(e) => handleFacturacionSelect(e.target.value)}
-                      className="w-full bg-secondary border border-zinc-700 rounded-xl px-4 py-4 outline-none transition-colors focus:border-primary appearance-none cursor-pointer text-sm sm:text-base"
-                    >
-                      <option value="">Selecciona una opción...</option>
-                      {facturacionOptions.map((fact) => (
-                        <option key={fact.id} value={fact.id}>
+                  <div className="space-y-2 sm:space-y-3">
+                    {facturacionOptions.map((fact) => {
+                      const isSelected = formData.facturacion === fact.id;
+                      return (
+                        <motion.button
+                          key={fact.id}
+                          whileHover={{ scale: 1.01 }}
+                          whileTap={{ scale: 0.99 }}
+                          onClick={() => handleFacturacionSelect(fact.id)}
+                          className={`w-full p-3 sm:p-4 rounded-xl border-2 transition-all text-left font-medium text-sm sm:text-base ${
+                            isSelected
+                              ? "border-primary bg-primary/10 text-primary"
+                              : "border-zinc-700 hover:border-zinc-500"
+                          }`}
+                        >
                           {fact.label}
-                        </option>
-                      ))}
-                    </select>
-                    <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground pointer-events-none" />
+                        </motion.button>
+                      );
+                    })}
                   </div>
 
                   <div className="flex justify-start pt-4">
