@@ -1,42 +1,234 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
-import { ArrowRight, ArrowLeft, FileText, Building2, ChevronDown, ChevronUp } from "lucide-react";
-import { useLeadMagnet, operacionOptions, frustracionOptions, objetivoOptions, urgenciaOptions } from "@/contexts/LeadMagnetContext";
+import {
+  ArrowRight,
+  ArrowLeft,
+  FileText,
+  ChevronDown,
+  Lock,
+} from "lucide-react";
+import {
+  useLeadMagnet,
+  experienciaOptions,
+  origenOptions,
+  mejorarOptions,
+  volumenOptions,
+  etapaOptions,
+  espacioOptions,
+  serviciosAdicionalesOptions,
+  frecuenciaOptions,
+  tercerizarOptions,
+  urgenciaOptions,
+  SituacionType,
+} from "@/contexts/LeadMagnetContext";
 import { Progress } from "@/components/ui/progress";
+
+// Get questions config based on situacion
+const getQuestionsConfig = (situacion: SituacionType | "") => {
+  switch (situacion) {
+    case "mejorar-costos":
+      return {
+        questions: [
+          {
+            id: "experiencia",
+            title: "Experiencia importando",
+            type: "select" as const,
+            options: experienciaOptions,
+            field: "experiencia" as const,
+          },
+          {
+            id: "origen",
+            title: "¿Desde dónde importas principalmente?",
+            type: "select" as const,
+            options: origenOptions,
+            field: "origen" as const,
+          },
+          {
+            id: "mejoras",
+            title: "¿Qué te gustaría mejorar principalmente?",
+            subtitle: "Seleccioná todo lo que aplique",
+            type: "checkbox" as const,
+            options: mejorarOptions,
+            field: "mejoras" as const,
+          },
+        ],
+        totalSteps: 6, // 3 specific + urgencia + contact
+      };
+    case "contenedor-compartido":
+      return {
+        questions: [
+          {
+            id: "origen",
+            title: "¿Desde dónde importas principalmente?",
+            type: "select" as const,
+            options: origenOptions,
+            field: "origen" as const,
+          },
+          {
+            id: "volumen",
+            title: "¿Cuánto volumen aproximado necesitas importar?",
+            type: "select" as const,
+            options: volumenOptions,
+            field: "volumen" as const,
+          },
+          {
+            id: "etapa",
+            title: "¿En qué etapa está tu importación?",
+            type: "select" as const,
+            options: etapaOptions,
+            field: "etapa" as const,
+          },
+        ],
+        totalSteps: 6,
+      };
+    case "deposito-fulfillment":
+      return {
+        questions: [
+          {
+            id: "espacio",
+            title: "¿Cuánto espacio aproximado necesitas?",
+            type: "select" as const,
+            options: espacioOptions,
+            field: "espacio" as const,
+          },
+          {
+            id: "serviciosAdicionales",
+            title: "¿Necesitas servicios adicionales de valor agregado?",
+            subtitle: "Seleccioná todo lo que aplique",
+            type: "checkbox" as const,
+            options: serviciosAdicionalesOptions,
+            field: "serviciosAdicionales" as const,
+          },
+          {
+            id: "frecuencia",
+            title: "¿Con qué frecuencia realizas despachos?",
+            type: "select" as const,
+            options: frecuenciaOptions,
+            field: "frecuencia" as const,
+          },
+        ],
+        totalSteps: 6,
+      };
+    case "escalar-negocio":
+      return {
+        questions: [
+          {
+            id: "experiencia",
+            title: "Experiencia importando",
+            type: "select" as const,
+            options: experienciaOptions,
+            field: "experiencia" as const,
+          },
+          {
+            id: "origen",
+            title: "¿Desde dónde importas principalmente?",
+            type: "select" as const,
+            options: origenOptions,
+            field: "origen" as const,
+          },
+          {
+            id: "tercerizar",
+            title: "¿Qué servicios te gustaría tercerizar?",
+            subtitle: "Seleccioná todo lo que aplique",
+            type: "checkbox" as const,
+            options: tercerizarOptions,
+            field: "tercerizar" as const,
+          },
+        ],
+        totalSteps: 6,
+      };
+    default:
+      return { questions: [], totalSteps: 3 };
+  }
+};
 
 export const QualificationForm2 = () => {
   const { formData, updateFormData, currentStep, setCurrentStep, submitToWebhook, saveToStorage } = useLeadMagnet();
   const [formStep, setFormStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showOperacionDetalle, setShowOperacionDetalle] = useState(false);
-  const [showFrustracionDetalle, setShowFrustracionDetalle] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const totalSteps = 5;
+  const config = getQuestionsConfig(formData.situacion);
+  const specificQuestions = config.questions;
+  const totalSteps = config.totalSteps;
+
+  // Total steps: specific questions (3) + urgencia (1) + contact (1) = 5
+  // But we'll use 6 total with 0-based index
   const progress = ((formStep + 1) / totalSteps) * 100;
 
-  // Toggle handlers for multi-select chips
-  const handleOperacionToggle = (id: string) => {
-    const current = formData.operacionTags || [];
+  // Validaciones
+  const validateName = (name: string): boolean => {
+    const words = name.trim().split(/\s+/);
+    return words.length >= 2 && words.every(w => w.length >= 1);
+  };
+
+  const validateEmail = (email: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const validateWhatsApp = (phone: string): boolean => {
+    const phoneRegex = /^\+?[\d\s\-()]{10,20}$/;
+    return phoneRegex.test(phone.replace(/\s/g, ''));
+  };
+
+  // Handle checkbox toggle
+  const handleCheckboxToggle = (field: "mejoras" | "serviciosAdicionales" | "tercerizar", id: string) => {
+    const current = formData[field] || [];
     if (current.includes(id)) {
-      updateFormData({ operacionTags: current.filter((t) => t !== id) });
+      updateFormData({ [field]: current.filter((t: string) => t !== id) });
     } else {
-      updateFormData({ operacionTags: [...current, id] });
+      updateFormData({ [field]: [...current, id] });
     }
   };
 
-  const handleFrustracionToggle = (id: string) => {
-    const current = formData.frustracionTags || [];
-    if (current.includes(id)) {
-      updateFormData({ frustracionTags: current.filter((t) => t !== id) });
-    } else {
-      updateFormData({ frustracionTags: [...current, id] });
+  // Handle select
+  const handleSelectChange = (field: string, value: string) => {
+    updateFormData({ [field]: value });
+    if (value) {
+      setTimeout(() => setFormStep(prev => prev + 1), 300);
     }
+  };
+
+  // Validation for current step
+  const canProceedCurrentStep = () => {
+    if (formStep < specificQuestions.length) {
+      const question = specificQuestions[formStep];
+      if (question.type === "checkbox") {
+        const fieldValue = formData[question.field as keyof typeof formData];
+        return Array.isArray(fieldValue) && fieldValue.length > 0;
+      }
+      return !!formData[question.field as keyof typeof formData];
+    }
+    if (formStep === specificQuestions.length) {
+      return !!formData.urgencia;
+    }
+    return true;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.urgencia) return;
 
+    const newErrors: Record<string, string> = {};
+
+    if (!formData.nombre || !validateName(formData.nombre)) {
+      newErrors.nombre = "Ingresá tu nombre completo (nombre y apellido)";
+    }
+
+    if (!formData.email || !validateEmail(formData.email)) {
+      newErrors.email = "Ingresá un email válido";
+    }
+
+    if (!formData.whatsapp || !validateWhatsApp(formData.whatsapp)) {
+      newErrors.whatsapp = "Ingresá un número válido con código de país";
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    setErrors({});
     setIsSubmitting(true);
 
     // Save to storage before submitting
@@ -46,23 +238,19 @@ export const QualificationForm2 = () => {
     await submitToWebhook();
 
     setIsSubmitting(false);
-    setCurrentStep("action_plan");
+    setCurrentStep("whatsapp_redirect");
 
     setTimeout(() => {
-      document.getElementById("action-plan-section")?.scrollIntoView({ behavior: "smooth" });
+      document.getElementById("whatsapp-redirect-section")?.scrollIntoView({ behavior: "smooth" });
     }, 100);
   };
 
-  // Validation helpers
-  const canProceedStep0 = formData.empresa && formData.empresa.trim().length > 0;
-  const canProceedStep1 = formData.operacionTags && formData.operacionTags.length > 0;
-  const canProceedStep2 = formData.frustracionTags && formData.frustracionTags.length > 0;
-  const canProceedStep3 = formData.objetivoPrincipal;
-  const canSubmit = formData.urgencia;
-
-  if (currentStep !== "form2" && currentStep !== "action_plan" && currentStep !== "calendar") {
+  if (currentStep !== "form2" && currentStep !== "whatsapp_redirect") {
     return null;
   }
+
+  const urgenciaStepIndex = specificQuestions.length;
+  const contactStepIndex = specificQuestions.length + 1;
 
   return (
     <section id="form2-section" className="py-12 md:py-20 px-4 md:px-6 bg-gradient-to-b from-black to-background">
@@ -74,13 +262,13 @@ export const QualificationForm2 = () => {
         >
           <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-3 md:px-4 py-1.5 md:py-2 rounded-full text-xs md:text-sm font-semibold mb-3 md:mb-4">
             <FileText className="w-3 h-3 md:w-4 md:h-4" />
-            Paso 2 de 3
+            Formulario de profundización
           </div>
           <h2 className="text-2xl md:text-4xl font-black tracking-tight mb-3 md:mb-4">
-            Contanos un poco más para personalizar tu Plan de Acción
+            Contanos un poco más sobre tu situación
           </h2>
           <p className="text-muted-foreground text-sm md:text-base">
-            Con esta información generamos recomendaciones específicas para tu negocio
+            Esta información nos ayuda a entender mejor cómo podemos ayudarte
           </p>
         </motion.div>
 
@@ -101,236 +289,133 @@ export const QualificationForm2 = () => {
 
           <div className="p-5 md:p-8">
             <AnimatePresence mode="wait">
-              {/* Pregunta 1: Empresa */}
-              {formStep === 0 && (
+              {/* Specific Questions (0, 1, 2) */}
+              {formStep < specificQuestions.length && (
                 <motion.div
-                  key="step0"
+                  key={`step-${formStep}`}
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -20 }}
                   className="space-y-4 md:space-y-6"
                 >
-                  <div>
-                    <h3 className="text-lg md:text-xl font-bold flex items-center gap-2 mb-1">
-                      <Building2 className="w-5 h-5 text-primary" />
-                      ¿Cuál es el nombre de tu empresa?
-                    </h3>
-                  </div>
-                  <input
-                    type="text"
-                    placeholder="TechCorp SRL"
-                    value={formData.empresa}
-                    onChange={(e) => updateFormData({ empresa: e.target.value })}
-                    className="w-full bg-secondary border border-zinc-700 focus:border-primary rounded-xl px-4 py-3 md:py-4 outline-none transition-colors text-sm md:text-base"
-                    autoFocus
-                  />
-                  <div className="flex justify-end pt-4">
-                    <button
-                      onClick={() => setFormStep(1)}
-                      disabled={!canProceedStep0}
-                      className="flex items-center gap-2 bg-primary text-primary-foreground px-5 md:px-6 py-2.5 md:py-3 rounded-xl font-bold disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary/90 transition-all text-sm"
-                    >
-                      Siguiente <ArrowRight className="w-4 h-4" />
-                    </button>
-                  </div>
+                  {(() => {
+                    const question = specificQuestions[formStep];
+                    return (
+                      <>
+                        <div>
+                          <h3 className="text-lg md:text-xl font-bold mb-1">{question.title}</h3>
+                          {question.subtitle && (
+                            <p className="text-xs md:text-sm text-muted-foreground">{question.subtitle}</p>
+                          )}
+                        </div>
+
+                        {question.type === "select" && (
+                          <div className="relative">
+                            <select
+                              value={formData[question.field as keyof typeof formData] as string || ""}
+                              onChange={(e) => handleSelectChange(question.field, e.target.value)}
+                              className="w-full bg-secondary border border-zinc-700 rounded-xl px-4 py-4 outline-none transition-colors focus:border-primary appearance-none cursor-pointer text-sm md:text-base"
+                            >
+                              <option value="">Selecciona una opción...</option>
+                              {question.options.map((opt) => (
+                                <option key={opt.id} value={opt.id}>
+                                  {opt.label}
+                                </option>
+                              ))}
+                            </select>
+                            <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground pointer-events-none" />
+                          </div>
+                        )}
+
+                        {question.type === "checkbox" && (
+                          <>
+                            <div className="flex flex-wrap gap-2">
+                              {question.options.map((opt) => {
+                                const fieldValue = formData[question.field as keyof typeof formData];
+                                const isSelected = Array.isArray(fieldValue) && fieldValue.includes(opt.id);
+                                return (
+                                  <button
+                                    key={opt.id}
+                                    onClick={() => handleCheckboxToggle(question.field as "mejoras" | "serviciosAdicionales" | "tercerizar", opt.id)}
+                                    className={`px-3 md:px-4 py-2 rounded-full border-2 transition-all text-xs md:text-sm font-medium ${
+                                      isSelected
+                                        ? "border-primary bg-primary/10 text-primary"
+                                        : "border-zinc-700 hover:border-zinc-500"
+                                    }`}
+                                  >
+                                    {opt.label}
+                                  </button>
+                                );
+                              })}
+                            </div>
+                            <div className="flex justify-between pt-4 gap-4">
+                              <button
+                                onClick={() => setFormStep(prev => prev - 1)}
+                                disabled={formStep === 0}
+                                className="flex items-center gap-1 md:gap-2 text-muted-foreground hover:text-foreground transition-colors text-sm disabled:opacity-50"
+                              >
+                                <ArrowLeft className="w-4 h-4" /> <span className="hidden sm:inline">Anterior</span>
+                              </button>
+                              <button
+                                onClick={() => setFormStep(prev => prev + 1)}
+                                disabled={!canProceedCurrentStep()}
+                                className="flex items-center gap-2 bg-primary text-primary-foreground px-5 md:px-6 py-2.5 md:py-3 rounded-xl font-bold disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary/90 transition-all text-sm"
+                              >
+                                Siguiente <ArrowRight className="w-4 h-4" />
+                              </button>
+                            </div>
+                          </>
+                        )}
+
+                        {question.type === "select" && (
+                          <div className="flex justify-start pt-4">
+                            <button
+                              onClick={() => setFormStep(prev => prev - 1)}
+                              disabled={formStep === 0}
+                              className="flex items-center gap-1 md:gap-2 text-muted-foreground hover:text-foreground transition-colors text-sm disabled:opacity-50"
+                            >
+                              <ArrowLeft className="w-4 h-4" /> <span className="hidden sm:inline">Anterior</span>
+                            </button>
+                          </div>
+                        )}
+                      </>
+                    );
+                  })()}
                 </motion.div>
               )}
 
-              {/* Pregunta 2: Operación actual */}
-              {formStep === 1 && (
+              {/* Urgencia Step */}
+              {formStep === urgenciaStepIndex && (
                 <motion.div
-                  key="step1"
+                  key="step-urgencia"
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -20 }}
                   className="space-y-4 md:space-y-6"
                 >
                   <div>
-                    <h3 className="text-lg md:text-xl font-bold mb-1">¿Cómo es tu operación logística hoy?</h3>
-                    <p className="text-xs md:text-sm text-muted-foreground">Seleccioná todo lo que aplique</p>
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {operacionOptions.map((option) => {
-                      const isSelected = formData.operacionTags?.includes(option.id);
-                      return (
-                        <button
-                          key={option.id}
-                          onClick={() => handleOperacionToggle(option.id)}
-                          className={`px-3 md:px-4 py-2 rounded-full border-2 transition-all text-xs md:text-sm font-medium ${
-                            isSelected
-                              ? "border-primary bg-primary/10 text-primary"
-                              : "border-zinc-700 hover:border-zinc-500"
-                          }`}
-                        >
-                          {option.label}
-                        </button>
-                      );
-                    })}
+                    <h3 className="text-lg md:text-xl font-bold mb-1">¿Cuándo necesitas comenzar?</h3>
                   </div>
 
-                  {/* Textarea opcional colapsable */}
-                  <div>
-                    <button
-                      type="button"
-                      onClick={() => setShowOperacionDetalle(!showOperacionDetalle)}
-                      className="flex items-center gap-2 text-xs md:text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  <div className="relative">
+                    <select
+                      value={formData.urgencia}
+                      onChange={(e) => handleSelectChange("urgencia", e.target.value)}
+                      className="w-full bg-secondary border border-zinc-700 rounded-xl px-4 py-4 outline-none transition-colors focus:border-primary appearance-none cursor-pointer text-sm md:text-base"
                     >
-                      {showOperacionDetalle ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-                      Agregar detalles (opcional)
-                    </button>
-                    {showOperacionDetalle && (
-                      <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: "auto" }}
-                        exit={{ opacity: 0, height: 0 }}
-                        className="mt-3"
-                      >
-                        <textarea
-                          placeholder="Ej: Traemos 2 containers por mes de Shenzhen, principalmente electrónica..."
-                          value={formData.operacionDetalle}
-                          onChange={(e) => updateFormData({ operacionDetalle: e.target.value })}
-                          rows={3}
-                          maxLength={500}
-                          className="w-full bg-secondary border border-zinc-700 focus:border-primary rounded-xl px-4 py-3 outline-none transition-colors text-sm resize-none"
-                        />
-                      </motion.div>
-                    )}
+                      <option value="">Selecciona una opción...</option>
+                      {urgenciaOptions.map((opt) => (
+                        <option key={opt.id} value={opt.id}>
+                          {opt.label}
+                        </option>
+                      ))}
+                    </select>
+                    <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground pointer-events-none" />
                   </div>
 
-                  <div className="flex justify-between pt-4 gap-4">
+                  <div className="flex justify-start pt-4">
                     <button
-                      onClick={() => setFormStep(0)}
-                      className="flex items-center gap-1 md:gap-2 text-muted-foreground hover:text-foreground transition-colors text-sm"
-                    >
-                      <ArrowLeft className="w-4 h-4" /> <span className="hidden sm:inline">Anterior</span>
-                    </button>
-                    <button
-                      onClick={() => setFormStep(2)}
-                      disabled={!canProceedStep1}
-                      className="flex items-center gap-2 bg-primary text-primary-foreground px-5 md:px-6 py-2.5 md:py-3 rounded-xl font-bold disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary/90 transition-all text-sm"
-                    >
-                      Siguiente <ArrowRight className="w-4 h-4" />
-                    </button>
-                  </div>
-                </motion.div>
-              )}
-
-              {/* Pregunta 3: Mayor frustración */}
-              {formStep === 2 && (
-                <motion.div
-                  key="step2"
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -20 }}
-                  className="space-y-4 md:space-y-6"
-                >
-                  <div>
-                    <h3 className="text-lg md:text-xl font-bold mb-1">¿Qué es lo que más te frustra o genera problemas hoy?</h3>
-                    <p className="text-xs md:text-sm text-muted-foreground">Seleccioná los principales</p>
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {frustracionOptions.map((option) => {
-                      const isSelected = formData.frustracionTags?.includes(option.id);
-                      return (
-                        <button
-                          key={option.id}
-                          onClick={() => handleFrustracionToggle(option.id)}
-                          className={`px-3 md:px-4 py-2 rounded-full border-2 transition-all text-xs md:text-sm font-medium ${
-                            isSelected
-                              ? "border-primary bg-primary/10 text-primary"
-                              : "border-zinc-700 hover:border-zinc-500"
-                          }`}
-                        >
-                          {option.label}
-                        </button>
-                      );
-                    })}
-                  </div>
-
-                  {/* Textarea opcional colapsable */}
-                  <div>
-                    <button
-                      type="button"
-                      onClick={() => setShowFrustracionDetalle(!showFrustracionDetalle)}
-                      className="flex items-center gap-2 text-xs md:text-sm text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                      {showFrustracionDetalle ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-                      Contanos más (opcional)
-                    </button>
-                    {showFrustracionDetalle && (
-                      <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: "auto" }}
-                        exit={{ opacity: 0, height: 0 }}
-                        className="mt-3"
-                      >
-                        <textarea
-                          placeholder="Ej: El mes pasado tardaron 3 semanas en liberar un container..."
-                          value={formData.frustracionDetalle}
-                          onChange={(e) => updateFormData({ frustracionDetalle: e.target.value })}
-                          rows={3}
-                          maxLength={500}
-                          className="w-full bg-secondary border border-zinc-700 focus:border-primary rounded-xl px-4 py-3 outline-none transition-colors text-sm resize-none"
-                        />
-                      </motion.div>
-                    )}
-                  </div>
-
-                  <div className="flex justify-between pt-4 gap-4">
-                    <button
-                      onClick={() => setFormStep(1)}
-                      className="flex items-center gap-1 md:gap-2 text-muted-foreground hover:text-foreground transition-colors text-sm"
-                    >
-                      <ArrowLeft className="w-4 h-4" /> <span className="hidden sm:inline">Anterior</span>
-                    </button>
-                    <button
-                      onClick={() => setFormStep(3)}
-                      disabled={!canProceedStep2}
-                      className="flex items-center gap-2 bg-primary text-primary-foreground px-5 md:px-6 py-2.5 md:py-3 rounded-xl font-bold disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary/90 transition-all text-sm"
-                    >
-                      Siguiente <ArrowRight className="w-4 h-4" />
-                    </button>
-                  </div>
-                </motion.div>
-              )}
-
-              {/* Pregunta 4: Objetivo principal */}
-              {formStep === 3 && (
-                <motion.div
-                  key="step3"
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -20 }}
-                  className="space-y-4 md:space-y-6"
-                >
-                  <div>
-                    <h3 className="text-lg md:text-xl font-bold mb-1">¿Qué te gustaría lograr en los próximos 6 meses?</h3>
-                    <p className="text-xs md:text-sm text-muted-foreground">Elegí tu prioridad principal</p>
-                  </div>
-                  <div className="space-y-2 md:space-y-3">
-                    {objetivoOptions.map((option) => {
-                      const isSelected = formData.objetivoPrincipal === option.id;
-                      return (
-                        <button
-                          key={option.id}
-                          onClick={() => {
-                            updateFormData({ objetivoPrincipal: option.id });
-                            setTimeout(() => setFormStep(4), 300);
-                          }}
-                          className={`w-full p-3 md:p-4 rounded-xl border-2 transition-all text-left font-medium text-sm md:text-base ${
-                            isSelected
-                              ? "border-primary bg-primary/10 text-primary"
-                              : "border-zinc-700 hover:border-zinc-500"
-                          }`}
-                        >
-                          {option.label}
-                        </button>
-                      );
-                    })}
-                  </div>
-                  <div className="flex justify-between pt-4">
-                    <button
-                      onClick={() => setFormStep(2)}
+                      onClick={() => setFormStep(prev => prev - 1)}
                       className="flex items-center gap-1 md:gap-2 text-muted-foreground hover:text-foreground transition-colors text-sm"
                     >
                       <ArrowLeft className="w-4 h-4" /> <span className="hidden sm:inline">Anterior</span>
@@ -339,61 +424,132 @@ export const QualificationForm2 = () => {
                 </motion.div>
               )}
 
-              {/* Pregunta 5: Urgencia */}
-              {formStep === 4 && (
+              {/* Contact Step */}
+              {formStep === contactStepIndex && (
                 <motion.div
-                  key="step4"
+                  key="step-contact"
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -20 }}
                   className="space-y-4 md:space-y-6"
                 >
                   <div>
-                    <h3 className="text-lg md:text-xl font-bold mb-1">¿Para cuándo necesitás implementar mejoras?</h3>
+                    <h3 className="text-lg md:text-xl font-bold mb-1">Datos de contacto</h3>
+                    <p className="text-xs md:text-sm text-muted-foreground">Para continuar por WhatsApp</p>
                   </div>
-                  <div className="space-y-2 md:space-y-3">
-                    {urgenciaOptions.map((option) => {
-                      const isSelected = formData.urgencia === option.id;
-                      return (
-                        <button
-                          key={option.id}
-                          onClick={() => updateFormData({ urgencia: option.id })}
-                          className={`w-full p-3 md:p-4 rounded-xl border-2 transition-all text-left font-medium text-sm md:text-base ${
-                            isSelected
-                              ? "border-primary bg-primary/10 text-primary"
-                              : "border-zinc-700 hover:border-zinc-500"
-                          }`}
-                        >
-                          {option.label}
-                        </button>
-                      );
-                    })}
-                  </div>
-                  <div className="flex flex-col-reverse sm:flex-row justify-between pt-4 gap-3 sm:gap-4">
-                    <button
-                      onClick={() => setFormStep(3)}
-                      className="flex items-center justify-center gap-2 text-muted-foreground hover:text-foreground transition-colors text-sm py-2"
-                    >
-                      <ArrowLeft className="w-4 h-4" /> Anterior
-                    </button>
-                    <button
-                      onClick={handleSubmit}
-                      disabled={!canSubmit || isSubmitting}
-                      className="flex items-center justify-center gap-2 bg-primary text-primary-foreground px-6 md:px-8 py-3 md:py-4 rounded-xl font-bold hover:bg-primary/90 transition-all shadow-2xl shadow-primary/30 disabled:opacity-50 disabled:cursor-not-allowed text-sm md:text-base"
-                    >
-                      {isSubmitting ? (
-                        <>
-                          <div className="w-5 h-5 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
-                          Generando...
-                        </>
-                      ) : (
-                        <>
-                          Generar mi Plan de Acción
-                          <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
-                        </>
+
+                  <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
+                    <div>
+                      <label className="text-xs sm:text-sm font-medium text-muted-foreground mb-1 block">
+                        Nombre completo *
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="Juan Pérez"
+                        value={formData.nombre}
+                        onChange={(e) => {
+                          updateFormData({ nombre: e.target.value });
+                          if (errors.nombre) setErrors(prev => ({ ...prev, nombre: '' }));
+                        }}
+                        className={`w-full bg-secondary border rounded-xl px-4 py-3 outline-none transition-colors text-sm sm:text-base ${
+                          errors.nombre ? 'border-red-500' : 'border-zinc-700 focus:border-primary'
+                        }`}
+                        required
+                      />
+                      {errors.nombre && (
+                        <p className="text-red-500 text-xs mt-1">{errors.nombre}</p>
                       )}
-                    </button>
-                  </div>
+                    </div>
+
+                    <div>
+                      <label className="text-xs sm:text-sm font-medium text-muted-foreground mb-1 block">
+                        Email *
+                      </label>
+                      <input
+                        type="email"
+                        placeholder="juan@empresa.com"
+                        value={formData.email}
+                        onChange={(e) => {
+                          updateFormData({ email: e.target.value });
+                          if (errors.email) setErrors(prev => ({ ...prev, email: '' }));
+                        }}
+                        className={`w-full bg-secondary border rounded-xl px-4 py-3 outline-none transition-colors text-sm sm:text-base ${
+                          errors.email ? 'border-red-500' : 'border-zinc-700 focus:border-primary'
+                        }`}
+                        required
+                      />
+                      {errors.email && (
+                        <p className="text-red-500 text-xs mt-1">{errors.email}</p>
+                      )}
+                    </div>
+
+                    <div>
+                      <label className="text-xs sm:text-sm font-medium text-muted-foreground mb-1 block">
+                        WhatsApp *
+                      </label>
+                      <input
+                        type="tel"
+                        placeholder="+54 9 11 1234-5678"
+                        value={formData.whatsapp}
+                        onChange={(e) => {
+                          updateFormData({ whatsapp: e.target.value });
+                          if (errors.whatsapp) setErrors(prev => ({ ...prev, whatsapp: '' }));
+                        }}
+                        className={`w-full bg-secondary border rounded-xl px-4 py-3 outline-none transition-colors text-sm sm:text-base ${
+                          errors.whatsapp ? 'border-red-500' : 'border-zinc-700 focus:border-primary'
+                        }`}
+                        required
+                      />
+                      {errors.whatsapp && (
+                        <p className="text-red-500 text-xs mt-1">{errors.whatsapp}</p>
+                      )}
+                    </div>
+
+                    <div>
+                      <label className="text-xs sm:text-sm font-medium text-muted-foreground mb-1 block">
+                        Empresa (opcional)
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="Tu empresa SRL"
+                        value={formData.empresa}
+                        onChange={(e) => updateFormData({ empresa: e.target.value })}
+                        className="w-full bg-secondary border border-zinc-700 focus:border-primary rounded-xl px-4 py-3 outline-none transition-colors text-sm sm:text-base"
+                      />
+                    </div>
+
+                    <div className="flex flex-col-reverse sm:flex-row justify-between pt-4 gap-3 sm:gap-4">
+                      <button
+                        type="button"
+                        onClick={() => setFormStep(prev => prev - 1)}
+                        className="flex items-center justify-center gap-2 text-muted-foreground hover:text-foreground transition-colors text-sm py-2"
+                      >
+                        <ArrowLeft className="w-4 h-4" /> Anterior
+                      </button>
+                      <button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className="flex items-center justify-center gap-2 bg-primary text-primary-foreground px-6 md:px-8 py-3 md:py-4 rounded-xl font-bold hover:bg-primary/90 transition-all shadow-2xl shadow-primary/30 disabled:opacity-50 disabled:cursor-not-allowed text-sm md:text-base"
+                      >
+                        {isSubmitting ? (
+                          <>
+                            <div className="w-5 h-5 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
+                            Procesando...
+                          </>
+                        ) : (
+                          <>
+                            Continuar por WhatsApp
+                            <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
+                          </>
+                        )}
+                      </button>
+                    </div>
+
+                    <p className="text-center text-xs text-muted-foreground flex items-center justify-center gap-2 pt-2">
+                      <Lock className="w-3 h-3" />
+                      Tus datos están seguros.
+                    </p>
+                  </form>
                 </motion.div>
               )}
             </AnimatePresence>

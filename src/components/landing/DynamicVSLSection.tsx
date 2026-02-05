@@ -4,11 +4,15 @@ import {
   Play,
   CheckCircle,
   Building,
-  User,
+  Target,
   ArrowRight,
   Clock,
 } from "lucide-react";
-import { useLeadMagnet, industriasOptions, facturacionOptions } from "@/contexts/LeadMagnetContext";
+import {
+  useLeadMagnet,
+  nichoOptions,
+  getSituacionTitulo,
+} from "@/contexts/LeadMagnetContext";
 
 export const DynamicVSLSection = () => {
   const { formData, currentStep, setCurrentStep } = useLeadMagnet();
@@ -26,17 +30,20 @@ export const DynamicVSLSection = () => {
   };
 
   // Obtener labels amigables
-  const nichoLabel = industriasOptions.find((n) => n.id === formData.nicho)?.label || formData.nicho;
-  const factLabel = facturacionOptions.find((f) => f.id === formData.facturacion)?.label || formData.facturacion;
+  const nichoLabel = formData.nicho === "otro" && formData.nichoOtro
+    ? formData.nichoOtro
+    : nichoOptions.find((n) => n.id === formData.nicho)?.label || formData.nicho;
 
-  if (currentStep !== "vsl" && currentStep !== "form2" && currentStep !== "action_plan" && currentStep !== "calendar") {
+  const situacionLabel = getSituacionTitulo(formData.situacion);
+
+  if (currentStep !== "vsl" && currentStep !== "form2" && currentStep !== "whatsapp_redirect") {
     return null;
   }
 
   return (
     <section id="vsl-section" className="py-12 md:py-20 px-4 md:px-6 bg-black">
       <div className="max-w-5xl mx-auto">
-        {/* Personalization header */}
+        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -44,13 +51,13 @@ export const DynamicVSLSection = () => {
         >
           <div className="inline-flex items-center gap-2 bg-primary/20 text-primary px-3 md:px-4 py-1.5 md:py-2 rounded-full text-xs md:text-sm font-semibold mb-3 md:mb-4">
             <CheckCircle className="w-3 h-3 md:w-4 md:h-4" />
-            Diagnóstico generado para {formData.nombre || "vos"}
+            Video informativo
           </div>
           <h2 className="text-2xl md:text-4xl font-black text-white mb-2">
-            Tu Diagnóstico Personalizado
+            Conocé cómo podemos ayudarte
           </h2>
           <p className="text-sm md:text-base text-zinc-400">
-            Basado en tu industria y necesidades específicas
+            Te mostramos cómo trabajamos y qué soluciones tenemos para vos
           </p>
         </motion.div>
 
@@ -73,10 +80,10 @@ export const DynamicVSLSection = () => {
                   <Play className="w-8 h-8 md:w-12 md:h-12 text-primary-foreground ml-1 md:ml-2" fill="currentColor" />
                 </motion.div>
                 <h3 className="text-xl md:text-2xl font-bold text-white mb-3 text-center">
-                  ¡Hola {formData.nombre}!
+                  Mirá este video antes de continuar
                 </h3>
                 <p className="text-zinc-400 mb-6 text-sm md:text-base max-w-md mx-auto text-center">
-                  Mirá este video con tu diagnóstico personalizado basado en lo que nos contaste.
+                  Te explicamos cómo funciona nuestro servicio y cómo podemos ayudarte con tu operación.
                 </p>
                 <div className="flex items-center gap-2 text-zinc-500 text-xs md:text-sm">
                   <Clock className="w-4 h-4" />
@@ -91,7 +98,7 @@ export const DynamicVSLSection = () => {
                   className="w-full h-full"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
-                  title="Video diagnóstico personalizado"
+                  title="Video explicativo Altitude"
                 />
               </div>
             )}
@@ -109,9 +116,11 @@ export const DynamicVSLSection = () => {
             <span className="bg-zinc-800 text-zinc-300 px-4 py-2 rounded-full text-sm flex items-center gap-2">
               <Building className="w-4 h-4" /> {nichoLabel}
             </span>
-            <span className="bg-zinc-800 text-zinc-300 px-4 py-2 rounded-full text-sm flex items-center gap-2">
-              <User className="w-4 h-4" /> {factLabel}
-            </span>
+            {situacionLabel && (
+              <span className="bg-zinc-800 text-zinc-300 px-4 py-2 rounded-full text-sm flex items-center gap-2">
+                <Target className="w-4 h-4" /> {situacionLabel.length > 40 ? situacionLabel.slice(0, 40) + "..." : situacionLabel}
+              </span>
+            )}
           </motion.div>
         )}
 

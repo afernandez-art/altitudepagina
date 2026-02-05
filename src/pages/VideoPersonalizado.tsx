@@ -2,13 +2,12 @@ import { useEffect } from "react";
 import { DynamicVSLSection } from "@/components/landing/DynamicVSLSection";
 import { QualificationForm2 } from "@/components/landing/QualificationForm2";
 import { ActionPlanSection } from "@/components/landing/ActionPlanSection";
-import { CalendarSection } from "@/components/landing/CalendarSection";
 import { LeadMagnetProvider, useLeadMagnet } from "@/contexts/LeadMagnetContext";
 import { motion } from "framer-motion";
 import { ArrowLeft, FileSearch } from "lucide-react";
 
 const VideoContent = () => {
-  const { formData, currentStep, setCurrentStep, loadFromStorage } = useLeadMagnet();
+  const { formData, setCurrentStep, loadFromStorage } = useLeadMagnet();
 
   useEffect(() => {
     // Load data from localStorage on mount
@@ -17,8 +16,8 @@ const VideoContent = () => {
     setCurrentStep("vsl");
   }, []);
 
-  // If no data, show error
-  if (!formData.nombre && !formData.email) {
+  // If no data from Form 1, show error
+  if (!formData.nicho && !formData.situacion) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center p-4 md:p-6">
         <motion.div
@@ -29,9 +28,9 @@ const VideoContent = () => {
           <div className="w-16 h-16 md:w-20 md:h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4 md:mb-6">
             <FileSearch className="w-8 h-8 md:w-10 md:h-10 text-primary" />
           </div>
-          <h1 className="text-xl md:text-2xl font-bold mb-3 md:mb-4">Diagnóstico no disponible</h1>
+          <h1 className="text-xl md:text-2xl font-bold mb-3 md:mb-4">Formulario no disponible</h1>
           <p className="text-sm md:text-base text-muted-foreground mb-6 md:mb-8">
-            Para ver tu diagnóstico personalizado, primero completá el cuestionario en nuestra página principal.
+            Para continuar, primero completá el cuestionario en nuestra página principal.
           </p>
           <a
             href="/"
@@ -55,7 +54,7 @@ const VideoContent = () => {
             <span className="text-xs md:text-sm">Volver</span>
           </a>
           <div className="text-xs md:text-sm text-muted-foreground">
-            Diagnóstico para <span className="text-primary font-semibold">{formData.nombre}</span>
+            Altitude Logistics Group
           </div>
         </div>
       </header>
@@ -65,7 +64,6 @@ const VideoContent = () => {
         <DynamicVSLSection />
         <QualificationForm2 />
         <ActionPlanSection />
-        <CalendarSection />
       </main>
 
       {/* Simple footer */}

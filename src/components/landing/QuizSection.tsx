@@ -5,108 +5,72 @@ import {
   ArrowLeft,
   FileSearch,
   CheckCircle,
-  ShoppingCart,
-  Factory,
-  UtensilsCrossed,
-  Pill,
-  Shirt,
-  Cpu,
-  Car,
-  Package,
   Lock,
   Sparkles,
+  ChevronDown,
 } from "lucide-react";
-import { useLeadMagnet, industriasOptions, desafiosOptions, facturacionOptions } from "@/contexts/LeadMagnetContext";
+import {
+  useLeadMagnet,
+  nichoOptions,
+  situacionOptions,
+  problematicasPorSituacion,
+  facturacionOptions,
+  SituacionType,
+} from "@/contexts/LeadMagnetContext";
 import { Progress } from "@/components/ui/progress";
-
-// Iconos para las industrias
-const industriaIcons: Record<string, React.ComponentType<{ className?: string }>> = {
-  ecommerce: ShoppingCart,
-  industrial: Factory,
-  alimentos: UtensilsCrossed,
-  farmaceutico: Pill,
-  textil: Shirt,
-  tecnologia: Cpu,
-  automotriz: Car,
-  otro: Package,
-};
 
 export const QuizSection = () => {
   const { formData, updateFormData, saveToStorage } = useLeadMagnet();
   const [quizStep, setQuizStep] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [showNichoOtro, setShowNichoOtro] = useState(false);
 
   const totalSteps = 4;
   const progress = ((quizStep + 1) / totalSteps) * 100;
 
-  const handleIndustriaSelect = (id: string) => {
+  // Get dynamic problematicas based on selected situacion
+  const currentProblematicas = formData.situacion
+    ? problematicasPorSituacion[formData.situacion]
+    : [];
+
+  const handleNichoSelect = (id: string) => {
     updateFormData({ nicho: id });
-    setTimeout(() => setQuizStep(1), 300);
+    if (id === "otro") {
+      setShowNichoOtro(true);
+    } else {
+      setShowNichoOtro(false);
+      setTimeout(() => setQuizStep(1), 300);
+    }
   };
 
-  const handleDesafioToggle = (id: string) => {
-    const current = formData.problematicas || [];
-    if (current.includes(id)) {
-      updateFormData({ problematicas: current.filter((p) => p !== id) });
-    } else if (current.length < 2) {
-      updateFormData({ problematicas: [...current, id] });
+  const handleNichoOtroSubmit = () => {
+    if (formData.nichoOtro.trim()) {
+      setTimeout(() => setQuizStep(1), 300);
     }
+  };
+
+  const handleSituacionSelect = (id: SituacionType) => {
+    updateFormData({ situacion: id, problematica: "" }); // Reset problematica when changing situacion
+    setTimeout(() => setQuizStep(2), 300);
+  };
+
+  const handleProblematicaSelect = (id: string) => {
+    updateFormData({ problematica: id });
+    setTimeout(() => setQuizStep(3), 300);
   };
 
   const handleFacturacionSelect = (id: string) => {
     updateFormData({ facturacion: id });
-    setTimeout(() => setQuizStep(3), 300);
-  };
-
-  // Validaciones
-  const validateName = (name: string): boolean => {
-    const words = name.trim().split(/\s+/);
-    return words.length >= 2 && words.every(w => w.length >= 1);
-  };
-
-  const validateEmail = (email: string): boolean => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
-
-  const validateWhatsApp = (phone: string): boolean => {
-    // Acepta formatos con código de país: +54 9 11 1234-5678, +541112345678, etc.
-    const phoneRegex = /^\+?[\d\s\-()]{10,20}$/;
-    return phoneRegex.test(phone.replace(/\s/g, ''));
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    const newErrors: Record<string, string> = {};
-
-    if (!formData.nombre || !validateName(formData.nombre)) {
-      newErrors.nombre = "Ingresá tu nombre completo (nombre y apellido)";
-    }
-
-    if (!formData.email || !validateEmail(formData.email)) {
-      newErrors.email = "Ingresá un email válido";
-    }
-
-    if (!formData.whatsapp || !validateWhatsApp(formData.whatsapp)) {
-      newErrors.whatsapp = "Ingresá un número válido con código de país";
-    }
-
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-      return;
-    }
-
-    setErrors({});
     // Save data to localStorage for the new tab
-    saveToStorage();
-    setIsCompleted(true);
-    // Open video in new tab
-    window.open("/video-personalizado", "_blank");
+    setTimeout(() => {
+      saveToStorage();
+      setIsCompleted(true);
+      // Open video in new tab
+      window.open("/video-personalizado", "_blank");
+    }, 300);
   };
 
-  const canProceedStep2 = formData.problematicas && formData.problematicas.length > 0;
+  const canProceedStep1 = formData.nicho && (formData.nicho !== "otro" || formData.nichoOtro.trim());
 
   if (isCompleted) {
     return (
@@ -182,7 +146,7 @@ export const QuizSection = () => {
           {/* Quiz Steps */}
           <div className="p-4 sm:p-8">
             <AnimatePresence mode="wait">
-              {/* Step 1: Industria */}
+              {/* Step 1: Nicho */}
               {quizStep === 0 && (
                 <motion.div
                   key="step1"
@@ -191,33 +155,52 @@ export const QuizSection = () => {
                   exit={{ opacity: 0, x: -20 }}
                   className="space-y-4 sm:space-y-6"
                 >
-                  <h3 className="text-lg sm:text-xl font-bold">¿En qué industria opera tu empresa?</h3>
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
-                    {industriasOptions.map((industria) => {
-                      const Icon = industriaIcons[industria.id] || Package;
-                      const isSelected = formData.nicho === industria.id;
-                      return (
-                        <motion.button
-                          key={industria.id}
-                          whileHover={{ scale: 1.02 }}
-                          whileTap={{ scale: 0.98 }}
-                          onClick={() => handleIndustriaSelect(industria.id)}
-                          className={`p-3 sm:p-4 rounded-xl border-2 transition-all text-center ${
-                            isSelected
-                              ? "border-primary bg-primary/10 text-primary"
-                              : "border-zinc-700 hover:border-zinc-500"
-                          }`}
-                        >
-                          <Icon className="w-6 h-6 sm:w-8 sm:h-8 mx-auto mb-1 sm:mb-2" />
-                          <span className="text-xs sm:text-sm font-medium">{industria.label}</span>
-                        </motion.button>
-                      );
-                    })}
+                  <h3 className="text-lg sm:text-xl font-bold">¿Qué tipo de productos importas/vendes?</h3>
+
+                  <div className="relative">
+                    <select
+                      value={formData.nicho}
+                      onChange={(e) => handleNichoSelect(e.target.value)}
+                      className="w-full bg-secondary border border-zinc-700 rounded-xl px-4 py-4 outline-none transition-colors focus:border-primary appearance-none cursor-pointer text-sm sm:text-base"
+                    >
+                      <option value="">Selecciona una opción...</option>
+                      {nichoOptions.map((nicho) => (
+                        <option key={nicho.id} value={nicho.id}>
+                          {nicho.label}
+                        </option>
+                      ))}
+                    </select>
+                    <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground pointer-events-none" />
                   </div>
+
+                  {/* Campo para "Otro" */}
+                  {showNichoOtro && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      className="space-y-3"
+                    >
+                      <input
+                        type="text"
+                        placeholder="Especifica qué tipo de productos..."
+                        value={formData.nichoOtro}
+                        onChange={(e) => updateFormData({ nichoOtro: e.target.value })}
+                        className="w-full bg-secondary border border-zinc-700 rounded-xl px-4 py-3 outline-none transition-colors focus:border-primary text-sm sm:text-base"
+                        autoFocus
+                      />
+                      <button
+                        onClick={handleNichoOtroSubmit}
+                        disabled={!formData.nichoOtro.trim()}
+                        className="flex items-center gap-2 bg-primary text-primary-foreground px-6 py-3 rounded-xl font-bold disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary/90 transition-all text-sm"
+                      >
+                        Continuar <ArrowRight className="w-4 h-4" />
+                      </button>
+                    </motion.div>
+                  )}
                 </motion.div>
               )}
 
-              {/* Step 2: Desafíos */}
+              {/* Step 2: Situación actual */}
               {quizStep === 1 && (
                 <motion.div
                   key="step2"
@@ -226,53 +209,42 @@ export const QuizSection = () => {
                   exit={{ opacity: 0, x: -20 }}
                   className="space-y-4 sm:space-y-6"
                 >
-                  <div>
-                    <h3 className="text-lg sm:text-xl font-bold mb-1">¿Cuáles son tus principales dolores logísticos hoy?</h3>
-                    <p className="text-xs sm:text-sm text-muted-foreground">Elegí hasta 2 opciones</p>
-                  </div>
-                  <div className="grid grid-cols-1 gap-2 sm:gap-3">
-                    {desafiosOptions.map((desafio) => {
-                      const isSelected = formData.problematicas?.includes(desafio.id);
-                      const isDisabled = !isSelected && formData.problematicas?.length >= 2;
+                  <h3 className="text-lg sm:text-xl font-bold">Selecciona la opción que mejor describe tu situación:</h3>
+
+                  <div className="space-y-3">
+                    {situacionOptions.map((situacion) => {
+                      const isSelected = formData.situacion === situacion.id;
                       return (
                         <motion.button
-                          key={desafio.id}
-                          whileHover={!isDisabled ? { scale: 1.01 } : {}}
-                          whileTap={!isDisabled ? { scale: 0.99 } : {}}
-                          onClick={() => !isDisabled && handleDesafioToggle(desafio.id)}
-                          disabled={isDisabled}
-                          className={`p-3 sm:p-4 rounded-xl border-2 transition-all text-left flex items-center gap-3 ${
+                          key={situacion.id}
+                          whileHover={{ scale: 1.01 }}
+                          whileTap={{ scale: 0.99 }}
+                          onClick={() => handleSituacionSelect(situacion.id)}
+                          className={`w-full p-4 sm:p-5 rounded-xl border-2 transition-all text-left ${
                             isSelected
                               ? "border-primary bg-primary/10"
-                              : isDisabled
-                              ? "border-zinc-800 opacity-50 cursor-not-allowed"
                               : "border-zinc-700 hover:border-zinc-500"
                           }`}
                         >
-                          <span className="font-medium text-sm sm:text-base">{desafio.label}</span>
+                          <p className="font-bold text-sm sm:text-base mb-1">{situacion.titulo}</p>
+                          <p className="text-xs sm:text-sm text-muted-foreground">{situacion.descripcion}</p>
                         </motion.button>
                       );
                     })}
                   </div>
-                  <div className="flex justify-between pt-4 gap-4">
+
+                  <div className="flex justify-start pt-4">
                     <button
                       onClick={() => setQuizStep(0)}
                       className="flex items-center gap-1 sm:gap-2 text-muted-foreground hover:text-foreground transition-colors text-sm"
                     >
                       <ArrowLeft className="w-4 h-4" /> <span className="hidden sm:inline">Anterior</span>
                     </button>
-                    <button
-                      onClick={() => setQuizStep(2)}
-                      disabled={!canProceedStep2}
-                      className="flex items-center gap-2 bg-primary text-primary-foreground px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl font-bold disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary/90 transition-all text-sm"
-                    >
-                      Siguiente <ArrowRight className="w-4 h-4" />
-                    </button>
                   </div>
                 </motion.div>
               )}
 
-              {/* Step 3: Facturación */}
+              {/* Step 3: Problemáticas específicas */}
               {quizStep === 2 && (
                 <motion.div
                   key="step3"
@@ -281,28 +253,25 @@ export const QuizSection = () => {
                   exit={{ opacity: 0, x: -20 }}
                   className="space-y-4 sm:space-y-6"
                 >
-                  <h3 className="text-lg sm:text-xl font-bold">¿Cuál es tu facturación mensual aproximada?</h3>
-                  <div className="space-y-2 sm:space-y-3">
-                    {facturacionOptions.map((fact) => {
-                      const isSelected = formData.facturacion === fact.id;
-                      return (
-                        <motion.button
-                          key={fact.id}
-                          whileHover={{ scale: 1.01 }}
-                          whileTap={{ scale: 0.99 }}
-                          onClick={() => handleFacturacionSelect(fact.id)}
-                          className={`w-full p-3 sm:p-4 rounded-xl border-2 transition-all text-left font-medium text-sm sm:text-base ${
-                            isSelected
-                              ? "border-primary bg-primary/10 text-primary"
-                              : "border-zinc-700 hover:border-zinc-500"
-                          }`}
-                        >
-                          {fact.label}
-                        </motion.button>
-                      );
-                    })}
+                  <h3 className="text-lg sm:text-xl font-bold">¿Cuál es tu principal desafío?</h3>
+
+                  <div className="relative">
+                    <select
+                      value={formData.problematica}
+                      onChange={(e) => handleProblematicaSelect(e.target.value)}
+                      className="w-full bg-secondary border border-zinc-700 rounded-xl px-4 py-4 outline-none transition-colors focus:border-primary appearance-none cursor-pointer text-sm sm:text-base"
+                    >
+                      <option value="">Selecciona una opción...</option>
+                      {currentProblematicas.map((prob) => (
+                        <option key={prob.id} value={prob.id}>
+                          {prob.label}
+                        </option>
+                      ))}
+                    </select>
+                    <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground pointer-events-none" />
                   </div>
-                  <div className="flex justify-between pt-4">
+
+                  <div className="flex justify-start pt-4">
                     <button
                       onClick={() => setQuizStep(1)}
                       className="flex items-center gap-1 sm:gap-2 text-muted-foreground hover:text-foreground transition-colors text-sm"
@@ -313,7 +282,7 @@ export const QuizSection = () => {
                 </motion.div>
               )}
 
-              {/* Step 4: Datos de contacto */}
+              {/* Step 4: Facturación */}
               {quizStep === 3 && (
                 <motion.div
                   key="step4"
@@ -322,96 +291,37 @@ export const QuizSection = () => {
                   exit={{ opacity: 0, x: -20 }}
                   className="space-y-4 sm:space-y-6"
                 >
-                  <div>
-                    <h3 className="text-lg sm:text-xl font-bold mb-1">¿Dónde te enviamos tu diagnóstico personalizado?</h3>
-                    <p className="text-xs sm:text-sm text-muted-foreground">Tu diagnóstico personalizado está casi listo</p>
+                  <h3 className="text-lg sm:text-xl font-bold">¿Cuál es tu facturación mensual aproximada?</h3>
+
+                  <div className="relative">
+                    <select
+                      value={formData.facturacion}
+                      onChange={(e) => handleFacturacionSelect(e.target.value)}
+                      className="w-full bg-secondary border border-zinc-700 rounded-xl px-4 py-4 outline-none transition-colors focus:border-primary appearance-none cursor-pointer text-sm sm:text-base"
+                    >
+                      <option value="">Selecciona una opción...</option>
+                      {facturacionOptions.map((fact) => (
+                        <option key={fact.id} value={fact.id}>
+                          {fact.label}
+                        </option>
+                      ))}
+                    </select>
+                    <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground pointer-events-none" />
                   </div>
-                  <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
-                    <div>
-                      <label className="text-xs sm:text-sm font-medium text-muted-foreground mb-1 block">
-                        Nombre completo *
-                      </label>
-                      <input
-                        type="text"
-                        placeholder="Juan Pérez"
-                        value={formData.nombre}
-                        onChange={(e) => {
-                          updateFormData({ nombre: e.target.value });
-                          if (errors.nombre) setErrors(prev => ({ ...prev, nombre: '' }));
-                        }}
-                        className={`w-full bg-secondary border rounded-xl px-4 py-3 outline-none transition-colors text-sm sm:text-base ${
-                          errors.nombre ? 'border-red-500' : 'border-zinc-700 focus:border-primary'
-                        }`}
-                        required
-                      />
-                      {errors.nombre && (
-                        <p className="text-red-500 text-xs mt-1">{errors.nombre}</p>
-                      )}
-                    </div>
-                    <div>
-                      <label className="text-xs sm:text-sm font-medium text-muted-foreground mb-1 block">
-                        Email *
-                      </label>
-                      <input
-                        type="email"
-                        placeholder="juan@empresa.com"
-                        value={formData.email}
-                        onChange={(e) => {
-                          updateFormData({ email: e.target.value });
-                          if (errors.email) setErrors(prev => ({ ...prev, email: '' }));
-                        }}
-                        className={`w-full bg-secondary border rounded-xl px-4 py-3 outline-none transition-colors text-sm sm:text-base ${
-                          errors.email ? 'border-red-500' : 'border-zinc-700 focus:border-primary'
-                        }`}
-                        required
-                      />
-                      {errors.email && (
-                        <p className="text-red-500 text-xs mt-1">{errors.email}</p>
-                      )}
-                    </div>
-                    <div>
-                      <label className="text-xs sm:text-sm font-medium text-muted-foreground mb-1 block">
-                        WhatsApp *
-                      </label>
-                      <input
-                        type="tel"
-                        placeholder="+54 9 11 1234-5678"
-                        value={formData.whatsapp}
-                        onChange={(e) => {
-                          updateFormData({ whatsapp: e.target.value });
-                          if (errors.whatsapp) setErrors(prev => ({ ...prev, whatsapp: '' }));
-                        }}
-                        className={`w-full bg-secondary border rounded-xl px-4 py-3 outline-none transition-colors text-sm sm:text-base ${
-                          errors.whatsapp ? 'border-red-500' : 'border-zinc-700 focus:border-primary'
-                        }`}
-                        required
-                      />
-                      {errors.whatsapp && (
-                        <p className="text-red-500 text-xs mt-1">{errors.whatsapp}</p>
-                      )}
-                    </div>
-                    <div className="flex flex-col-reverse sm:flex-row justify-between pt-4 gap-3 sm:gap-4">
-                      <button
-                        type="button"
-                        onClick={() => setQuizStep(2)}
-                        className="flex items-center justify-center gap-2 text-muted-foreground hover:text-foreground transition-colors text-sm py-2"
-                      >
-                        <ArrowLeft className="w-4 h-4" /> Anterior
-                      </button>
-                      <button
-                        type="submit"
-                        className="flex items-center justify-center gap-2 bg-primary text-primary-foreground px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-bold hover:bg-primary/90 transition-all shadow-lg shadow-primary/20 text-sm sm:text-base"
-                      >
-                        <FileSearch className="w-5 h-5" />
-                        Ver mi diagnóstico
-                        <ArrowRight className="w-4 h-4" />
-                      </button>
-                    </div>
-                    <p className="text-center text-xs text-muted-foreground flex items-center justify-center gap-2 pt-2">
-                      <Lock className="w-3 h-3" />
-                      Tus datos están seguros.
-                    </p>
-                  </form>
+
+                  <div className="flex justify-start pt-4">
+                    <button
+                      onClick={() => setQuizStep(2)}
+                      className="flex items-center gap-1 sm:gap-2 text-muted-foreground hover:text-foreground transition-colors text-sm"
+                    >
+                      <ArrowLeft className="w-4 h-4" /> <span className="hidden sm:inline">Anterior</span>
+                    </button>
+                  </div>
+
+                  <p className="text-center text-xs text-muted-foreground flex items-center justify-center gap-2 pt-2">
+                    <Lock className="w-3 h-3" />
+                    Tus datos están seguros y no serán compartidos.
+                  </p>
                 </motion.div>
               )}
             </AnimatePresence>

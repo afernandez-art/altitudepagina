@@ -1,101 +1,207 @@
 import { createContext, useContext, useState, ReactNode } from "react";
 
-// Tipos para los datos del formulario
-export interface LeadMagnetFormData {
-  // QUIZ 1 - Captura inicial
-  nombre: string;
-  email: string;
-  whatsapp: string;
-  nicho: string;
-  problematicas: string[];
-  facturacion: string;
+// ==========================================
+// FORM 1 - CALIFICACIÓN INICIAL
+// ==========================================
 
-  // FORM 2 - Profundización
-  empresa: string;
-  operacionTags: string[];
-  operacionDetalle: string;
-  frustracionTags: string[];
-  frustracionDetalle: string;
-  objetivoPrincipal: string;
-  urgencia: string;
-}
-
-// Opciones de industria
-export const industriasOptions = [
-  { id: "ecommerce", label: "E-commerce / Retail online" },
-  { id: "industrial", label: "Industrial / Manufactura" },
+// Paso 1: Nicho - ¿Qué tipo de productos importas/vendes?
+export const nichoOptions = [
+  { id: "textil", label: "Textil y confección (ropa, calzado, accesorios)" },
+  { id: "electronica", label: "Electrónica y tecnología" },
   { id: "alimentos", label: "Alimentos y bebidas" },
-  { id: "farmaceutico", label: "Farmacéutico / Salud" },
-  { id: "textil", label: "Textil / Moda" },
-  { id: "tecnologia", label: "Tecnología / Electrónica" },
-  { id: "automotriz", label: "Automotriz / Autopartes" },
+  { id: "belleza", label: "Belleza y cuidado personal" },
+  { id: "hogar", label: "Hogar y decoración" },
+  { id: "juguetes", label: "Juguetes y artículos infantiles" },
+  { id: "deportes", label: "Deportes y fitness" },
+  { id: "maquinaria", label: "Maquinaria y equipamiento industrial" },
+  { id: "insumos", label: "Insumos para la industria" },
+  { id: "repuestos", label: "Repuestos y autopartes" },
   { id: "otro", label: "Otro" },
 ];
 
-// Opciones de desafíos/dolores
-export const desafiosOptions = [
-  { id: "costos-altos", label: "💰 Costos logísticos muy altos" },
-  { id: "tiempos-impredecibles", label: "⏱️ Tiempos de entrega impredecibles" },
-  { id: "sin-visibilidad", label: "👁️ Falta de visibilidad y tracking" },
-  { id: "problemas-aduana", label: "📋 Problemas con aduana / documentación" },
-  { id: "mal-servicio", label: "😤 Mal servicio de mi operador actual" },
-  { id: "escalar", label: "📈 Necesito escalar pero mi logística no aguanta" },
-  { id: "primera-importacion", label: "🆕 Es mi primera importación" },
-  { id: "necesito-fulfillment", label: "📦 Necesito fulfillment / almacenamiento" },
+// Paso 2: Situación actual
+export type SituacionType = "mejorar-costos" | "contenedor-compartido" | "deposito-fulfillment" | "escalar-negocio";
+
+export const situacionOptions: { id: SituacionType; titulo: string; descripcion: string }[] = [
+  {
+    id: "mejorar-costos",
+    titulo: "Necesito mejorar costos/servicios de importación",
+    descripcion: "Buscas reducir costos sin comprometer la calidad de tu operación de importación",
+  },
+  {
+    id: "contenedor-compartido",
+    titulo: "Tengo capital para importar en un contenedor compartido",
+    descripcion: "Tienes capital disponible y quieres maximizarlo importando en un contenedor compartido (LCL)",
+  },
+  {
+    id: "deposito-fulfillment",
+    titulo: "Necesito un depósito/fulfillment",
+    descripcion: "Necesitas un espacio de almacenamiento y gestión logística para tus productos",
+  },
+  {
+    id: "escalar-negocio",
+    titulo: "Necesito escalar mi negocio",
+    descripcion: "Necesito escalar mi negocio con una solución integral que maneje tanto la importación (comex) como toda la logística",
+  },
 ];
 
-// Opciones de facturación
+// Paso 3: Problemáticas específicas (dinámicas según situación)
+export const problematicasPorSituacion: Record<SituacionType, { id: string; label: string }[]> = {
+  "mejorar-costos": [
+    { id: "costos-altos", label: "Mis costos actuales son muy altos y afectan mi margen de ganancia" },
+    { id: "servicio-lento", label: "El servicio actual es lento o poco confiable" },
+    { id: "sin-visibilidad", label: "No tengo visibilidad/control sobre el proceso de importación" },
+    { id: "sin-personalizacion", label: "Mi proveedor actual no me ofrece soluciones personalizadas" },
+  ],
+  "contenedor-compartido": [
+    { id: "primera-importacion", label: "Es mi primera importación y no sé por dónde empezar" },
+    { id: "validar-mercado", label: "Quiero validar el mercado antes de invertir en un contenedor completo" },
+    { id: "varias-referencias", label: "Necesito importar varias referencias pero no llego al volumen de un contenedor" },
+    { id: "minimizar-riesgos", label: "Busco minimizar riesgos importando cantidades más pequeñas" },
+  ],
+  "deposito-fulfillment": [
+    { id: "almacenar-preparar", label: "Necesito almacenar y preparar pedidos para mis canales de distribución" },
+    { id: "entregas-rapidas", label: "Mis clientes mayoristas exigen entregas más rápidas y profesionales" },
+    { id: "pickeo-packing", label: "Necesito capacidad de pickeo y packing para pedidos corporativos/mayoristas" },
+    { id: "sin-capacidad", label: "Mi operación actual no tiene capacidad para manejar más volumen" },
+  ],
+  "escalar-negocio": [
+    { id: "mucho-tiempo", label: "Paso demasiado tiempo gestionando importaciones y logística" },
+    { id: "expandir-canales", label: "Quiero expandirme a nuevos canales pero no tengo capacidad operativa" },
+    { id: "profesionalizar", label: "Necesito profesionalizar mi operación para competir mejor" },
+    { id: "socio-estrategico", label: "Busco un socio estratégico que entienda mi negocio de punta a punta" },
+  ],
+};
+
+// Paso 4: Facturación mensual
 export const facturacionOptions = [
-  { id: "menos-50k", label: "Menos de USD 50k" },
-  { id: "50-200k", label: "USD 50k - 200k" },
-  { id: "200-500k", label: "USD 200k - 500k" },
-  { id: "500k-1m", label: "USD 500k - 1M" },
-  { id: "mas-1m", label: "Más de USD 1M" },
+  { id: "menos-15k", label: "Menos de $15.000 USD" },
+  { id: "15-50k", label: "$15.000 - $50.000 USD" },
+  { id: "50-100k", label: "$50.000 - $100.000 USD" },
+  { id: "mas-100k", label: "Más de $100.000 USD" },
 ];
 
-// FORM 2 - Opciones de operación actual
-export const operacionOptions = [
-  { id: "importo-china", label: "Importo de China" },
-  { id: "importo-usa-europa", label: "Importo de USA/Europa" },
-  { id: "importo-latam", label: "Importo de Latinoamérica" },
-  { id: "compro-local", label: "Compro en Argentina" },
-  { id: "uso-forwarder", label: "Uso freight forwarder" },
-  { id: "despachante-propio", label: "Tengo despachante propio" },
-  { id: "tercerizo-todo", label: "Tercerizo toda la logística" },
-  { id: "logistica-propia", label: "Manejo logística propia" },
+// ==========================================
+// FORM 2 - PROFUNDIZACIÓN (según situación)
+// ==========================================
+
+// Experiencia importando (para mejorar-costos y escalar-negocio)
+export const experienciaOptions = [
+  { id: "primera-vez", label: "Es mi primera vez importando" },
+  { id: "ocasionalmente", label: "Importo ocasionalmente (1-2 veces al año)" },
+  { id: "regularmente", label: "Importo regularmente (3-6 veces al año)" },
+  { id: "frecuentemente", label: "Importo frecuentemente (más de 6 veces al año)" },
 ];
 
-// FORM 2 - Opciones de frustraciones
-export const frustracionOptions = [
-  { id: "demoras-aduana", label: "Demoras en aduana" },
-  { id: "sin-tracking", label: "No sé dónde está mi mercadería" },
-  { id: "sobrecostos", label: "Costos ocultos / sobrecostos" },
-  { id: "documentacion-rechazada", label: "Documentación rechazada" },
-  { id: "operador-no-responde", label: "Mi operador no responde" },
-  { id: "no-puedo-planificar", label: "No puedo planificar mi inventario" },
-  { id: "entregas-lentas", label: "Entregas al cliente final lentas" },
-  { id: "falta-capacidad", label: "No tengo capacidad de almacenamiento" },
+// Origen de importación (para mejorar-costos, contenedor-compartido, escalar-negocio)
+export const origenOptions = [
+  { id: "china", label: "China" },
+  { id: "usa", label: "USA" },
+  { id: "europa", label: "Europa" },
+  { id: "otros-asia", label: "Otros países asiáticos" },
+  { id: "multiples", label: "Múltiples orígenes" },
 ];
 
-// FORM 2 - Opciones de objetivo principal
-export const objetivoOptions = [
-  { id: "reducir-costos", label: "Reducir costos logísticos" },
-  { id: "acelerar-tiempos", label: "Acelerar tiempos de entrega" },
-  { id: "tener-visibilidad", label: "Tener visibilidad en tiempo real" },
-  { id: "escalar-volumen", label: "Escalar mi volumen de importación" },
-  { id: "stock-argentina", label: "Tener stock en Argentina" },
-  { id: "entregas-rapidas", label: "Entregas same-day / next-day a mis clientes" },
-  { id: "profesionalizar", label: "Profesionalizar mi operación" },
-  { id: "primera-importacion", label: "Hacer mi primera importación con éxito" },
+// Qué mejorar (para mejorar-costos) - checkbox
+export const mejorarOptions = [
+  { id: "reducir-costos", label: "Reducir costos de importación" },
+  { id: "agilizar-tiempos", label: "Agilizar tiempos de despacho" },
+  { id: "mejor-comunicacion", label: "Tener mejor comunicación y seguimiento" },
+  { id: "mejores-tarifas", label: "Acceder a mejores tarifas de flete" },
 ];
 
-// FORM 2 - Opciones de urgencia
+// Volumen (para contenedor-compartido)
+export const volumenOptions = [
+  { id: "menos-5m3", label: "Menos de 5 m³" },
+  { id: "5-10m3", label: "5 - 10 m³" },
+  { id: "10-15m3", label: "10 - 15 m³" },
+  { id: "mas-15m3", label: "Más de 15 m³" },
+];
+
+// Etapa de importación (para contenedor-compartido)
+export const etapaOptions = [
+  { id: "proveedor-confirmado", label: "Ya tengo proveedor confirmado y cotización" },
+  { id: "negociando", label: "Estoy negociando con proveedores" },
+  { id: "buscando", label: "Recién empezando a buscar proveedores" },
+  { id: "necesito-ayuda", label: "Necesito ayuda para encontrar proveedores" },
+];
+
+// Espacio necesario (para deposito-fulfillment)
+export const espacioOptions = [
+  { id: "hasta-10-pallets", label: "Hasta 10 pallets (pequeño)" },
+  { id: "10-30-pallets", label: "10 - 30 pallets (mediano)" },
+  { id: "30-60-pallets", label: "30 - 60 pallets (grande)" },
+  { id: "mas-60-pallets", label: "Más de 60 pallets (muy grande)" },
+];
+
+// Servicios adicionales (para deposito-fulfillment) - checkbox
+export const serviciosAdicionalesOptions = [
+  { id: "etiquetado", label: "Etiquetado/re-etiquetado de productos" },
+  { id: "reempaque", label: "Reempaque" },
+  { id: "personalizacion", label: "Personalización de pedidos" },
+  { id: "solo-estandar", label: "No, solo almacenamiento y despacho estándar" },
+];
+
+// Frecuencia de despachos (para deposito-fulfillment)
+export const frecuenciaOptions = [
+  { id: "diario", label: "Diario" },
+  { id: "semanal", label: "Semanal" },
+  { id: "quincenal", label: "Quincenal" },
+  { id: "mensual", label: "Mensual" },
+];
+
+// Servicios a tercerizar (para escalar-negocio) - checkbox
+export const tercerizarOptions = [
+  { id: "gestion-importacion", label: "Gestión de importación (comex completo)" },
+  { id: "almacenamiento", label: "Almacenamiento y preparación de pedidos" },
+  { id: "distribucion", label: "Distribución a clientes" },
+  { id: "todo", label: "Todo el proceso de punta a punta" },
+];
+
+// Urgencia (para todos)
 export const urgenciaOptions = [
-  { id: "inmediato", label: "🔥 Inmediato - tengo un problema urgente" },
-  { id: "1-3-meses", label: "📅 En los próximos 1-3 meses" },
-  { id: "3-6-meses", label: "📆 En los próximos 3-6 meses" },
-  { id: "explorando", label: "🔍 Solo estoy explorando opciones" },
+  { id: "inmediatamente", label: "Inmediatamente" },
+  { id: "2-4-semanas", label: "En las próximas 2-4 semanas" },
+  { id: "1-2-meses", label: "En 1-2 meses" },
+  { id: "explorando", label: "Solo estoy explorando opciones por ahora" },
 ];
+
+// ==========================================
+// TIPOS DE DATOS
+// ==========================================
+
+export interface LeadMagnetFormData {
+  // FORM 1 - Calificación inicial
+  nicho: string;
+  nichoOtro: string; // Si eligió "otro"
+  situacion: SituacionType | "";
+  problematica: string;
+  facturacion: string;
+
+  // FORM 2 - Profundización (según situación)
+  // Para mejorar-costos y escalar-negocio
+  experiencia: string;
+  // Para mejorar-costos, contenedor-compartido, escalar-negocio
+  origen: string;
+  // Para mejorar-costos (checkbox)
+  mejoras: string[];
+  // Para contenedor-compartido
+  volumen: string;
+  etapa: string;
+  // Para deposito-fulfillment
+  espacio: string;
+  serviciosAdicionales: string[];
+  frecuencia: string;
+  // Para escalar-negocio (checkbox)
+  tercerizar: string[];
+
+  // Preguntas finales (para todos)
+  urgencia: string;
+  nombre: string;
+  email: string;
+  whatsapp: string;
+  empresa: string; // opcional
+}
 
 // Helper para obtener labels
 export const getLabel = (options: { id: string; label: string }[], id: string): string => {
@@ -106,8 +212,13 @@ export const getLabels = (options: { id: string; label: string }[], ids: string[
   return ids.map(id => getLabel(options, id));
 };
 
+export const getSituacionTitulo = (id: SituacionType | ""): string => {
+  if (!id) return "";
+  return situacionOptions.find(opt => opt.id === id)?.titulo || id;
+};
+
 // Estados del flujo
-export type LeadMagnetStep = "form1" | "vsl" | "form2" | "action_plan" | "calendar";
+export type LeadMagnetStep = "form1" | "vsl" | "form2" | "whatsapp_redirect";
 
 interface LeadMagnetContextType {
   // Estado actual del flujo
@@ -125,25 +236,37 @@ interface LeadMagnetContextType {
 
   // Submit to webhook
   submitToWebhook: () => Promise<boolean>;
+
+  // Generar link de WhatsApp
+  generateWhatsAppLink: () => string;
 }
 
 const initialFormData: LeadMagnetFormData = {
+  nicho: "",
+  nichoOtro: "",
+  situacion: "",
+  problematica: "",
+  facturacion: "",
+  experiencia: "",
+  origen: "",
+  mejoras: [],
+  volumen: "",
+  etapa: "",
+  espacio: "",
+  serviciosAdicionales: [],
+  frecuencia: "",
+  tercerizar: [],
+  urgencia: "",
   nombre: "",
   email: "",
   whatsapp: "",
-  nicho: "",
-  problematicas: [],
-  facturacion: "",
   empresa: "",
-  operacionTags: [],
-  operacionDetalle: "",
-  frustracionTags: [],
-  frustracionDetalle: "",
-  objetivoPrincipal: "",
-  urgencia: "",
 };
 
 const LeadMagnetContext = createContext<LeadMagnetContextType | undefined>(undefined);
+
+// Número de WhatsApp de Altitude
+const WHATSAPP_NUMBER = "5492257617922";
 
 export function LeadMagnetProvider({ children }: { children: ReactNode }) {
   const [currentStep, setCurrentStep] = useState<LeadMagnetStep>("form1");
@@ -159,7 +282,7 @@ export function LeadMagnetProvider({ children }: { children: ReactNode }) {
     localStorage.removeItem("altitude_lead_data");
   };
 
-  // Save form data to localStorage for cross-tab communication
+  // Save form data to localStorage
   const saveToStorage = () => {
     const dataToSave = {
       formData,
@@ -184,6 +307,77 @@ export function LeadMagnetProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  // Generar mensaje de WhatsApp
+  const generateWhatsAppMessage = (): string => {
+    const nichoLabel = formData.nicho === "otro" && formData.nichoOtro
+      ? formData.nichoOtro
+      : getLabel(nichoOptions, formData.nicho);
+
+    const situacionTitulo = getSituacionTitulo(formData.situacion);
+    const problematicaOptions = formData.situacion ? problematicasPorSituacion[formData.situacion] : [];
+    const problematicaLabel = getLabel(problematicaOptions, formData.problematica);
+    const facturacionLabel = getLabel(facturacionOptions, formData.facturacion);
+    const urgenciaLabel = getLabel(urgenciaOptions, formData.urgencia);
+
+    let mensaje = `Hola! Completé el formulario en la web.
+
+📋 *Mis datos:*
+Nombre: ${formData.nombre}`;
+
+    if (formData.empresa) {
+      mensaje += `\nEmpresa: ${formData.empresa}`;
+    }
+
+    mensaje += `
+Productos: ${nichoLabel}
+Facturación: ${facturacionLabel}
+
+🎯 *Mi situación:*
+${situacionTitulo}
+
+⚠️ *Mi principal problemática:*
+${problematicaLabel}
+
+📦 *Detalles adicionales:*`;
+
+    // Agregar detalles según situación
+    if (formData.situacion === "mejorar-costos") {
+      mensaje += `
+- Experiencia: ${getLabel(experienciaOptions, formData.experiencia)}
+- Origen: ${getLabel(origenOptions, formData.origen)}
+- Quiero mejorar: ${formData.mejoras.map(m => getLabel(mejorarOptions, m)).join(", ")}`;
+    } else if (formData.situacion === "contenedor-compartido") {
+      mensaje += `
+- Origen: ${getLabel(origenOptions, formData.origen)}
+- Volumen: ${getLabel(volumenOptions, formData.volumen)}
+- Etapa: ${getLabel(etapaOptions, formData.etapa)}`;
+    } else if (formData.situacion === "deposito-fulfillment") {
+      mensaje += `
+- Espacio necesario: ${getLabel(espacioOptions, formData.espacio)}
+- Servicios adicionales: ${formData.serviciosAdicionales.map(s => getLabel(serviciosAdicionalesOptions, s)).join(", ")}
+- Frecuencia de despachos: ${getLabel(frecuenciaOptions, formData.frecuencia)}`;
+    } else if (formData.situacion === "escalar-negocio") {
+      mensaje += `
+- Experiencia: ${getLabel(experienciaOptions, formData.experiencia)}
+- Origen: ${getLabel(origenOptions, formData.origen)}
+- Quiero tercerizar: ${formData.tercerizar.map(t => getLabel(tercerizarOptions, t)).join(", ")}`;
+    }
+
+    mensaje += `
+
+⏰ *Cuándo necesito esto:*
+${urgenciaLabel}`;
+
+    return mensaje;
+  };
+
+  // Generar link de WhatsApp
+  const generateWhatsAppLink = (): string => {
+    const mensaje = generateWhatsAppMessage();
+    const encodedMessage = encodeURIComponent(mensaje);
+    return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`;
+  };
+
   // Submit all data to webhook
   const submitToWebhook = async (): Promise<boolean> => {
     const webhookUrl = import.meta.env.VITE_WEBHOOK_URL;
@@ -194,24 +388,50 @@ export function LeadMagnetProvider({ children }: { children: ReactNode }) {
     }
 
     const payload = {
+      timestamp: new Date().toISOString(),
+      estado: "Lead enviado a WhatsApp",
+
+      // Datos de contacto
       nombre: formData.nombre,
       email: formData.email,
       whatsapp: formData.whatsapp,
-      industria: formData.nicho,
-      industriaLabel: getLabel(industriasOptions, formData.nicho),
-      problematicas: formData.problematicas,
-      problematicasLabels: getLabels(desafiosOptions, formData.problematicas),
+      empresa: formData.empresa || null,
+
+      // Form 1
+      nicho: formData.nicho,
+      nichoLabel: formData.nicho === "otro" ? formData.nichoOtro : getLabel(nichoOptions, formData.nicho),
+      situacion: formData.situacion,
+      situacionLabel: getSituacionTitulo(formData.situacion),
+      problematica: formData.problematica,
+      problematicaLabel: formData.situacion
+        ? getLabel(problematicasPorSituacion[formData.situacion], formData.problematica)
+        : "",
       facturacion: formData.facturacion,
       facturacionLabel: getLabel(facturacionOptions, formData.facturacion),
-      empresa: formData.empresa,
-      operacionTags: formData.operacionTags,
-      operacionTagsLabels: getLabels(operacionOptions, formData.operacionTags),
-      operacionDetalle: formData.operacionDetalle || null,
-      frustracionTags: formData.frustracionTags,
-      frustracionTagsLabels: getLabels(frustracionOptions, formData.frustracionTags),
-      frustracionDetalle: formData.frustracionDetalle || null,
-      objetivoPrincipal: formData.objetivoPrincipal,
-      objetivoPrincipalLabel: getLabel(objetivoOptions, formData.objetivoPrincipal),
+
+      // Form 2 (según situación)
+      experiencia: formData.experiencia || null,
+      experienciaLabel: formData.experiencia ? getLabel(experienciaOptions, formData.experiencia) : null,
+      origen: formData.origen || null,
+      origenLabel: formData.origen ? getLabel(origenOptions, formData.origen) : null,
+      mejoras: formData.mejoras.length > 0 ? formData.mejoras : null,
+      mejorasLabels: formData.mejoras.length > 0 ? getLabels(mejorarOptions, formData.mejoras) : null,
+      volumen: formData.volumen || null,
+      volumenLabel: formData.volumen ? getLabel(volumenOptions, formData.volumen) : null,
+      etapa: formData.etapa || null,
+      etapaLabel: formData.etapa ? getLabel(etapaOptions, formData.etapa) : null,
+      espacio: formData.espacio || null,
+      espacioLabel: formData.espacio ? getLabel(espacioOptions, formData.espacio) : null,
+      serviciosAdicionales: formData.serviciosAdicionales.length > 0 ? formData.serviciosAdicionales : null,
+      serviciosAdicionalesLabels: formData.serviciosAdicionales.length > 0
+        ? getLabels(serviciosAdicionalesOptions, formData.serviciosAdicionales)
+        : null,
+      frecuencia: formData.frecuencia || null,
+      frecuenciaLabel: formData.frecuencia ? getLabel(frecuenciaOptions, formData.frecuencia) : null,
+      tercerizar: formData.tercerizar.length > 0 ? formData.tercerizar : null,
+      tercerizarLabels: formData.tercerizar.length > 0 ? getLabels(tercerizarOptions, formData.tercerizar) : null,
+
+      // Urgencia
       urgencia: formData.urgencia,
       urgenciaLabel: getLabel(urgenciaOptions, formData.urgencia),
     };
@@ -248,6 +468,7 @@ export function LeadMagnetProvider({ children }: { children: ReactNode }) {
         saveToStorage,
         loadFromStorage,
         submitToWebhook,
+        generateWhatsAppLink,
       }}
     >
       {children}

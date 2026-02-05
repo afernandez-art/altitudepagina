@@ -2,22 +2,22 @@ import { motion } from "framer-motion";
 import {
   CheckCircle,
   MessageCircle,
-  FileText,
-  Sparkles,
-  Calendar,
   ArrowRight,
+  Smartphone,
 } from "lucide-react";
 import { useLeadMagnet } from "@/contexts/LeadMagnetContext";
 
 export const ActionPlanSection = () => {
-  const { formData, currentStep } = useLeadMagnet();
+  const { formData, currentStep, generateWhatsAppLink } = useLeadMagnet();
 
-  if (currentStep !== "action_plan" && currentStep !== "calendar") {
+  if (currentStep !== "whatsapp_redirect") {
     return null;
   }
 
+  const whatsappLink = generateWhatsAppLink();
+
   return (
-    <section id="action-plan-section" className="py-12 md:py-20 px-4 md:px-6 bg-gradient-to-b from-background to-secondary/30">
+    <section id="whatsapp-redirect-section" className="py-12 md:py-20 px-4 md:px-6 bg-gradient-to-b from-background to-secondary/30">
       <div className="max-w-2xl mx-auto">
         {/* Success animation */}
         <motion.div
@@ -49,86 +49,78 @@ export const ActionPlanSection = () => {
             transition={{ delay: 0.4 }}
             className="text-lg md:text-xl text-muted-foreground mb-2"
           >
-            Te enviamos tu Plan de Acción por WhatsApp
+            Ya tenemos toda tu información.
           </motion.p>
 
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
-            className="inline-flex items-center gap-2 text-green-500 font-medium"
+            className="text-base md:text-lg text-muted-foreground"
           >
-            <MessageCircle className="w-5 h-5" />
-            <span>{formData.whatsapp}</span>
-          </motion.div>
+            El siguiente paso es continuar la conversación por WhatsApp.
+          </motion.p>
         </motion.div>
 
-        {/* What they'll receive */}
+        {/* WhatsApp CTA */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
-          className="bg-card rounded-2xl border border-zinc-800 p-6 md:p-8 mb-8"
+          className="bg-card rounded-2xl border border-zinc-800 p-6 md:p-8 mb-8 text-center"
         >
-          <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
-            <Sparkles className="w-5 h-5 text-primary" />
-            En tu WhatsApp vas a recibir:
-          </h3>
-          <ul className="space-y-4">
-            <li className="flex items-start gap-3">
-              <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center shrink-0">
-                <FileText className="w-4 h-4 text-primary" />
-              </div>
-              <div>
-                <p className="font-medium">Tu Plan de Acción personalizado</p>
-                <p className="text-sm text-muted-foreground">Diagnóstico + soluciones específicas para tu operación</p>
-              </div>
-            </li>
-            <li className="flex items-start gap-3">
-              <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center shrink-0">
-                <Calendar className="w-4 h-4 text-primary" />
-              </div>
-              <div>
-                <p className="font-medium">Link para agendar llamada</p>
-                <p className="text-sm text-muted-foreground">15 minutos con un especialista para revisar tu plan</p>
-              </div>
-            </li>
-          </ul>
+          <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
+            <Smartphone className="w-8 h-8 text-green-500" />
+          </div>
+
+          <p className="text-muted-foreground mb-6 text-sm md:text-base">
+            Hacé click en el botón para enviarnos un mensaje con toda la información que completaste:
+          </p>
+
+          <a
+            href={whatsappLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-3 bg-green-500 hover:bg-green-600 text-white px-8 py-4 rounded-xl font-bold transition-all text-base md:text-lg shadow-2xl shadow-green-500/30 w-full sm:w-auto"
+          >
+            <MessageCircle className="w-6 h-6" />
+            Continuar por WhatsApp
+            <ArrowRight className="w-5 h-5" />
+          </a>
         </motion.div>
 
-        {/* Reminder box */}
+        {/* Info box */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8 }}
-          className="bg-green-500/10 border border-green-500/20 rounded-xl p-4 md:p-6 text-center"
+          className="bg-primary/5 border border-primary/20 rounded-xl p-4 md:p-6"
         >
-          <div className="flex items-center justify-center gap-2 text-green-500 font-medium mb-2">
-            <MessageCircle className="w-5 h-5" />
-            Revisá tu WhatsApp
-          </div>
-          <p className="text-sm text-muted-foreground">
-            El mensaje llega en los próximos minutos. Si no lo recibís, revisá la carpeta de spam o contactanos.
-          </p>
+          <h3 className="font-bold mb-3 text-sm md:text-base">¿Qué pasa después?</h3>
+          <ul className="space-y-2 text-sm text-muted-foreground">
+            <li className="flex items-start gap-2">
+              <CheckCircle className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+              <span>Recibimos tu mensaje con todos los detalles de tu consulta</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <CheckCircle className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+              <span>Un especialista te contacta para resolver tus dudas</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <CheckCircle className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+              <span>Te armamos una propuesta personalizada según tu situación</span>
+            </li>
+          </ul>
         </motion.div>
 
-        {/* Contact link */}
+        {/* Footer note */}
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1 }}
-          className="text-center text-sm text-muted-foreground mt-6"
+          className="text-center text-xs text-muted-foreground mt-6"
         >
-          ¿Problemas?{" "}
-          <a
-            href={`https://wa.me/5491112345678?text=Hola! Completé el diagnóstico y no recibí mi Plan de Acción. Mi email es ${formData.email}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-primary hover:underline inline-flex items-center gap-1"
-          >
-            Contactanos por WhatsApp
-            <ArrowRight className="w-3 h-3" />
-          </a>
+          Respondemos de lunes a viernes de 9 a 18hs (hora Argentina)
         </motion.p>
       </div>
     </section>
