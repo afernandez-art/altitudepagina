@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, ReactNode } from "react";
+import { saveLead, isSupabaseConfigured } from "@/lib/supabase";
 
 // ==========================================
 // FORM 1 - CALIFICACIÓN INICIAL
@@ -378,19 +379,12 @@ ${urgenciaLabel}`;
     return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`;
   };
 
-  // Submit all data to webhook
+  // Submit all data to webhook and Supabase
   const submitToWebhook = async (): Promise<boolean> => {
     const webhookUrl = import.meta.env.VITE_WEBHOOK_URL;
 
-    if (!webhookUrl) {
-      console.warn("Webhook URL not configured");
-      return true; // Continue flow even without webhook
-    }
-
-    const payload = {
-      timestamp: new Date().toISOString(),
-      estado: "Lead enviado a WhatsApp",
-
+    // Prepare lead data for Supabase
+    const leadData = {
       // Datos de contacto
       nombre: formData.nombre,
       email: formData.email,
@@ -399,62 +393,79 @@ ${urgenciaLabel}`;
 
       // Form 1
       nicho: formData.nicho,
-      nichoLabel: formData.nicho === "otro" ? formData.nichoOtro : getLabel(nichoOptions, formData.nicho),
+      nicho_label: formData.nicho === "otro" ? formData.nichoOtro : getLabel(nichoOptions, formData.nicho),
       situacion: formData.situacion,
-      situacionLabel: getSituacionTitulo(formData.situacion),
+      situacion_label: getSituacionTitulo(formData.situacion),
       problematica: formData.problematica,
-      problematicaLabel: formData.situacion
+      problematica_label: formData.situacion
         ? getLabel(problematicasPorSituacion[formData.situacion], formData.problematica)
         : "",
       facturacion: formData.facturacion,
-      facturacionLabel: getLabel(facturacionOptions, formData.facturacion),
+      facturacion_label: getLabel(facturacionOptions, formData.facturacion),
 
       // Form 2 (según situación)
       experiencia: formData.experiencia || null,
-      experienciaLabel: formData.experiencia ? getLabel(experienciaOptions, formData.experiencia) : null,
+      experiencia_label: formData.experiencia ? getLabel(experienciaOptions, formData.experiencia) : null,
       origen: formData.origen || null,
-      origenLabel: formData.origen ? getLabel(origenOptions, formData.origen) : null,
+      origen_label: formData.origen ? getLabel(origenOptions, formData.origen) : null,
       mejoras: formData.mejoras.length > 0 ? formData.mejoras : null,
-      mejorasLabels: formData.mejoras.length > 0 ? getLabels(mejorarOptions, formData.mejoras) : null,
+      mejoras_labels: formData.mejoras.length > 0 ? getLabels(mejorarOptions, formData.mejoras) : null,
       volumen: formData.volumen || null,
-      volumenLabel: formData.volumen ? getLabel(volumenOptions, formData.volumen) : null,
+      volumen_label: formData.volumen ? getLabel(volumenOptions, formData.volumen) : null,
       etapa: formData.etapa || null,
-      etapaLabel: formData.etapa ? getLabel(etapaOptions, formData.etapa) : null,
+      etapa_label: formData.etapa ? getLabel(etapaOptions, formData.etapa) : null,
       espacio: formData.espacio || null,
-      espacioLabel: formData.espacio ? getLabel(espacioOptions, formData.espacio) : null,
-      serviciosAdicionales: formData.serviciosAdicionales.length > 0 ? formData.serviciosAdicionales : null,
-      serviciosAdicionalesLabels: formData.serviciosAdicionales.length > 0
+      espacio_label: formData.espacio ? getLabel(espacioOptions, formData.espacio) : null,
+      servicios_adicionales: formData.serviciosAdicionales.length > 0 ? formData.serviciosAdicionales : null,
+      servicios_adicionales_labels: formData.serviciosAdicionales.length > 0
         ? getLabels(serviciosAdicionalesOptions, formData.serviciosAdicionales)
         : null,
       frecuencia: formData.frecuencia || null,
-      frecuenciaLabel: formData.frecuencia ? getLabel(frecuenciaOptions, formData.frecuencia) : null,
+      frecuencia_label: formData.frecuencia ? getLabel(frecuenciaOptions, formData.frecuencia) : null,
       tercerizar: formData.tercerizar.length > 0 ? formData.tercerizar : null,
-      tercerizarLabels: formData.tercerizar.length > 0 ? getLabels(tercerizarOptions, formData.tercerizar) : null,
+      tercerizar_labels: formData.tercerizar.length > 0 ? getLabels(tercerizarOptions, formData.tercerizar) : null,
 
       // Urgencia
       urgencia: formData.urgencia,
-      urgenciaLabel: getLabel(urgenciaOptions, formData.urgencia),
+      urgencia_label: getLabel(urgenciaOptions, formData.urgencia),
+
+      // Estado
+      estado: "nuevo",
+      contactado_whatsapp: false,
+      notas: null,
     };
 
-    try {
-      const response = await fetch(webhookUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
-
-      if (!response.ok) {
-        console.error("Webhook error:", response.status);
-        return false;
+    // Save to Supabase if configured
+    if (isSupabaseConfigured()) {
+      const { error: supabaseError } = await saveLead(leadData);
+      if (supabaseError) {
+        console.error("Supabase error:", supabaseError);
       }
-
-      return true;
-    } catch (error) {
-      console.error("Webhook error:", error);
-      return false;
     }
+
+    // Also send to webhook if configured
+    if (webhookUrl) {
+      try {
+        const response = await fetch(webhookUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            ...leadData,
+            timestamp: new Date().toISOString(),
+          }),
+        });
+
+        if (!response.ok) {
+          console.error("Webhook error:", response.status);
+        }
+      } catch (error) {
+        console.error("Webhook error:", error);
+      }
+    }
+
+    return true; // Always continue flow
   };
 
   return (
