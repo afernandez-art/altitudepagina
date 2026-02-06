@@ -14,7 +14,126 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      leads: {
+        Row: {
+          contactado_whatsapp: boolean | null
+          created_at: string | null
+          email: string
+          empresa: string | null
+          espacio: string | null
+          espacio_label: string | null
+          estado: string | null
+          etapa: string | null
+          etapa_label: string | null
+          experiencia: string | null
+          experiencia_label: string | null
+          facturacion: string
+          facturacion_label: string
+          frecuencia: string | null
+          frecuencia_label: string | null
+          id: string
+          mejoras: string[] | null
+          mejoras_labels: string[] | null
+          nicho: string
+          nicho_label: string
+          nombre: string
+          notas: string | null
+          origen: string | null
+          origen_label: string | null
+          problematica: string
+          problematica_label: string
+          servicios_adicionales: string[] | null
+          servicios_adicionales_labels: string[] | null
+          situacion: string
+          situacion_label: string
+          tercerizar: string[] | null
+          tercerizar_labels: string[] | null
+          urgencia: string
+          urgencia_label: string
+          volumen: string | null
+          volumen_label: string | null
+          whatsapp: string
+        }
+        Insert: {
+          contactado_whatsapp?: boolean | null
+          created_at?: string | null
+          email: string
+          empresa?: string | null
+          espacio?: string | null
+          espacio_label?: string | null
+          estado?: string | null
+          etapa?: string | null
+          etapa_label?: string | null
+          experiencia?: string | null
+          experiencia_label?: string | null
+          facturacion: string
+          facturacion_label: string
+          frecuencia?: string | null
+          frecuencia_label?: string | null
+          id?: string
+          mejoras?: string[] | null
+          mejoras_labels?: string[] | null
+          nicho: string
+          nicho_label: string
+          nombre: string
+          notas?: string | null
+          origen?: string | null
+          origen_label?: string | null
+          problematica: string
+          problematica_label: string
+          servicios_adicionales?: string[] | null
+          servicios_adicionales_labels?: string[] | null
+          situacion: string
+          situacion_label: string
+          tercerizar?: string[] | null
+          tercerizar_labels?: string[] | null
+          urgencia: string
+          urgencia_label: string
+          volumen?: string | null
+          volumen_label?: string | null
+          whatsapp: string
+        }
+        Update: {
+          contactado_whatsapp?: boolean | null
+          created_at?: string | null
+          email?: string
+          empresa?: string | null
+          espacio?: string | null
+          espacio_label?: string | null
+          estado?: string | null
+          etapa?: string | null
+          etapa_label?: string | null
+          experiencia?: string | null
+          experiencia_label?: string | null
+          facturacion?: string
+          facturacion_label?: string
+          frecuencia?: string | null
+          frecuencia_label?: string | null
+          id?: string
+          mejoras?: string[] | null
+          mejoras_labels?: string[] | null
+          nicho?: string
+          nicho_label?: string
+          nombre?: string
+          notas?: string | null
+          origen?: string | null
+          origen_label?: string | null
+          problematica?: string
+          problematica_label?: string
+          servicios_adicionales?: string[] | null
+          servicios_adicionales_labels?: string[] | null
+          situacion?: string
+          situacion_label?: string
+          tercerizar?: string[] | null
+          tercerizar_labels?: string[] | null
+          urgencia?: string
+          urgencia_label?: string
+          volumen?: string | null
+          volumen_label?: string | null
+          whatsapp?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

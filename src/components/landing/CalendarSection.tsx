@@ -115,7 +115,7 @@ export const CalendarSection = () => {
     }
   };
 
-  if (currentStep !== "calendar") {
+  if ((currentStep as string) !== "calendar") {
     return null;
   }
 
