@@ -299,8 +299,8 @@ export const QualificationForm2 = () => {
                       <>
                         <div>
                           <h3 className="text-lg md:text-xl font-bold mb-1">{question.title}</h3>
-                          {question.subtitle && (
-                            <p className="text-xs md:text-sm text-muted-foreground">{question.subtitle}</p>
+                          {'subtitle' in question && question.subtitle && (
+                            <p className="text-xs md:text-sm text-muted-foreground">{question.subtitle as string}</p>
                           )}
                         </div>
 
