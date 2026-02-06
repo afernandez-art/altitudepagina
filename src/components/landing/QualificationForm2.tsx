@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   ArrowRight,
   ArrowLeft,
@@ -21,6 +21,7 @@ import {
   SituacionType,
 } from "@/contexts/LeadMagnetContext";
 import { Progress } from "@/components/ui/progress";
+import { analytics } from "@/lib/analytics";
 
 // Get questions config based on situacion
 const getQuestionsConfig = (situacion: SituacionType | "") => {
@@ -146,12 +147,36 @@ export const QualificationForm2 = () => {
   const [formStep, setFormStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const hasTrackedStart = useRef(false);
 
   const config = getQuestionsConfig(formData.situacion);
   const specificQuestions = config.questions;
   const totalSteps = config.totalSteps;
 
   const progress = ((formStep + 1) / totalSteps) * 100;
+
+  // Track form2 start
+  useEffect(() => {
+    if (currentStep === "form2" && !hasTrackedStart.current && formData.situacion) {
+      analytics.form2.start(formData.situacion);
+      const stepName = specificQuestions[0]?.id || 'question_1';
+      analytics.form2.stepView(1, stepName);
+      hasTrackedStart.current = true;
+    }
+  }, [currentStep, formData.situacion, specificQuestions]);
+
+  // Track step views
+  useEffect(() => {
+    if (hasTrackedStart.current && formStep > 0) {
+      let stepName = 'contact';
+      if (formStep < specificQuestions.length) {
+        stepName = specificQuestions[formStep]?.id || `question_${formStep + 1}`;
+      } else if (formStep === specificQuestions.length) {
+        stepName = 'urgencia';
+      }
+      analytics.form2.stepView(formStep + 1, stepName);
+    }
+  }, [formStep, specificQuestions]);
 
   // Validaciones
   const validateName = (name: string): boolean => {
@@ -182,6 +207,7 @@ export const QualificationForm2 = () => {
   // Handle single select (button click)
   const handleSingleSelect = (field: string, value: string) => {
     updateFormData({ [field]: value });
+    analytics.form2.stepComplete(formStep + 1, field, value);
     setTimeout(() => setFormStep(prev => prev + 1), 300);
   };
 
@@ -228,6 +254,10 @@ export const QualificationForm2 = () => {
 
     // Save to storage before submitting
     saveToStorage();
+
+    // Track form complete
+    analytics.form2.stepComplete(totalSteps, 'contact', formData.email);
+    analytics.form2.complete();
 
     // Submit to webhook
     await submitToWebhook();

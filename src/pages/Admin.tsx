@@ -22,8 +22,14 @@ import {
   AlertTriangle,
   Package,
   Save,
+  BarChart3,
+  Users,
+  TrendingUp,
+  ArrowRight,
+  MousePointer,
 } from "lucide-react";
 import { getLeads, updateLeadStatus, Lead, isSupabaseConfigured } from "@/lib/supabase";
+import { getAnalyticsData, calculateFunnelMetrics } from "@/lib/analytics";
 
 // Password simple para el admin (en producción usar auth de Supabase)
 const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || "altitude2024";
@@ -41,6 +47,28 @@ const getEstadoConfig = (estado: string) => {
   return estadosOptions.find(e => e.id === estado) || estadosOptions[0];
 };
 
+// Tipos para métricas
+interface FunnelMetrics {
+  funnel: {
+    visitors: number;
+    form1Start: number;
+    form1Complete: number;
+    form2Start: number;
+    form2Complete: number;
+    whatsappClick: number;
+  };
+  rates: {
+    form1StartRate: string;
+    form1CompleteRate: string;
+    form2StartRate: string;
+    form2CompleteRate: string;
+    whatsappRate: string;
+    overallConversion: string;
+  };
+  form1Abandons: { step: string; count: number }[];
+  buttonClicks: Record<string, number>;
+}
+
 const Admin = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState("");
@@ -54,6 +82,12 @@ const Admin = () => {
   const [editingNotas, setEditingNotas] = useState("");
   const [editingEstado, setEditingEstado] = useState("");
   const [saving, setSaving] = useState(false);
+
+  // Métricas
+  const [activeTab, setActiveTab] = useState<"leads" | "metrics">("leads");
+  const [metrics, setMetrics] = useState<FunnelMetrics | null>(null);
+  const [metricsLoading, setMetricsLoading] = useState(false);
+  const [metricsDays, setMetricsDays] = useState(30);
 
   // Check if already authenticated
   useEffect(() => {
@@ -97,6 +131,23 @@ const Admin = () => {
     }
     setLoading(false);
   };
+
+  const loadMetrics = async () => {
+    setMetricsLoading(true);
+    const events = await getAnalyticsData(metricsDays);
+    if (events) {
+      const calculatedMetrics = calculateFunnelMetrics(events);
+      setMetrics(calculatedMetrics);
+    }
+    setMetricsLoading(false);
+  };
+
+  // Load metrics when tab changes or days change
+  useEffect(() => {
+    if (isAuthenticated && activeTab === "metrics") {
+      loadMetrics();
+    }
+  }, [isAuthenticated, activeTab, metricsDays]);
 
   const handleSaveLead = async () => {
     if (!selectedLead?.id) return;
@@ -236,28 +287,55 @@ const Admin = () => {
       {/* Header */}
       <header className="bg-card border-b border-zinc-800 sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <h1 className="text-xl font-black">Leads Dashboard</h1>
-            <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">
-              {filteredLeads.length} leads
-            </span>
+          <div className="flex items-center gap-6">
+            <h1 className="text-xl font-black">Admin Dashboard</h1>
+            {/* Tabs */}
+            <div className="flex items-center gap-1 bg-secondary/50 p-1 rounded-lg">
+              <button
+                onClick={() => setActiveTab("leads")}
+                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors flex items-center gap-2 ${
+                  activeTab === "leads"
+                    ? "bg-primary text-primary-foreground"
+                    : "hover:bg-secondary"
+                }`}
+              >
+                <Users className="w-4 h-4" />
+                Leads
+                <span className="bg-white/20 px-2 py-0.5 rounded-full text-xs">
+                  {leads.length}
+                </span>
+              </button>
+              <button
+                onClick={() => setActiveTab("metrics")}
+                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors flex items-center gap-2 ${
+                  activeTab === "metrics"
+                    ? "bg-primary text-primary-foreground"
+                    : "hover:bg-secondary"
+                }`}
+              >
+                <BarChart3 className="w-4 h-4" />
+                Métricas
+              </button>
+            </div>
           </div>
           <div className="flex items-center gap-3">
             <button
-              onClick={loadLeads}
-              disabled={loading}
+              onClick={activeTab === "leads" ? loadLeads : loadMetrics}
+              disabled={loading || metricsLoading}
               className="p-2 hover:bg-secondary rounded-lg transition-colors"
               title="Actualizar"
             >
-              <RefreshCw className={`w-5 h-5 ${loading ? "animate-spin" : ""}`} />
+              <RefreshCw className={`w-5 h-5 ${(loading || metricsLoading) ? "animate-spin" : ""}`} />
             </button>
-            <button
-              onClick={exportToCSV}
-              className="flex items-center gap-2 bg-secondary px-4 py-2 rounded-lg hover:bg-secondary/80 transition-colors text-sm"
-            >
-              <Download className="w-4 h-4" />
-              Exportar CSV
-            </button>
+            {activeTab === "leads" && (
+              <button
+                onClick={exportToCSV}
+                className="flex items-center gap-2 bg-secondary px-4 py-2 rounded-lg hover:bg-secondary/80 transition-colors text-sm"
+              >
+                <Download className="w-4 h-4" />
+                Exportar CSV
+              </button>
+            )}
             <button
               onClick={handleLogout}
               className="p-2 hover:bg-secondary rounded-lg transition-colors text-red-500"
@@ -270,6 +348,180 @@ const Admin = () => {
       </header>
 
       <div className="max-w-7xl mx-auto px-4 py-6">
+        {/* Metrics Tab */}
+        {activeTab === "metrics" && (
+          <div className="space-y-6">
+            {/* Period Selector */}
+            <div className="flex items-center justify-between">
+              <h2 className="text-lg font-bold">Métricas del Embudo</h2>
+              <select
+                value={metricsDays}
+                onChange={(e) => setMetricsDays(Number(e.target.value))}
+                className="bg-secondary border border-zinc-700 rounded-lg px-3 py-2 text-sm"
+              >
+                <option value={7}>Últimos 7 días</option>
+                <option value={30}>Últimos 30 días</option>
+                <option value={90}>Últimos 90 días</option>
+              </select>
+            </div>
+
+            {metricsLoading ? (
+              <div className="bg-card rounded-xl border border-zinc-800 p-12 text-center">
+                <RefreshCw className="w-8 h-8 animate-spin mx-auto mb-4 text-primary" />
+                <p className="text-muted-foreground">Cargando métricas...</p>
+              </div>
+            ) : !metrics ? (
+              <div className="bg-card rounded-xl border border-zinc-800 p-12 text-center">
+                <BarChart3 className="w-12 h-12 mx-auto mb-4 text-muted-foreground/50" />
+                <p className="text-muted-foreground">No hay datos de métricas</p>
+                <p className="text-sm text-muted-foreground mt-2">
+                  Asegurate de haber creado la tabla "events" en Supabase
+                </p>
+              </div>
+            ) : (
+              <>
+                {/* KPI Cards */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div className="bg-card rounded-xl border border-zinc-800 p-4">
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="w-10 h-10 bg-blue-500/10 rounded-lg flex items-center justify-center">
+                        <Users className="w-5 h-5 text-blue-500" />
+                      </div>
+                      <span className="text-sm text-muted-foreground">Visitantes</span>
+                    </div>
+                    <p className="text-3xl font-black">{metrics.funnel.visitors}</p>
+                  </div>
+                  <div className="bg-card rounded-xl border border-zinc-800 p-4">
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="w-10 h-10 bg-green-500/10 rounded-lg flex items-center justify-center">
+                        <CheckCircle className="w-5 h-5 text-green-500" />
+                      </div>
+                      <span className="text-sm text-muted-foreground">Leads completos</span>
+                    </div>
+                    <p className="text-3xl font-black">{metrics.funnel.form2Complete}</p>
+                  </div>
+                  <div className="bg-card rounded-xl border border-zinc-800 p-4">
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="w-10 h-10 bg-emerald-500/10 rounded-lg flex items-center justify-center">
+                        <MessageCircle className="w-5 h-5 text-emerald-500" />
+                      </div>
+                      <span className="text-sm text-muted-foreground">Clicks WhatsApp</span>
+                    </div>
+                    <p className="text-3xl font-black">{metrics.funnel.whatsappClick}</p>
+                  </div>
+                  <div className="bg-card rounded-xl border border-zinc-800 p-4">
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                        <TrendingUp className="w-5 h-5 text-primary" />
+                      </div>
+                      <span className="text-sm text-muted-foreground">Conversión total</span>
+                    </div>
+                    <p className="text-3xl font-black">{metrics.rates.overallConversion}%</p>
+                  </div>
+                </div>
+
+                {/* Funnel Chart */}
+                <div className="bg-card rounded-xl border border-zinc-800 p-6">
+                  <h3 className="font-bold mb-6 flex items-center gap-2">
+                    <BarChart3 className="w-5 h-5 text-primary" />
+                    Embudo de Conversión
+                  </h3>
+                  <div className="space-y-4">
+                    {/* Funnel Steps */}
+                    {[
+                      { label: "Visitantes", value: metrics.funnel.visitors, rate: "100%" },
+                      { label: "Iniciaron Form 1", value: metrics.funnel.form1Start, rate: `${metrics.rates.form1StartRate}%` },
+                      { label: "Completaron Form 1", value: metrics.funnel.form1Complete, rate: `${metrics.rates.form1CompleteRate}%` },
+                      { label: "Iniciaron Form 2", value: metrics.funnel.form2Start, rate: `${metrics.rates.form2StartRate}%` },
+                      { label: "Completaron Form 2", value: metrics.funnel.form2Complete, rate: `${metrics.rates.form2CompleteRate}%` },
+                      { label: "Click WhatsApp", value: metrics.funnel.whatsappClick, rate: `${metrics.rates.whatsappRate}%` },
+                    ].map((step, index, arr) => {
+                      const maxValue = arr[0].value || 1;
+                      const widthPercent = (step.value / maxValue) * 100;
+                      const colors = [
+                        "bg-blue-500",
+                        "bg-cyan-500",
+                        "bg-teal-500",
+                        "bg-emerald-500",
+                        "bg-green-500",
+                        "bg-lime-500",
+                      ];
+                      return (
+                        <div key={step.label} className="relative">
+                          <div className="flex items-center justify-between mb-1 text-sm">
+                            <div className="flex items-center gap-2">
+                              {index > 0 && <ArrowRight className="w-3 h-3 text-muted-foreground" />}
+                              <span>{step.label}</span>
+                            </div>
+                            <div className="flex items-center gap-3">
+                              <span className="font-bold">{step.value}</span>
+                              <span className="text-muted-foreground text-xs w-12 text-right">{step.rate}</span>
+                            </div>
+                          </div>
+                          <div className="h-8 bg-secondary/50 rounded-lg overflow-hidden">
+                            <motion.div
+                              initial={{ width: 0 }}
+                              animate={{ width: `${widthPercent}%` }}
+                              transition={{ duration: 0.5, delay: index * 0.1 }}
+                              className={`h-full ${colors[index]} rounded-lg`}
+                            />
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Abandonment by Step */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="bg-card rounded-xl border border-zinc-800 p-6">
+                    <h3 className="font-bold mb-4 flex items-center gap-2">
+                      <AlertTriangle className="w-5 h-5 text-yellow-500" />
+                      Abandonos Form 1 (por paso)
+                    </h3>
+                    <div className="space-y-3">
+                      {metrics.form1Abandons.map((abandon) => (
+                        <div key={abandon.step} className="flex items-center justify-between">
+                          <span className="text-sm capitalize">{abandon.step}</span>
+                          <span className="font-bold text-yellow-500">{abandon.count}</span>
+                        </div>
+                      ))}
+                      {metrics.form1Abandons.every(a => a.count === 0) && (
+                        <p className="text-sm text-muted-foreground">Sin abandonos registrados</p>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="bg-card rounded-xl border border-zinc-800 p-6">
+                    <h3 className="font-bold mb-4 flex items-center gap-2">
+                      <MousePointer className="w-5 h-5 text-primary" />
+                      Clicks en botones
+                    </h3>
+                    <div className="space-y-3 max-h-48 overflow-y-auto">
+                      {Object.entries(metrics.buttonClicks).length > 0 ? (
+                        Object.entries(metrics.buttonClicks)
+                          .sort(([, a], [, b]) => b - a)
+                          .slice(0, 10)
+                          .map(([button, count]) => (
+                            <div key={button} className="flex items-center justify-between">
+                              <span className="text-sm truncate max-w-[200px]">{button}</span>
+                              <span className="font-bold">{count}</span>
+                            </div>
+                          ))
+                      ) : (
+                        <p className="text-sm text-muted-foreground">Sin clicks registrados</p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+        )}
+
+        {/* Leads Tab */}
+        {activeTab === "leads" && (
+          <>
         {/* Filters */}
         <div className="bg-card rounded-xl border border-zinc-800 p-4 mb-6">
           <div className="flex flex-wrap gap-4">
@@ -394,6 +646,8 @@ const Admin = () => {
             </div>
           )}
         </div>
+          </>
+        )}
       </div>
 
       {/* Lead Detail Modal */}

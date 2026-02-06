@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Navbar } from "@/components/landing/Navbar";
 import { HeroSection } from "@/components/landing/HeroSection";
 import { ServicesSection } from "@/components/landing/ServicesSection";
@@ -11,8 +12,14 @@ import { CTASection } from "@/components/landing/CTASection";
 import { Footer } from "@/components/landing/Footer";
 import { FloatingCTA } from "@/components/landing/FloatingCTA";
 import { LeadMagnetProvider } from "@/contexts/LeadMagnetContext";
+import { analytics } from "@/lib/analytics";
 
 const Index = () => {
+  // Track page view
+  useEffect(() => {
+    analytics.pageView("landing");
+  }, []);
+
   return (
     <LeadMagnetProvider>
       <div className="min-h-screen bg-background text-foreground selection:bg-primary selection:text-primary-foreground">

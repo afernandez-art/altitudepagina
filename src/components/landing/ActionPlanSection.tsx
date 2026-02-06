@@ -6,6 +6,7 @@ import {
   Smartphone,
 } from "lucide-react";
 import { useLeadMagnet } from "@/contexts/LeadMagnetContext";
+import { analytics } from "@/lib/analytics";
 
 export const ActionPlanSection = () => {
   const { formData, currentStep, generateWhatsAppLink } = useLeadMagnet();
@@ -81,6 +82,7 @@ export const ActionPlanSection = () => {
             href={whatsappLink}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => analytics.conversion.whatsappClick()}
             className="inline-flex items-center justify-center gap-3 bg-green-500 hover:bg-green-600 text-white px-8 py-4 rounded-xl font-bold transition-all text-base md:text-lg shadow-2xl shadow-green-500/30 w-full sm:w-auto"
           >
             <MessageCircle className="w-6 h-6" />

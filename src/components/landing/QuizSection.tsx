@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   ArrowRight,
   ArrowLeft,
@@ -17,6 +17,7 @@ import {
   SituacionType,
 } from "@/contexts/LeadMagnetContext";
 import { Progress } from "@/components/ui/progress";
+import { analytics } from "@/lib/analytics";
 
 export const QuizSection = () => {
   const { formData, updateFormData, saveToStorage } = useLeadMagnet();
@@ -27,11 +28,29 @@ export const QuizSection = () => {
 
   const totalSteps = 4;
   const progress = ((quizStep + 1) / totalSteps) * 100;
+  const hasTrackedStart = useRef(false);
+  const stepNames = ['nicho', 'situacion', 'problematica', 'facturacion'];
 
   // Get dynamic problematicas based on selected situacion
   const currentProblematicas = formData.situacion
     ? problematicasPorSituacion[formData.situacion]
     : [];
+
+  // Track form start (solo una vez)
+  useEffect(() => {
+    if (!hasTrackedStart.current) {
+      analytics.form1.start();
+      analytics.form1.stepView(1, 'nicho');
+      hasTrackedStart.current = true;
+    }
+  }, []);
+
+  // Track step views
+  useEffect(() => {
+    if (hasTrackedStart.current && quizStep > 0) {
+      analytics.form1.stepView(quizStep + 1, stepNames[quizStep]);
+    }
+  }, [quizStep]);
 
   // Effect to save and redirect after facturacion is set
   useEffect(() => {
@@ -48,6 +67,7 @@ export const QuizSection = () => {
     if (id === "otro") {
       setShowNichoOtro(true);
     } else {
+      analytics.form1.stepComplete(1, 'nicho', id);
       setShowNichoOtro(false);
       setTimeout(() => setQuizStep(1), 300);
     }
@@ -55,6 +75,7 @@ export const QuizSection = () => {
 
   const handleNichoOtroSubmit = () => {
     if (formData.nichoOtro.trim()) {
+      analytics.form1.stepComplete(1, 'nicho', 'otro: ' + formData.nichoOtro);
       setShowNichoOtro(false);
       setTimeout(() => setQuizStep(1), 300);
     }
@@ -62,16 +83,20 @@ export const QuizSection = () => {
 
   const handleSituacionSelect = (id: SituacionType) => {
     updateFormData({ situacion: id, problematica: "" });
+    analytics.form1.stepComplete(2, 'situacion', id);
     setTimeout(() => setQuizStep(2), 300);
   };
 
   const handleProblematicaSelect = (id: string) => {
     updateFormData({ problematica: id });
+    analytics.form1.stepComplete(3, 'problematica', id);
     setTimeout(() => setQuizStep(3), 300);
   };
 
   const handleFacturacionSelect = (id: string) => {
     updateFormData({ facturacion: id });
+    analytics.form1.stepComplete(4, 'facturacion', id);
+    analytics.form1.complete();
     setPendingSave(true);
   };
 
