@@ -12,12 +12,14 @@ import { CTASection } from "@/components/landing/CTASection";
 import { Footer } from "@/components/landing/Footer";
 import { FloatingCTA } from "@/components/landing/FloatingCTA";
 import { LeadMagnetProvider } from "@/contexts/LeadMagnetContext";
-import { analytics } from "@/lib/analytics";
+import { analytics, setupScrollTracking } from "@/lib/analytics";
 
 const Index = () => {
-  // Track page view
+  // Track page view and scroll depth
   useEffect(() => {
     analytics.pageView("landing");
+    const cleanup = setupScrollTracking("landing");
+    return cleanup;
   }, []);
 
   return (

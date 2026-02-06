@@ -27,9 +27,16 @@ import {
   TrendingUp,
   ArrowRight,
   MousePointer,
+  Smartphone,
+  Monitor,
+  Tablet,
+  Globe,
+  Timer,
+  ArrowDown,
+  PieChart,
 } from "lucide-react";
 import { getLeads, updateLeadStatus, Lead, isSupabaseConfigured } from "@/lib/supabase";
-import { getAnalyticsData, calculateFunnelMetrics } from "@/lib/analytics";
+import { getAnalyticsData, calculateFunnelMetrics, calculateExtendedMetrics } from "@/lib/analytics";
 
 // Password simple para el admin (en producción usar auth de Supabase)
 const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || "altitude2024";
@@ -69,6 +76,18 @@ interface FunnelMetrics {
   buttonClicks: Record<string, number>;
 }
 
+interface ExtendedMetrics {
+  devices: Record<string, number>;
+  trafficSources: Record<string, number>;
+  avgCompletionTime: { form1: number; form2: number };
+  hourDistribution: number[];
+  dayDistribution: Record<string, number>;
+  scrollDepth: { average: number; distribution: Record<string, number> };
+  form1Responses: Record<string, Record<string, number>>;
+  conversionByDevice: Record<string, { visitors: number; conversions: number; rate: string }>;
+  conversionBySource: Record<string, { visitors: number; conversions: number; rate: string }>;
+}
+
 const Admin = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState("");
@@ -86,6 +105,7 @@ const Admin = () => {
   // Métricas
   const [activeTab, setActiveTab] = useState<"leads" | "metrics">("leads");
   const [metrics, setMetrics] = useState<FunnelMetrics | null>(null);
+  const [extendedMetrics, setExtendedMetrics] = useState<ExtendedMetrics | null>(null);
   const [metricsLoading, setMetricsLoading] = useState(false);
   const [metricsDays, setMetricsDays] = useState(30);
 
@@ -137,7 +157,9 @@ const Admin = () => {
     const events = await getAnalyticsData(metricsDays);
     if (events) {
       const calculatedMetrics = calculateFunnelMetrics(events);
+      const calculatedExtended = calculateExtendedMetrics(events);
       setMetrics(calculatedMetrics);
+      setExtendedMetrics(calculatedExtended);
     }
     setMetricsLoading(false);
   };
@@ -514,6 +536,241 @@ const Admin = () => {
                     </div>
                   </div>
                 </div>
+
+                {/* Extended Metrics */}
+                {extendedMetrics && (
+                  <>
+                    {/* Dispositivos y Fuentes */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      {/* Dispositivos */}
+                      <div className="bg-card rounded-xl border border-zinc-800 p-6">
+                        <h3 className="font-bold mb-4 flex items-center gap-2">
+                          <Monitor className="w-5 h-5 text-primary" />
+                          Dispositivos
+                        </h3>
+                        <div className="space-y-3">
+                          {[
+                            { key: 'desktop', icon: Monitor, label: 'Desktop' },
+                            { key: 'mobile', icon: Smartphone, label: 'Mobile' },
+                            { key: 'tablet', icon: Tablet, label: 'Tablet' },
+                          ].map(({ key, icon: Icon, label }) => {
+                            const count = extendedMetrics.devices[key] || 0;
+                            const total = Object.values(extendedMetrics.devices).reduce((a, b) => a + b, 0) || 1;
+                            const percent = ((count / total) * 100).toFixed(1);
+                            const conversion = extendedMetrics.conversionByDevice[key];
+                            return (
+                              <div key={key} className="space-y-1">
+                                <div className="flex items-center justify-between">
+                                  <div className="flex items-center gap-2">
+                                    <Icon className="w-4 h-4 text-muted-foreground" />
+                                    <span className="text-sm">{label}</span>
+                                  </div>
+                                  <div className="text-right">
+                                    <span className="font-bold">{count}</span>
+                                    <span className="text-xs text-muted-foreground ml-2">({percent}%)</span>
+                                  </div>
+                                </div>
+                                {conversion && (
+                                  <div className="text-xs text-muted-foreground pl-6">
+                                    Conv: {conversion.rate}% ({conversion.conversions}/{conversion.visitors})
+                                  </div>
+                                )}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+
+                      {/* Fuentes de tráfico */}
+                      <div className="bg-card rounded-xl border border-zinc-800 p-6">
+                        <h3 className="font-bold mb-4 flex items-center gap-2">
+                          <Globe className="w-5 h-5 text-primary" />
+                          Fuentes de Tráfico (UTM)
+                        </h3>
+                        <div className="space-y-3 max-h-48 overflow-y-auto">
+                          {Object.entries(extendedMetrics.trafficSources).length > 0 ? (
+                            Object.entries(extendedMetrics.trafficSources)
+                              .sort(([, a], [, b]) => b - a)
+                              .map(([source, count]) => {
+                                const conversion = extendedMetrics.conversionBySource[source];
+                                return (
+                                  <div key={source} className="space-y-1">
+                                    <div className="flex items-center justify-between">
+                                      <span className="text-sm capitalize">{source}</span>
+                                      <span className="font-bold">{count}</span>
+                                    </div>
+                                    {conversion && (
+                                      <div className="text-xs text-muted-foreground">
+                                        Conv: {conversion.rate}% ({conversion.conversions}/{conversion.visitors})
+                                      </div>
+                                    )}
+                                  </div>
+                                );
+                              })
+                          ) : (
+                            <p className="text-sm text-muted-foreground">Sin datos de UTM</p>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Tiempo de completado y Scroll */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                      {/* Tiempo promedio */}
+                      <div className="bg-card rounded-xl border border-zinc-800 p-6">
+                        <h3 className="font-bold mb-4 flex items-center gap-2">
+                          <Timer className="w-5 h-5 text-primary" />
+                          Tiempo Promedio
+                        </h3>
+                        <div className="space-y-4">
+                          <div>
+                            <p className="text-sm text-muted-foreground">Form 1 (Landing)</p>
+                            <p className="text-2xl font-bold">
+                              {extendedMetrics.avgCompletionTime.form1 > 0
+                                ? `${Math.floor(extendedMetrics.avgCompletionTime.form1 / 60)}:${(extendedMetrics.avgCompletionTime.form1 % 60).toString().padStart(2, '0')}`
+                                : '--:--'}
+                            </p>
+                          </div>
+                          <div>
+                            <p className="text-sm text-muted-foreground">Form 2 (Video)</p>
+                            <p className="text-2xl font-bold">
+                              {extendedMetrics.avgCompletionTime.form2 > 0
+                                ? `${Math.floor(extendedMetrics.avgCompletionTime.form2 / 60)}:${(extendedMetrics.avgCompletionTime.form2 % 60).toString().padStart(2, '0')}`
+                                : '--:--'}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Scroll Depth */}
+                      <div className="bg-card rounded-xl border border-zinc-800 p-6">
+                        <h3 className="font-bold mb-4 flex items-center gap-2">
+                          <ArrowDown className="w-5 h-5 text-primary" />
+                          Scroll Depth
+                        </h3>
+                        <div className="space-y-3">
+                          <div className="text-center mb-4">
+                            <p className="text-3xl font-bold">{extendedMetrics.scrollDepth.average}%</p>
+                            <p className="text-xs text-muted-foreground">Promedio</p>
+                          </div>
+                          {Object.entries(extendedMetrics.scrollDepth.distribution).map(([depth, count]) => (
+                            <div key={depth} className="flex items-center justify-between text-sm">
+                              <span>{depth}</span>
+                              <span className="font-medium">{count}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Distribución horaria */}
+                      <div className="bg-card rounded-xl border border-zinc-800 p-6">
+                        <h3 className="font-bold mb-4 flex items-center gap-2">
+                          <Clock className="w-5 h-5 text-primary" />
+                          Hora Pico
+                        </h3>
+                        <div className="space-y-2">
+                          {(() => {
+                            const maxHour = extendedMetrics.hourDistribution.indexOf(
+                              Math.max(...extendedMetrics.hourDistribution)
+                            );
+                            const maxCount = Math.max(...extendedMetrics.hourDistribution);
+                            return (
+                              <div className="text-center mb-4">
+                                <p className="text-3xl font-bold">{maxHour}:00</p>
+                                <p className="text-xs text-muted-foreground">Mayor actividad ({maxCount} eventos)</p>
+                              </div>
+                            );
+                          })()}
+                          <div className="flex items-end justify-between h-20 gap-0.5">
+                            {extendedMetrics.hourDistribution.map((count, hour) => {
+                              const max = Math.max(...extendedMetrics.hourDistribution) || 1;
+                              const height = (count / max) * 100;
+                              return (
+                                <div
+                                  key={hour}
+                                  className="bg-primary/60 hover:bg-primary rounded-t transition-colors cursor-help"
+                                  style={{ height: `${height}%`, width: '3.5%' }}
+                                  title={`${hour}:00 - ${count} eventos`}
+                                />
+                              );
+                            })}
+                          </div>
+                          <div className="flex justify-between text-xs text-muted-foreground">
+                            <span>0h</span>
+                            <span>12h</span>
+                            <span>24h</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Día de la semana */}
+                    <div className="bg-card rounded-xl border border-zinc-800 p-6">
+                      <h3 className="font-bold mb-4 flex items-center gap-2">
+                        <Calendar className="w-5 h-5 text-primary" />
+                        Actividad por Día
+                      </h3>
+                      <div className="flex items-end justify-around h-32 gap-2">
+                        {Object.entries(extendedMetrics.dayDistribution).map(([day, count]) => {
+                          const max = Math.max(...Object.values(extendedMetrics.dayDistribution)) || 1;
+                          const height = (count / max) * 100;
+                          return (
+                            <div key={day} className="flex flex-col items-center gap-2 flex-1">
+                              <span className="text-xs font-medium">{count}</span>
+                              <div
+                                className="bg-primary/60 hover:bg-primary rounded-t transition-colors w-full max-w-[40px]"
+                                style={{ height: `${height}%`, minHeight: count > 0 ? '4px' : '0' }}
+                              />
+                              <span className="text-xs text-muted-foreground">{day}</span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    {/* Distribución de respuestas */}
+                    <div className="bg-card rounded-xl border border-zinc-800 p-6">
+                      <h3 className="font-bold mb-4 flex items-center gap-2">
+                        <PieChart className="w-5 h-5 text-primary" />
+                        Distribución de Respuestas (Form 1)
+                      </h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {Object.entries(extendedMetrics.form1Responses).map(([step, responses]) => {
+                          const entries = Object.entries(responses);
+                          if (entries.length === 0) return null;
+                          const total = entries.reduce((sum, [, count]) => sum + count, 0);
+                          return (
+                            <div key={step}>
+                              <h4 className="text-sm font-medium mb-2 capitalize">{step}</h4>
+                              <div className="space-y-2">
+                                {entries
+                                  .sort(([, a], [, b]) => b - a)
+                                  .slice(0, 5)
+                                  .map(([value, count]) => {
+                                    const percent = ((count / total) * 100).toFixed(1);
+                                    return (
+                                      <div key={value} className="space-y-1">
+                                        <div className="flex justify-between text-xs">
+                                          <span className="truncate max-w-[150px]" title={value}>{value}</span>
+                                          <span>{count} ({percent}%)</span>
+                                        </div>
+                                        <div className="h-2 bg-secondary rounded-full overflow-hidden">
+                                          <div
+                                            className="h-full bg-primary rounded-full"
+                                            style={{ width: `${percent}%` }}
+                                          />
+                                        </div>
+                                      </div>
+                                    );
+                                  })}
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </>
+                )}
               </>
             )}
           </div>

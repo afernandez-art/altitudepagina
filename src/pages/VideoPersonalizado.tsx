@@ -5,7 +5,7 @@ import { ActionPlanSection } from "@/components/landing/ActionPlanSection";
 import { LeadMagnetProvider, useLeadMagnet } from "@/contexts/LeadMagnetContext";
 import { motion } from "framer-motion";
 import { ArrowLeft, FileSearch } from "lucide-react";
-import { analytics } from "@/lib/analytics";
+import { analytics, setupScrollTracking } from "@/lib/analytics";
 
 const VideoContent = () => {
   const { formData, setCurrentStep, loadFromStorage } = useLeadMagnet();
@@ -15,8 +15,10 @@ const VideoContent = () => {
     loadFromStorage();
     // Set step to VSL
     setCurrentStep("vsl");
-    // Track page view
+    // Track page view and scroll
     analytics.pageView("video_personalizado");
+    const cleanup = setupScrollTracking("video_personalizado");
+    return cleanup;
   }, []);
 
   // If no data from Form 1, show error
