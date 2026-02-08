@@ -18,7 +18,7 @@ export const HeroSection = () => {
   return (
     <section className="relative min-h-[85svh] flex items-center px-4 sm:px-6 overflow-hidden pt-24 pb-12">
       {/* Background image - mobile */}
-      <div className="absolute inset-0 -z-10 block sm:hidden">
+      <div className="absolute inset-0 z-0 block sm:hidden">
         <img
           src={heroImageMobile}
           alt=""
@@ -28,7 +28,7 @@ export const HeroSection = () => {
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-background/30" />
       </div>
       {/* Background image - desktop */}
-      <div className="absolute inset-0 -z-10 hidden sm:block">
+      <div className="absolute inset-0 z-0 hidden sm:block">
         <img
           src={heroImage}
           alt=""
@@ -134,7 +134,7 @@ export const HeroSection = () => {
         </div>
       </div>
 
-      <div className="absolute bottom-0 left-1/4 -z-10 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
+      <div className="absolute bottom-0 left-1/4 z-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
     </section>
   );
 };
