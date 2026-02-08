@@ -10,9 +10,16 @@ export const Navbar = () => {
       className="fixed top-0 w-full z-50 glass-nav"
     >
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-        <div className="flex items-center">
+        <a
+          href="#"
+          onClick={(e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }}
+          className="flex items-center cursor-pointer"
+        >
           <img src={altitudeLogo} alt="Altitude Logistics Group" className="h-8 w-auto" />
-        </div>
+        </a>
 
         <div className="hidden md:flex items-center gap-8">
           <a href="#servicios" className="text-sm font-medium text-zinc-400 hover:text-foreground transition-colors">
