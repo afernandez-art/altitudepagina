@@ -49,7 +49,7 @@ const AnimatedCounter = ({ value, prefix = "", suffix = "" }: AnimatedCounterPro
 
 export const ClientsSection = () => {
   return (
-    <section className="py-20 sm:py-24 px-6 bg-card/50" id="clientes">
+    <section className="py-16 sm:py-20 px-6 bg-card/50" id="clientes">
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
