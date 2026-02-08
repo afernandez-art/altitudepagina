@@ -49,18 +49,18 @@ const AnimatedCounter = ({ value, prefix = "", suffix = "" }: AnimatedCounterPro
 
 export const ClientsSection = () => {
   return (
-    <section className="py-16 sm:py-20 px-6 bg-card/50" id="clientes">
+    <section className="py-12 sm:py-16 px-6 bg-card/50" id="clientes">
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-10"
         >
-          <h2 className="text-sm font-bold text-primary tracking-[0.2em] uppercase mb-4">
+          <h2 className="text-sm font-bold text-primary tracking-[0.2em] uppercase mb-3">
             Social Proof
           </h2>
-          <p className="text-4xl md:text-5xl font-black tracking-tighter">
+          <p className="text-3xl md:text-4xl font-black tracking-tighter">
             Empresas que <span className="text-primary">confían</span> en nosotros
           </p>
         </motion.div>
@@ -70,7 +70,7 @@ export const ClientsSection = () => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="grid grid-cols-3 md:grid-cols-5 gap-6 md:gap-8 mb-12 sm:mb-16 max-w-4xl mx-auto"
+          className="grid grid-cols-3 md:grid-cols-5 gap-4 md:gap-5 mb-10 sm:mb-12 max-w-4xl mx-auto"
         >
           {logos.map((logo, index) => (
             <div
@@ -91,7 +91,7 @@ export const ClientsSection = () => {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="max-w-4xl mx-auto mb-12 sm:mb-16"
+          className="max-w-4xl mx-auto mb-10 sm:mb-12"
         >
           <div className="relative p-8 md:p-12 rounded-2xl bg-background border border-border">
             <Quote className="w-12 h-12 text-primary/30 absolute top-6 left-6" />
