@@ -1,18 +1,27 @@
-import { useEffect } from "react";
+import { useEffect, lazy, Suspense } from "react";
 import { Navbar } from "@/components/landing/Navbar";
 import { HeroSection } from "@/components/landing/HeroSection";
 import { ServicesSection } from "@/components/landing/ServicesSection";
 import { WhyAltitudeSection } from "@/components/landing/WhyAltitudeSection";
 import { QuizSection } from "@/components/landing/QuizSection";
-import { ProcessSection } from "@/components/landing/ProcessSection";
-import { ClientsSection } from "@/components/landing/ClientsSection";
-import { AboutSection } from "@/components/landing/AboutSection";
-import { TeamSection } from "@/components/landing/TeamSection";
-import { CTASection } from "@/components/landing/CTASection";
-import { Footer } from "@/components/landing/Footer";
 import { FloatingCTA } from "@/components/landing/FloatingCTA";
 import { LeadMagnetProvider } from "@/contexts/LeadMagnetContext";
 import { analytics, setupScrollTracking } from "@/lib/analytics";
+
+// Lazy load below-the-fold sections for better initial load
+const ProcessSection = lazy(() => import("@/components/landing/ProcessSection").then(m => ({ default: m.ProcessSection })));
+const ClientsSection = lazy(() => import("@/components/landing/ClientsSection").then(m => ({ default: m.ClientsSection })));
+const AboutSection = lazy(() => import("@/components/landing/AboutSection").then(m => ({ default: m.AboutSection })));
+const TeamSection = lazy(() => import("@/components/landing/TeamSection").then(m => ({ default: m.TeamSection })));
+const CTASection = lazy(() => import("@/components/landing/CTASection").then(m => ({ default: m.CTASection })));
+const Footer = lazy(() => import("@/components/landing/Footer").then(m => ({ default: m.Footer })));
+
+// Minimal loading placeholder
+const SectionLoader = () => (
+  <div className="min-h-[300px] flex items-center justify-center">
+    <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+  </div>
+);
 
 const Index = () => {
   // Track page view and scroll depth
@@ -27,27 +36,43 @@ const Index = () => {
       <div className="min-h-screen bg-background text-foreground selection:bg-primary selection:text-primary-foreground">
         <Navbar />
         <main>
-          {/* 1. Hero - Qué hacemos + CTAs */}
+          {/* 1. Hero - Qué hacemos + CTAs (critical - no lazy) */}
           <HeroSection />
 
-          {/* 2. Servicios - Conocen el alcance */}
+          {/* 2. Servicios - Conocen el alcance (critical - no lazy) */}
           <ServicesSection />
 
-          {/* 3. Por qué Altitude - Confían */}
+          {/* 3. Por qué Altitude - Confían (critical - no lazy) */}
           <WhyAltitudeSection />
 
-          {/* 4. Quiz - Lead Magnet Dinámico */}
-          {/* Al completar, abre /video-personalizado en nueva pestaña */}
+          {/* 4. Quiz - Lead Magnet Dinámico (critical - no lazy) */}
           <QuizSection />
 
-          {/* Resto del contenido */}
-          <ProcessSection />
-          <ClientsSection />
-          <AboutSection />
-          <TeamSection />
-          <CTASection />
+          {/* Below the fold - lazy loaded */}
+          <Suspense fallback={<SectionLoader />}>
+            <ProcessSection />
+          </Suspense>
+
+          <Suspense fallback={<SectionLoader />}>
+            <ClientsSection />
+          </Suspense>
+
+          <Suspense fallback={<SectionLoader />}>
+            <AboutSection />
+          </Suspense>
+
+          <Suspense fallback={<SectionLoader />}>
+            <TeamSection />
+          </Suspense>
+
+          <Suspense fallback={<SectionLoader />}>
+            <CTASection />
+          </Suspense>
         </main>
-        <Footer />
+
+        <Suspense fallback={null}>
+          <Footer />
+        </Suspense>
 
         {/* CTA Flotante */}
         <FloatingCTA />

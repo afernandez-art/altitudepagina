@@ -1,7 +1,42 @@
 import { motion } from "framer-motion";
+import { memo } from "react";
 import { FileSearch, ChevronDown, CheckCircle, Truck, FileCheck, Package, Warehouse } from "lucide-react";
 import heroImage from "@/assets/hero-warehouse.png";
 import heroImageMobile from "@/assets/hero-warehouse-mobile.png";
+
+// Memoized hero background for performance
+const HeroBackground = memo(() => (
+  <>
+    {/* Background image - mobile */}
+    <div className="absolute inset-0 z-0 block sm:hidden">
+      <img
+        src={heroImageMobile}
+        alt=""
+        className="w-full h-full object-cover"
+        loading="eager"
+        decoding="async"
+        fetchPriority="high"
+      />
+      <div className="absolute inset-0 bg-background/75" />
+      <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-background/30" />
+    </div>
+    {/* Background image - desktop */}
+    <div className="absolute inset-0 z-0 hidden sm:block">
+      <img
+        src={heroImage}
+        alt=""
+        className="w-full h-full object-cover"
+        loading="eager"
+        decoding="async"
+        fetchPriority="high"
+      />
+      <div className="absolute inset-0 bg-background/80" />
+      <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-background/40" />
+    </div>
+  </>
+));
+
+HeroBackground.displayName = "HeroBackground";
 
 export const HeroSection = () => {
   const scrollToQuiz = () => {
@@ -17,26 +52,7 @@ export const HeroSection = () => {
 
   return (
     <section className="relative min-h-[85svh] flex items-center px-4 sm:px-6 overflow-hidden pt-24 pb-12">
-      {/* Background image - mobile */}
-      <div className="absolute inset-0 z-0 block sm:hidden">
-        <img
-          src={heroImageMobile}
-          alt=""
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-background/75" />
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-background/30" />
-      </div>
-      {/* Background image - desktop */}
-      <div className="absolute inset-0 z-0 hidden sm:block">
-        <img
-          src={heroImage}
-          alt=""
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-background/80" />
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-background/40" />
-      </div>
+      <HeroBackground />
 
       <div className="max-w-3xl mx-auto w-full relative z-10">
         <div className="text-center space-y-5 sm:space-y-6">

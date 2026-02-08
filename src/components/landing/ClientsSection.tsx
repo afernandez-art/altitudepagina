@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Quote } from "lucide-react";
 import { useCountUp } from "@/hooks/useCountUp";
+import { memo } from "react";
 
 import lichytexLogo from "@/assets/logos/lichytex.png";
 import adlerPelzerLogo from "@/assets/logos/adler-pelzer.png";
@@ -77,9 +78,11 @@ export const ClientsSection = () => {
               key={index}
               className="h-14 md:h-16 w-[calc(33.333%-1rem)] md:w-[calc(20%-1rem)] p-3 flex items-center justify-center bg-white/90 rounded-xl opacity-90 hover:opacity-100 hover:scale-105 transition-all duration-300"
             >
-              <img 
-                src={logo.src} 
-                alt={logo.alt} 
+              <img
+                src={logo.src}
+                alt={logo.alt}
+                loading="lazy"
+                decoding="async"
                 className={`max-h-full max-w-full object-contain ${logo.className}`}
               />
             </div>
