@@ -117,7 +117,8 @@ export const trackEvent = async (
       user_agent: navigator.userAgent,
     };
 
-    const { error } = await supabase
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { error } = await (supabase as any)
       .from('events')
       .insert([event]);
 
@@ -339,7 +340,8 @@ export const getAnalyticsData = async (days: number = 30) => {
   const startDate = new Date();
   startDate.setDate(startDate.getDate() - days);
 
-  const { data, error } = await supabase
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { data, error } = await (supabase as any)
     .from('events')
     .select('*')
     .gte('created_at', startDate.toISOString())

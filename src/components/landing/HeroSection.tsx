@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
 import { FileSearch, ChevronDown, CheckCircle, Truck, FileCheck, Package, Warehouse } from "lucide-react";
-import heroImage from "@/assets/hero-warehouse.jpg";
 
 export const HeroSection = () => {
   const scrollToQuiz = () => {
@@ -16,26 +15,8 @@ export const HeroSection = () => {
 
   return (
     <section className="relative min-h-[85svh] flex items-center px-4 sm:px-6 overflow-hidden pt-24 pb-12">
-      {/* Hero image for desktop - positioned on right side */}
-      <div className="hidden lg:block absolute right-0 top-0 w-1/2 h-full">
-        <motion.div
-          initial={{ opacity: 0, x: 50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-          className="relative w-full h-full"
-        >
-          <img
-            src={heroImage}
-            alt="Altitude Logistics Group - Centro de distribución"
-            className="w-full h-full object-cover"
-          />
-          {/* Gradient overlay for smooth transition */}
-          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-transparent" />
-        </motion.div>
-      </div>
-
-      <div className="max-w-3xl lg:max-w-7xl mx-auto w-full relative z-10">
-        <div className="text-center lg:text-left lg:max-w-xl space-y-5 sm:space-y-6">
+      <div className="max-w-3xl mx-auto w-full">
+        <div className="text-center space-y-5 sm:space-y-6">
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -61,7 +42,7 @@ export const HeroSection = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.25 }}
-            className="flex flex-wrap items-center justify-center lg:justify-start gap-x-2 sm:gap-x-4 gap-y-2 text-sm sm:text-base text-zinc-300"
+            className="flex flex-wrap items-center justify-center gap-x-2 sm:gap-x-4 gap-y-2 text-sm sm:text-base text-zinc-300"
           >
             <span className="flex items-center gap-1.5">
               <Package className="w-4 h-4 text-primary" />
@@ -89,7 +70,7 @@ export const HeroSection = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start pt-4"
+            className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center pt-4"
           >
             <button
               onClick={scrollToQuiz}
@@ -112,7 +93,7 @@ export const HeroSection = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
-            className="flex flex-wrap justify-center lg:justify-start gap-x-4 sm:gap-x-6 gap-y-2 text-zinc-500 text-xs sm:text-sm"
+            className="flex flex-wrap justify-center gap-x-4 sm:gap-x-6 gap-y-2 text-zinc-500 text-xs sm:text-sm"
           >
             <span className="flex items-center gap-1.5">
               <CheckCircle className="w-4 h-4 text-green-500" />
@@ -130,8 +111,8 @@ export const HeroSection = () => {
         </div>
       </div>
 
-      {/* Background gradient - hidden on desktop where image shows */}
-      <div className="absolute top-0 right-0 -z-10 w-1/2 h-full bg-gradient-to-l from-primary/5 to-transparent lg:hidden" />
+      {/* Background gradient */}
+      <div className="absolute top-0 right-0 -z-10 w-1/2 h-full bg-gradient-to-l from-primary/5 to-transparent" />
       <div className="absolute bottom-0 left-1/4 -z-10 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
     </section>
   );
