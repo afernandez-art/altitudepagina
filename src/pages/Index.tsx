@@ -62,10 +62,6 @@ const Index = () => {
           </Suspense>
 
           <Suspense fallback={<SectionLoader />}>
-            <TeamSection />
-          </Suspense>
-
-          <Suspense fallback={<SectionLoader />}>
             <CTASection />
           </Suspense>
         </main>

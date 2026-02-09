@@ -3,10 +3,10 @@ import { Check, ArrowRight } from "lucide-react";
 
 const credentials = [
   "Flota de transporte propia con cobertura nacional",
-  "Depósito fiscal habilitado y centro de fulfillment",
+  "Centro de fulfillment en Pilar, Buenos Aires",
   "Despachantes de aduana propios",
-  "Sistema de tracking en tiempo real",
-  "Atención 24/7 para urgencias"
+  "Servicio integral de importación (De China a tu depósito)",
+  "Contenedores consolidados propios"
 ];
 
 export const AboutSection = () => {
