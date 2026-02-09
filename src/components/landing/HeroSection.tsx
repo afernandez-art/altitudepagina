@@ -30,8 +30,8 @@ const HeroBackground = memo(() => (
         decoding="async"
         fetchPriority="high"
       />
-      <div className="absolute inset-0 bg-background/80" />
-      <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-background/40" />
+      <div className="absolute inset-0 bg-background/45" />
+      <div className="absolute inset-0 bg-gradient-to-t from-background via-background/25 to-transparent" />
     </div>
   </>
 ));
