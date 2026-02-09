@@ -17,8 +17,8 @@ const HeroBackground = memo(() => (
         decoding="async"
         fetchPriority="high"
       />
-      <div className="absolute inset-0 bg-background/75" />
-      <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-background/30" />
+      <div className="absolute inset-0 bg-background/40" />
+      <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent" />
     </div>
     {/* Background image - desktop */}
     <div className="absolute inset-0 z-0 hidden sm:block">
