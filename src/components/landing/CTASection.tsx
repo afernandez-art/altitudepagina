@@ -20,7 +20,7 @@ export const CTASection = () => {
               ¿Listo para optimizar tu logística?
             </h2>
             <p className="text-primary-foreground/80 text-lg mb-8 max-w-xl mx-auto">
-              Obtené un diagnóstico gratuito con soluciones personalizadas para tu negocio
+              Obtené una cotización personalizada para tu operación logística
             </p>
 
             <a
@@ -28,7 +28,7 @@ export const CTASection = () => {
               className="inline-flex items-center gap-3 bg-primary-foreground text-primary px-10 py-5 rounded-xl font-bold hover:bg-primary-foreground/90 transition-all shadow-lg text-lg"
             >
               <FileSearch className="w-6 h-6" />
-              Quiero mi diagnóstico gratis
+              Cotizar mi operación
               <ArrowRight className="w-5 h-5" />
             </a>
           </div>

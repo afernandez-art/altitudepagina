@@ -44,7 +44,7 @@ export const AboutSection = () => {
               viewport={{ once: true }}
               className="inline-flex items-center gap-2 text-primary font-semibold mt-8 hover:gap-3 transition-all"
             >
-              Obtené tu diagnóstico gratis <ArrowRight className="w-5 h-5" />
+              Cotizá tu operación <ArrowRight className="w-5 h-5" />
             </motion.a>
           </motion.div>
 

@@ -5,7 +5,7 @@ import { useState } from "react";
 const steps = [
   {
     number: "01",
-    title: "Diagnóstico",
+    title: "Consulta",
     description: "Entendemos tu operación",
     detail: "Analizamos tu flujo logístico actual, identificamos cuellos de botella y oportunidades de mejora."
   },
@@ -174,7 +174,7 @@ export const ProcessSection = () => {
             className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-8 py-4 rounded-xl font-bold hover:bg-primary/90 transition-all shadow-lg shadow-primary/20"
           >
             <FileSearch className="w-5 h-5" />
-            Empezar con mi diagnóstico gratis
+            Cotizar mi operación
             <ArrowRight className="w-5 h-5" />
           </a>
         </motion.div>

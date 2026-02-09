@@ -49,8 +49,8 @@ export const FloatingCTA = () => {
             className="bg-primary text-primary-foreground px-6 py-4 rounded-full font-bold shadow-2xl shadow-primary/40 flex items-center gap-2"
           >
             <FileSearch className="w-5 h-5" />
-            <span className="hidden sm:inline">Mi diagnóstico gratis</span>
-            <span className="sm:hidden">Diagnóstico</span>
+            <span className="hidden sm:inline">Cotizar mi operación</span>
+            <span className="sm:hidden">Cotizar</span>
           </motion.button>
           <button
             onClick={() => setIsDismissed(true)}
