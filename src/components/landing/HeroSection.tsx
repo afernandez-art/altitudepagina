@@ -144,7 +144,7 @@ export const HeroSection = () => {
             </span>
             <span className="flex items-center gap-1.5">
               <CheckCircle className="w-4 h-4 text-green-500" />
-              48hs aduana
+              Importamos por vos
             </span>
           </motion.div>
         </div>
