@@ -34,12 +34,11 @@ import {
   Timer,
   ArrowDown,
   PieChart,
+  Loader2,
 } from "lucide-react";
 import { getLeads, updateLeadStatus, Lead, isSupabaseConfigured } from "@/lib/supabase";
 import { getAnalyticsData, calculateFunnelMetrics, calculateExtendedMetrics } from "@/lib/analytics";
-
-// Password simple para el admin (en producción usar auth de Supabase)
-const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || "altitude2024";
+import { useAuth } from "@/hooks/useAuth";
 
 // Estados disponibles para leads
 const estadosOptions = [
@@ -89,9 +88,14 @@ interface ExtendedMetrics {
 }
 
 const Admin = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  // Auth state
+  const { user, loading: authLoading, isAuthenticated, signIn, signOut } = useAuth();
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [passwordError, setPasswordError] = useState("");
+  const [loginError, setLoginError] = useState("");
+  const [loginLoading, setLoginLoading] = useState(false);
+
+  // Leads state
   const [leads, setLeads] = useState<Lead[]>([]);
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -109,14 +113,6 @@ const Admin = () => {
   const [metricsLoading, setMetricsLoading] = useState(false);
   const [metricsDays, setMetricsDays] = useState(30);
 
-  // Check if already authenticated
-  useEffect(() => {
-    const auth = sessionStorage.getItem("admin_auth");
-    if (auth === "true") {
-      setIsAuthenticated(true);
-    }
-  }, []);
-
   // Load leads when authenticated
   useEffect(() => {
     if (isAuthenticated) {
@@ -124,20 +120,28 @@ const Admin = () => {
     }
   }, [isAuthenticated]);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (password === ADMIN_PASSWORD) {
-      setIsAuthenticated(true);
-      sessionStorage.setItem("admin_auth", "true");
-      setPasswordError("");
-    } else {
-      setPasswordError("Contraseña incorrecta");
+    setLoginLoading(true);
+    setLoginError("");
+
+    const { error } = await signIn(email, password);
+
+    if (error) {
+      if (error.message.includes("Invalid login credentials")) {
+        setLoginError("Email o contraseña incorrectos");
+      } else if (error.message.includes("Email not confirmed")) {
+        setLoginError("Confirmá tu email antes de iniciar sesión");
+      } else {
+        setLoginError(error.message);
+      }
     }
+
+    setLoginLoading(false);
   };
 
-  const handleLogout = () => {
-    setIsAuthenticated(false);
-    sessionStorage.removeItem("admin_auth");
+  const handleLogout = async () => {
+    await signOut();
   };
 
   const loadLeads = async () => {
@@ -248,6 +252,15 @@ const Admin = () => {
     link.click();
   };
 
+  // Loading state
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
   // Login screen
   if (!isAuthenticated) {
     return (
@@ -262,7 +275,7 @@ const Admin = () => {
               <Lock className="w-8 h-8 text-primary" />
             </div>
             <h1 className="text-2xl font-black mb-2">Admin Panel</h1>
-            <p className="text-sm text-muted-foreground">Ingresá la contraseña para acceder</p>
+            <p className="text-sm text-muted-foreground">Ingresá tus credenciales para acceder</p>
           </div>
 
           {!isSupabaseConfigured() && (
@@ -276,22 +289,47 @@ const Admin = () => {
 
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
+              <label className="text-sm text-muted-foreground mb-1 block">Email</label>
+              <input
+                type="email"
+                placeholder="admin@empresa.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full bg-secondary border border-zinc-700 rounded-xl px-4 py-3 outline-none focus:border-primary"
+                required
+                disabled={loginLoading}
+              />
+            </div>
+            <div>
+              <label className="text-sm text-muted-foreground mb-1 block">Contraseña</label>
               <input
                 type="password"
-                placeholder="Contraseña"
+                placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full bg-secondary border border-zinc-700 rounded-xl px-4 py-3 outline-none focus:border-primary"
+                required
+                disabled={loginLoading}
               />
-              {passwordError && (
-                <p className="text-red-500 text-sm mt-2">{passwordError}</p>
-              )}
             </div>
+            {loginError && (
+              <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-3">
+                <p className="text-red-500 text-sm">{loginError}</p>
+              </div>
+            )}
             <button
               type="submit"
-              className="w-full bg-primary text-primary-foreground py-3 rounded-xl font-bold hover:bg-primary/90 transition-all"
+              disabled={loginLoading}
+              className="w-full bg-primary text-primary-foreground py-3 rounded-xl font-bold hover:bg-primary/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
-              Ingresar
+              {loginLoading ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Ingresando...
+                </>
+              ) : (
+                "Ingresar"
+              )}
             </button>
           </form>
 
@@ -358,12 +396,17 @@ const Admin = () => {
                 Exportar CSV
               </button>
             )}
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <User className="w-4 h-4" />
+              <span className="hidden sm:inline">{user?.email}</span>
+            </div>
             <button
               onClick={handleLogout}
-              className="p-2 hover:bg-secondary rounded-lg transition-colors text-red-500"
+              className="flex items-center gap-2 px-3 py-2 hover:bg-red-500/10 rounded-lg transition-colors text-red-500 text-sm"
               title="Cerrar sesión"
             >
-              <LogOut className="w-5 h-5" />
+              <LogOut className="w-4 h-4" />
+              <span className="hidden sm:inline">Salir</span>
             </button>
           </div>
         </div>
