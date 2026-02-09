@@ -14,9 +14,9 @@ import nestleLogo from "@/assets/logos/nestle.png";
 import telecomLogo from "@/assets/logos/telecom.png";
 
 const stats = [
-  { value: 150, prefix: "+", suffix: "", label: "Clientes" },
+  { value: 450, prefix: "+", suffix: "", label: "Clientes" },
   { value: 98, prefix: "", suffix: "%", label: "Entregas a tiempo" },
-  { value: 500, prefix: "+", suffix: "", label: "Operaciones/año" },
+  { value: 1900, prefix: "+", suffix: "", label: "Operaciones/año" },
   { value: 12, prefix: "", suffix: "", label: "Años" }
 ];
 
