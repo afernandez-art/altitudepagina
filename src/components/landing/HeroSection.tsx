@@ -116,7 +116,7 @@ export const HeroSection = () => {
               className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground px-6 sm:px-8 py-4 rounded-xl text-base sm:text-lg font-bold transition-all flex items-center justify-center gap-2 sm:gap-3 shadow-2xl shadow-primary/20"
             >
               <FileSearch className="w-5 h-5" />
-              Quiero mi diagnóstico gratis
+              Cotizar mi operación
             </button>
             <button
               onClick={scrollToServices}
