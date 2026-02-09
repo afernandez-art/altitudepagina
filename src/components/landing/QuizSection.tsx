@@ -378,7 +378,7 @@ export const QuizSection = () => {
           viewport={{ once: true }}
           className="text-center text-xs sm:text-sm text-muted-foreground mt-6"
         >
-          <span className="text-primary font-semibold">+847 empresas</span> ya recibieron su cotización gratis
+          <span className="text-primary font-semibold">+1500 empresas</span> ya recibieron su cotización gratis
         </motion.p>
       </div>
     </section>
