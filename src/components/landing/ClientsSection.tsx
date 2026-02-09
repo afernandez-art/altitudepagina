@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-import { Quote } from "lucide-react";
 import { useCountUp } from "@/hooks/useCountUp";
 import { memo } from "react";
 
@@ -14,9 +13,9 @@ import nestleLogo from "@/assets/logos/nestle.png";
 import telecomLogo from "@/assets/logos/telecom.png";
 
 const stats = [
-  { value: 150, prefix: "+", suffix: "", label: "Clientes" },
+  { value: 450, prefix: "+", suffix: "", label: "Clientes" },
   { value: 98, prefix: "", suffix: "%", label: "Entregas a tiempo" },
-  { value: 500, prefix: "+", suffix: "", label: "Operaciones/año" },
+  { value: 1900, prefix: "+", suffix: "", label: "Operaciones/año" },
   { value: 12, prefix: "", suffix: "", label: "Años" }
 ];
 
@@ -89,25 +88,6 @@ export const ClientsSection = () => {
           ))}
         </motion.div>
 
-        {/* Testimonial */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="max-w-4xl mx-auto mb-10 sm:mb-12"
-        >
-          <div className="relative p-8 md:p-12 rounded-2xl bg-background border border-border">
-            <Quote className="w-12 h-12 text-primary/30 absolute top-6 left-6" />
-            <blockquote className="text-xl md:text-2xl font-medium leading-relaxed text-center pt-8">
-              "Altitude maneja nuestras importaciones, el transporte a todo el país y el stock en su depósito. 
-              Un solo proveedor, un solo contacto, cero dolores de cabeza."
-            </blockquote>
-            <div className="mt-8 text-center">
-              <p className="font-bold">María González</p>
-              <p className="text-muted-foreground text-sm">Gerente de Operaciones, Empresa S.A.</p>
-            </div>
-          </div>
-        </motion.div>
 
         {/* Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
