@@ -21,7 +21,7 @@ const services = [
   {
     number: "04",
     title: "Fulfillment B2B",
-    description: "Almacenamos tu mercadería y despachamos a tus clientes. Integración con tu sistema, reportes en tiempo real."
+    description: "Almacenamos tu mercadería y despachamos a tus clientes."
   }
 ];
 
