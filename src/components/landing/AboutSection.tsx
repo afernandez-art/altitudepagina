@@ -33,7 +33,7 @@ export const AboutSection = () => {
               </p>
               <p>
                 Operamos desde Buenos Aires con flota propia, depósito habilitado y 
-                cobertura en todo el país. Partners en los principales puertos del mundo.
+                cobertura en todo el país. Tenemos socios en los principales puertos del mundo.
               </p>
             </div>
 
