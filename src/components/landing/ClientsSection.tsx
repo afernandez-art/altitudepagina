@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-import { Quote } from "lucide-react";
 import { useCountUp } from "@/hooks/useCountUp";
 import { memo } from "react";
 
