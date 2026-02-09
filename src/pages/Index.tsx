@@ -12,7 +12,7 @@ import { analytics, setupScrollTracking } from "@/lib/analytics";
 const ProcessSection = lazy(() => import("@/components/landing/ProcessSection").then(m => ({ default: m.ProcessSection })));
 const ClientsSection = lazy(() => import("@/components/landing/ClientsSection").then(m => ({ default: m.ClientsSection })));
 const AboutSection = lazy(() => import("@/components/landing/AboutSection").then(m => ({ default: m.AboutSection })));
-const TeamSection = lazy(() => import("@/components/landing/TeamSection").then(m => ({ default: m.TeamSection })));
+
 const CTASection = lazy(() => import("@/components/landing/CTASection").then(m => ({ default: m.CTASection })));
 const Footer = lazy(() => import("@/components/landing/Footer").then(m => ({ default: m.Footer })));
 
