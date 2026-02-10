@@ -60,11 +60,11 @@ export const HeroSection = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1]"
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] uppercase"
           >
-            <span className="text-zinc-400">Tu carga,</span>
+            <span className="text-zinc-400">Movemos tu</span>
             <br />
-            <span>nuestra responsabilidad.</span>
+            <span className="text-primary">carga</span> con actitud.
           </motion.h1>
 
           <motion.p
@@ -73,7 +73,7 @@ export const HeroSection = () => {
             transition={{ delay: 0.2 }}
             className="text-base sm:text-lg lg:text-xl text-zinc-400 max-w-2xl mx-auto"
           >
-            De origen a destino, sin intermediarios. Un solo operador para toda tu cadena logística.
+            No somos otra empresa de logística aburrida. Somos la fuerza que mueve tu negocio 🔥
           </motion.p>
 
           {/* Services inline */}
@@ -116,13 +116,13 @@ export const HeroSection = () => {
               className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground px-6 sm:px-8 py-4 rounded-xl text-base sm:text-lg font-bold transition-all flex items-center justify-center gap-2 sm:gap-3 shadow-2xl shadow-primary/20"
             >
               <FileSearch className="w-5 h-5" />
-              Cotizar mi operación
+              COTIZAR AHORA 🚀
             </button>
             <button
               onClick={scrollToServices}
-              className="w-full sm:w-auto bg-foreground/5 hover:bg-foreground/10 border border-zinc-800 px-6 sm:px-8 py-4 rounded-xl text-base sm:text-lg font-bold transition-all flex items-center justify-center gap-2"
+              className="w-full sm:w-auto bg-foreground/5 hover:bg-foreground/10 border border-zinc-800 px-6 sm:px-8 py-4 rounded-xl text-base sm:text-lg font-bold transition-all flex items-center justify-center gap-2 uppercase"
             >
-              Conocer más
+              Ver servicios
               <ChevronDown className="w-5 h-5" />
             </button>
           </motion.div>
@@ -136,15 +136,15 @@ export const HeroSection = () => {
           >
             <span className="flex items-center gap-1.5">
               <CheckCircle className="w-4 h-4 text-green-500" />
-              +12 años
+              +12 años en la calle
             </span>
             <span className="flex items-center gap-1.5">
               <CheckCircle className="w-4 h-4 text-green-500" />
-              Flota propia
+              Flota 100% propia
             </span>
             <span className="flex items-center gap-1.5">
               <CheckCircle className="w-4 h-4 text-green-500" />
-              Importamos por vos
+              Importamos por vos 💪
             </span>
           </motion.div>
         </div>

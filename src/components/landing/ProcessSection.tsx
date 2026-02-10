@@ -48,9 +48,9 @@ export const ProcessSection = () => {
           className="text-center mb-12 sm:mb-16"
         >
           <h2 className="text-sm font-bold text-primary tracking-[0.2em] uppercase mb-4">
-            Cómo trabajamos
+            Así laburamos 🔧
           </h2>
-          <p className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter">
+          <p className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter uppercase">
             Tu operación en <span className="text-primary">5 pasos</span>
           </p>
         </motion.div>
@@ -174,7 +174,7 @@ export const ProcessSection = () => {
             className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-8 py-4 rounded-xl font-bold hover:bg-primary/90 transition-all shadow-lg shadow-primary/20"
           >
             <FileSearch className="w-5 h-5" />
-            Cotizar mi operación
+            COTIZAR AHORA 🔥
             <ArrowRight className="w-5 h-5" />
           </a>
         </motion.div>
