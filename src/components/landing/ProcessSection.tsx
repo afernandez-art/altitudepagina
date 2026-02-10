@@ -174,7 +174,7 @@ export const ProcessSection = () => {
             className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-8 py-4 rounded-xl font-bold hover:bg-primary/90 transition-all shadow-lg shadow-primary/20"
           >
             <FileSearch className="w-5 h-5" />
-            Cotizar mi operación
+            COTIZAR AHORA 🔥
             <ArrowRight className="w-5 h-5" />
           </a>
         </motion.div>

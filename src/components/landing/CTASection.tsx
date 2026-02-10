@@ -28,7 +28,7 @@ export const CTASection = () => {
               className="inline-flex items-center gap-3 bg-primary-foreground text-primary px-10 py-5 rounded-xl font-bold hover:bg-primary-foreground/90 transition-all shadow-lg text-lg"
             >
               <FileSearch className="w-6 h-6" />
-              Cotizar mi operación
+              COTIZAR AHORA 🔥
               <ArrowRight className="w-5 h-5" />
             </a>
           </div>

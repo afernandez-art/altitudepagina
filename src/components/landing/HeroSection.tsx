@@ -136,15 +136,15 @@ export const HeroSection = () => {
           >
             <span className="flex items-center gap-1.5">
               <CheckCircle className="w-4 h-4 text-green-500" />
-              +12 años
+              +12 años en la calle
             </span>
             <span className="flex items-center gap-1.5">
               <CheckCircle className="w-4 h-4 text-green-500" />
-              Flota propia
+              Flota 100% propia
             </span>
             <span className="flex items-center gap-1.5">
               <CheckCircle className="w-4 h-4 text-green-500" />
-              Importamos por vos
+              Importamos por vos 💪
             </span>
           </motion.div>
         </div>
