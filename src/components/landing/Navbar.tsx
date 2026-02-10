@@ -22,15 +22,15 @@ export const Navbar = () => {
         </a>
 
         <div className="hidden md:flex items-center gap-8">
-          <a href="#servicios" className="text-sm font-medium text-zinc-400 hover:text-foreground transition-colors">
+          <a href="#servicios" className="font-heading text-xs font-medium text-muted-foreground hover:text-primary transition-colors tracking-[3px] uppercase">
             Servicios
           </a>
-          <a href="#proceso" className="text-sm font-medium text-zinc-400 hover:text-foreground transition-colors">
+          <a href="#proceso" className="font-heading text-xs font-medium text-muted-foreground hover:text-primary transition-colors tracking-[3px] uppercase">
             Cómo funciona
           </a>
           <a
             href="#quiz-section"
-            className="bg-primary hover:bg-primary/90 text-primary-foreground px-5 py-2.5 rounded-lg text-sm font-bold tracking-tight transition-all flex items-center gap-2"
+            className="font-heading bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-2.5 text-xs font-bold tracking-[2px] uppercase transition-all flex items-center gap-2"
           >
             <FileSearch className="w-4 h-4" />
             Cotizar operación
