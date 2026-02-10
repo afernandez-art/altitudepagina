@@ -48,9 +48,9 @@ export const ProcessSection = () => {
           className="text-center mb-12 sm:mb-16"
         >
           <h2 className="text-sm font-bold text-primary tracking-[0.2em] uppercase mb-4">
-            Cómo trabajamos
+            Así laburamos 🔧
           </h2>
-          <p className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter">
+          <p className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter uppercase">
             Tu operación en <span className="text-primary">5 pasos</span>
           </p>
         </motion.div>
