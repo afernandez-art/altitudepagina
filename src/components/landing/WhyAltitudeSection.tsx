@@ -4,18 +4,18 @@ import { User, MapPin, DollarSign, ArrowRight, FileSearch } from "lucide-react";
 const benefits = [
   {
     icon: User,
-    title: "Un solo contacto",
-    description: "No coordinás entre múltiples proveedores. Ya sea una importación, un envío nacional o tu almacén, tenés un solo equipo."
+    title: "Un solo contacto 📱",
+    description: "Basta de hablar con 10 proveedores distintos. Un equipo, un WhatsApp, todo resuelto."
   },
   {
     icon: MapPin,
-    title: "Visibilidad total",
-    description: "Sabés dónde está tu mercadería en cada momento. Tracking en tiempo real para todas tus operaciones."
+    title: "Sabés todo, siempre 📍",
+    description: "Tracking real de tu carga. Nada de 'te aviso mañana'. Sabés dónde está en cada momento."
   },
   {
     icon: DollarSign,
-    title: "Precio cerrado",
-    description: "Cotización integral sin sorpresas. Sabés el costo total de tu operación antes de arrancar."
+    title: "Precio cerrado, sin humo 💰",
+    description: "Te decimos cuánto sale y punto. Sin costos ocultos, sin sorpresas al final."
   }
 ];
 
