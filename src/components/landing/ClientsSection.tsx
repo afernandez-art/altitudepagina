@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { useCountUp } from "@/hooks/useCountUp";
+import { memo } from "react";
 
 import lichytexLogo from "@/assets/logos/lichytex.png";
 import adlerPelzerLogo from "@/assets/logos/adler-pelzer.png";
@@ -38,8 +39,9 @@ interface AnimatedCounterProps {
 
 const AnimatedCounter = ({ value, prefix = "", suffix = "" }: AnimatedCounterProps) => {
   const { count, elementRef } = useCountUp({ end: value, duration: 2000 });
+  
   return (
-    <div ref={elementRef} className="font-display text-6xl md:text-7xl text-primary mb-2">
+    <div ref={elementRef} className="text-5xl md:text-6xl font-black text-primary mb-2">
       {prefix}{count}{suffix}
     </div>
   );
@@ -55,10 +57,10 @@ export const ClientsSection = () => {
           viewport={{ once: true }}
           className="text-center mb-10"
         >
-          <h2 className="font-heading text-xs font-bold text-primary tracking-[4px] uppercase mb-3">
+          <h2 className="text-sm font-bold text-primary tracking-[0.2em] uppercase mb-3">
             Social Proof
           </h2>
-          <p className="font-display text-4xl md:text-5xl lg:text-6xl tracking-tight uppercase">
+          <p className="text-3xl md:text-4xl font-black tracking-tighter">
             Empresas que <span className="text-primary">confían</span> en nosotros
           </p>
         </motion.div>
@@ -73,12 +75,19 @@ export const ClientsSection = () => {
           {logos.map((logo, index) => (
             <div
               key={index}
-              className="h-14 md:h-16 w-[calc(33.333%-1rem)] md:w-[calc(20%-1rem)] p-3 flex items-center justify-center bg-white/90 opacity-90 hover:opacity-100 hover:scale-105 transition-all duration-300"
+              className="h-14 md:h-16 w-[calc(33.333%-1rem)] md:w-[calc(20%-1rem)] p-3 flex items-center justify-center bg-white/90 rounded-xl opacity-90 hover:opacity-100 hover:scale-105 transition-all duration-300"
             >
-              <img src={logo.src} alt={logo.alt} loading="lazy" decoding="async" className={`max-h-full max-w-full object-contain ${logo.className}`} />
+              <img
+                src={logo.src}
+                alt={logo.alt}
+                loading="lazy"
+                decoding="async"
+                className={`max-h-full max-w-full object-contain ${logo.className}`}
+              />
             </div>
           ))}
         </motion.div>
+
 
         {/* Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
@@ -91,8 +100,12 @@ export const ClientsSection = () => {
               transition={{ delay: index * 0.1 }}
               className="text-center"
             >
-              <AnimatedCounter value={stat.value} prefix={stat.prefix} suffix={stat.suffix} />
-              <div className="font-heading text-muted-foreground text-xs uppercase tracking-[3px]">
+              <AnimatedCounter 
+                value={stat.value} 
+                prefix={stat.prefix} 
+                suffix={stat.suffix} 
+              />
+              <div className="text-muted-foreground text-sm uppercase tracking-wider">
                 {stat.label}
               </div>
             </motion.div>

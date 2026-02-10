@@ -29,7 +29,7 @@ export const WhyAltitudeSection = () => {
           viewport={{ once: true }}
           className="text-center mb-12 sm:mb-16"
         >
-          <h2 className="font-display text-5xl md:text-6xl lg:text-7xl tracking-tight uppercase">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter">
             ¿Por qué trabajar con un{" "}
             <span className="text-primary">solo operador</span>?
           </h2>
@@ -43,13 +43,13 @@ export const WhyAltitudeSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.15 }}
-              className="group p-8 bg-background/50 border border-border hover:border-primary/50 transition-all duration-300"
+              className="group p-8 rounded-2xl bg-background/50 border border-border hover:border-primary/50 transition-all duration-300"
             >
-              <div className="w-14 h-14 bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors">
+              <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors">
                 <benefit.icon className="w-7 h-7 text-primary" />
               </div>
-              <h3 className="font-heading text-2xl font-bold mb-4 tracking-tight uppercase">{benefit.title}</h3>
-              <p className="font-body text-muted-foreground leading-relaxed tracking-wide">{benefit.description}</p>
+              <h3 className="text-2xl font-bold mb-4 tracking-tight">{benefit.title}</h3>
+              <p className="text-muted-foreground leading-relaxed">{benefit.description}</p>
             </motion.div>
           ))}
         </div>
@@ -62,14 +62,14 @@ export const WhyAltitudeSection = () => {
         >
           <a
             href="#quiz-section"
-            className="inline-flex items-center gap-2 font-heading bg-primary text-primary-foreground px-8 py-4 text-sm font-bold tracking-[2px] uppercase hover:bg-primary/90 transition-all shadow-lg shadow-primary/20"
+            className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-8 py-4 rounded-xl font-bold hover:bg-primary/90 transition-all shadow-lg shadow-primary/20"
           >
             <FileSearch className="w-5 h-5" />
             Cotizar mi operación
           </a>
           <a
             href="#proceso"
-            className="inline-flex items-center gap-2 font-heading text-muted-foreground hover:text-foreground text-sm font-semibold tracking-[2px] uppercase transition-all"
+            className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground font-semibold transition-all"
           >
             Ver cómo funciona <ArrowRight className="w-5 h-5" />
           </a>

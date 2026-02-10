@@ -10,17 +10,24 @@ export const FloatingCTA = () => {
 
   useEffect(() => {
     const handleScroll = () => {
+      // Show after scrolling past 500px
       const scrolled = window.scrollY > 500;
+      // Hide if user is in the quiz section or beyond
       const quizSection = document.getElementById("quiz-section");
       const quizTop = quizSection?.offsetTop || 0;
       const isNearQuiz = window.scrollY > quizTop - 200;
+
       setIsVisible(scrolled && !isNearQuiz && !isDismissed);
     };
+
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [isDismissed]);
 
-  if (currentStep !== "form1") return null;
+  // Don't show if user has started the flow
+  if (currentStep !== "form1") {
+    return null;
+  }
 
   const scrollToQuiz = () => {
     document.getElementById("quiz-section")?.scrollIntoView({ behavior: "smooth" });
@@ -39,7 +46,7 @@ export const FloatingCTA = () => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={scrollToQuiz}
-            className="font-heading bg-primary text-primary-foreground px-6 py-4 font-bold shadow-2xl shadow-primary/40 flex items-center gap-2 text-xs tracking-[2px] uppercase"
+            className="bg-primary text-primary-foreground px-6 py-4 rounded-full font-bold shadow-2xl shadow-primary/40 flex items-center gap-2"
           >
             <FileSearch className="w-5 h-5" />
             <span className="hidden sm:inline">Cotizar mi operación</span>
@@ -47,7 +54,7 @@ export const FloatingCTA = () => {
           </motion.button>
           <button
             onClick={() => setIsDismissed(true)}
-            className="w-10 h-10 bg-zinc-800 hover:bg-zinc-700 flex items-center justify-center transition-colors"
+            className="w-10 h-10 bg-zinc-800 hover:bg-zinc-700 rounded-full flex items-center justify-center transition-colors"
           >
             <X className="w-4 h-4" />
           </button>

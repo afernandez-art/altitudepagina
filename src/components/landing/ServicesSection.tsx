@@ -31,15 +31,15 @@ export const ServicesSection = () => {
   return (
     <section className="py-20 sm:py-24 px-6" id="servicios">
       <div className="max-w-7xl mx-auto">
-        <motion.h2
+        <motion.h2 
           initial={{ opacity: 0, x: -20 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
-          className="font-heading text-xs font-bold text-primary tracking-[4px] uppercase mb-10 sm:mb-12"
+          className="text-sm font-bold text-primary tracking-[0.2em] uppercase mb-10 sm:mb-12"
         >
           Nuestros Servicios
         </motion.h2>
-
+        
         <div className="flex flex-col">
           {services.map((service, index) => (
             <motion.div
@@ -55,18 +55,20 @@ export const ServicesSection = () => {
                 className="w-full py-8 md:py-12 flex flex-col md:flex-row items-start md:items-center justify-between transition-all px-4 hover:bg-foreground/[0.02] text-left"
               >
                 <div className="flex items-center gap-8 md:gap-12 w-full md:w-auto">
-                  <span className="font-heading text-muted-foreground text-xl md:text-2xl font-light tracking-[3px]">{service.number}</span>
-                  <h3 className="font-display text-3xl md:text-5xl lg:text-6xl tracking-tight uppercase group-hover:text-primary transition-colors">
+                  <span className="font-mono text-muted-foreground text-xl md:text-2xl font-light">{service.number}</span>
+                  <h3 className="text-2xl md:text-4xl lg:text-5xl font-bold tracking-tighter uppercase group-hover:text-primary transition-colors">
                     {service.title}
                   </h3>
                 </div>
                 <div className="flex items-center gap-4 mt-4 md:mt-0">
-                  <ChevronDown
-                    className={`w-6 h-6 text-muted-foreground transition-transform duration-300 ${expandedIndex === index ? 'rotate-180' : ''}`}
+                  <ChevronDown 
+                    className={`w-6 h-6 text-muted-foreground transition-transform duration-300 ${
+                      expandedIndex === index ? 'rotate-180' : ''
+                    }`} 
                   />
                 </div>
               </button>
-
+              
               <motion.div
                 initial={false}
                 animate={{
@@ -77,7 +79,7 @@ export const ServicesSection = () => {
                 className="overflow-hidden"
               >
                 <div className="px-4 pb-8 md:pl-[calc(2rem+3rem+3rem)] md:pr-12">
-                  <p className="font-body text-muted-foreground text-lg max-w-2xl tracking-wide">{service.description}</p>
+                  <p className="text-muted-foreground text-lg max-w-2xl">{service.description}</p>
                 </div>
               </motion.div>
             </motion.div>
@@ -93,7 +95,7 @@ export const ServicesSection = () => {
         >
           <a
             href="#quiz-section"
-            className="inline-flex items-center gap-3 font-heading bg-primary text-primary-foreground px-8 py-4 text-sm font-bold tracking-[2px] uppercase hover:bg-primary/90 transition-all shadow-lg shadow-primary/20"
+            className="inline-flex items-center gap-3 bg-primary text-primary-foreground px-8 py-4 rounded-xl font-bold hover:bg-primary/90 transition-all shadow-lg shadow-primary/20"
           >
             <FileSearch className="w-5 h-5" />
             Cotizar mi operación

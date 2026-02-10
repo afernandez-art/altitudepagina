@@ -19,20 +19,20 @@ export const AboutSection = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="font-heading text-xs font-bold text-primary tracking-[4px] uppercase mb-4">
+            <h2 className="text-sm font-bold text-primary tracking-[0.2em] uppercase mb-4">
               Sobre nosotros
             </h2>
-            <p className="font-display text-5xl md:text-6xl tracking-tight uppercase mb-8">
+            <p className="text-4xl md:text-5xl font-black tracking-tighter mb-8">
               Logística con <span className="text-primary">respaldo real</span>
             </p>
-            <div className="space-y-6 font-body text-lg text-muted-foreground leading-relaxed tracking-wide">
+            <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
               <p>
-                Somos un equipo de profesionales en logística con más de 12 años de
-                experiencia. Manejamos importaciones, distribución nacional y almacenamiento
+                Somos un equipo de profesionales en logística con más de 12 años de 
+                experiencia. Manejamos importaciones, distribución nacional y almacenamiento 
                 con la misma dedicación y eficiencia.
               </p>
               <p>
-                Operamos desde Buenos Aires con flota propia, depósito habilitado y
+                Operamos desde Buenos Aires con flota propia, depósito habilitado y 
                 cobertura en todo el país. Tenemos socios en los principales puertos del mundo.
               </p>
             </div>
@@ -42,7 +42,7 @@ export const AboutSection = () => {
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="inline-flex items-center gap-2 font-heading text-primary text-sm font-semibold mt-8 hover:gap-3 transition-all tracking-[2px] uppercase"
+              className="inline-flex items-center gap-2 text-primary font-semibold mt-8 hover:gap-3 transition-all"
             >
               Cotizá tu operación <ArrowRight className="w-5 h-5" />
             </motion.a>
@@ -52,9 +52,9 @@ export const AboutSection = () => {
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="p-8 md:p-12 bg-card border border-border"
+            className="p-8 md:p-12 rounded-2xl bg-card border border-border"
           >
-            <h3 className="font-heading text-2xl font-bold mb-8 uppercase tracking-wider">Nuestras credenciales</h3>
+            <h3 className="text-2xl font-bold mb-8">Nuestras credenciales</h3>
             <ul className="space-y-5">
               {credentials.map((item, index) => (
                 <motion.li
@@ -65,10 +65,10 @@ export const AboutSection = () => {
                   transition={{ delay: index * 0.1 }}
                   className="flex items-center gap-4"
                 >
-                  <div className="w-8 h-8 bg-primary/10 flex items-center justify-center flex-shrink-0">
+                  <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                     <Check className="w-4 h-4 text-primary" />
                   </div>
-                  <span className="font-body text-foreground tracking-wide">{item}</span>
+                  <span className="text-foreground">{item}</span>
                 </motion.li>
               ))}
             </ul>

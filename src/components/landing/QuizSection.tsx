@@ -1,7 +1,12 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowRight, ArrowLeft, Lock, Sparkles } from "lucide-react";
+import {
+  ArrowRight,
+  ArrowLeft,
+  Lock,
+  Sparkles,
+} from "lucide-react";
 import {
   useLeadMagnet,
   nichoOptions,
@@ -25,10 +30,12 @@ export const QuizSection = () => {
   const hasTrackedStart = useRef(false);
   const stepNames = ['nicho', 'situacion', 'problematica', 'facturacion'];
 
+  // Get dynamic problematicas based on selected situacion
   const currentProblematicas = formData.situacion
     ? problematicasPorSituacion[formData.situacion]
     : [];
 
+  // Track form start (solo una vez)
   useEffect(() => {
     if (!hasTrackedStart.current) {
       analytics.form1.start();
@@ -37,16 +44,19 @@ export const QuizSection = () => {
     }
   }, []);
 
+  // Track step views
   useEffect(() => {
     if (hasTrackedStart.current && quizStep > 0) {
       analytics.form1.stepView(quizStep + 1, stepNames[quizStep]);
     }
   }, [quizStep]);
 
+  // Effect to save and redirect after facturacion is set
   useEffect(() => {
     if (pendingSave && formData.facturacion) {
       saveToStorage();
       setPendingSave(false);
+      // Navigate to video page in the same tab
       navigate("/video");
     }
   }, [pendingSave, formData.facturacion, saveToStorage, navigate]);
@@ -89,13 +99,6 @@ export const QuizSection = () => {
     setPendingSave(true);
   };
 
-  const optionClasses = (isSelected: boolean) =>
-    `w-full p-3 sm:p-4 border-2 transition-all text-left font-body tracking-wide text-sm sm:text-base ${
-      isSelected
-        ? "border-primary bg-primary/10 text-primary"
-        : "border-zinc-700 hover:border-zinc-500"
-    }`;
-
   return (
     <section id="quiz-section" className="py-12 sm:py-20 px-4 sm:px-6 bg-gradient-to-b from-secondary/30 to-background">
       <div className="max-w-3xl mx-auto">
@@ -106,14 +109,14 @@ export const QuizSection = () => {
           viewport={{ once: true }}
           className="text-center mb-8 sm:mb-12"
         >
-          <span className="inline-flex items-center gap-2 font-heading bg-primary/10 text-primary px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-semibold mb-4 tracking-[2px] uppercase">
+          <span className="inline-flex items-center gap-2 bg-primary/10 text-primary px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-semibold mb-4">
             <Sparkles className="w-4 h-4" />
             Cotización gratis en 2 minutos
           </span>
-          <h2 className="font-display text-3xl sm:text-4xl md:text-5xl tracking-tight uppercase mb-3 sm:mb-4">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight mb-3 sm:mb-4">
             Obtené tu cotización personalizada
           </h2>
-          <p className="font-body text-muted-foreground text-sm sm:text-base tracking-wide">
+          <p className="text-muted-foreground text-sm sm:text-base">
             Respondé 4 preguntas rápidas y te preparamos una propuesta con soluciones para tu negocio
           </p>
         </motion.div>
@@ -123,11 +126,11 @@ export const QuizSection = () => {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="bg-card border border-zinc-800 overflow-hidden"
+          className="bg-card rounded-2xl border border-zinc-800 overflow-hidden"
         >
           {/* Progress bar */}
           <div className="p-4 sm:p-6 border-b border-zinc-800">
-            <div className="flex items-center justify-between text-xs sm:text-sm mb-2 font-heading tracking-wider uppercase">
+            <div className="flex items-center justify-between text-xs sm:text-sm mb-2">
               <span className="text-muted-foreground">Paso {quizStep + 1} de {totalSteps}</span>
               <span className="text-primary font-medium">{Math.round(progress)}%</span>
             </div>
@@ -137,36 +140,57 @@ export const QuizSection = () => {
           {/* Quiz Steps */}
           <div className="p-4 sm:p-8">
             <AnimatePresence mode="wait">
+              {/* Step 1: Nicho */}
               {quizStep === 0 && (
-                <motion.div key="step1" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-4 sm:space-y-6">
-                  <h3 className="font-heading text-lg sm:text-xl font-bold tracking-wide uppercase">¿En qué rubro o nicho se encuentra tu negocio?</h3>
+                <motion.div
+                  key="step1"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  className="space-y-4 sm:space-y-6"
+                >
+                  <h3 className="text-lg sm:text-xl font-bold">¿En qué rubro o nicho se encuentra tu negocio?</h3>
+
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
-                    {nichoOptions.map((nicho) => (
-                      <motion.button
-                        key={nicho.id}
-                        whileHover={{ scale: 1.01 }}
-                        whileTap={{ scale: 0.99 }}
-                        onClick={() => handleNichoSelect(nicho.id)}
-                        className={optionClasses(formData.nicho === nicho.id)}
-                      >
-                        {nicho.label}
-                      </motion.button>
-                    ))}
+                    {nichoOptions.map((nicho) => {
+                      const isSelected = formData.nicho === nicho.id;
+                      return (
+                        <motion.button
+                          key={nicho.id}
+                          whileHover={{ scale: 1.01 }}
+                          whileTap={{ scale: 0.99 }}
+                          onClick={() => handleNichoSelect(nicho.id)}
+                          className={`p-3 sm:p-4 rounded-xl border-2 transition-all text-left text-sm sm:text-base ${
+                            isSelected
+                              ? "border-primary bg-primary/10 text-primary"
+                              : "border-zinc-700 hover:border-zinc-500"
+                          }`}
+                        >
+                          {nicho.label}
+                        </motion.button>
+                      );
+                    })}
                   </div>
+
+                  {/* Campo para "Otro" */}
                   {showNichoOtro && (
-                    <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} className="space-y-3">
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      className="space-y-3"
+                    >
                       <input
                         type="text"
                         placeholder="Especifica en qué rubro estás..."
                         value={formData.nichoOtro}
                         onChange={(e) => updateFormData({ nichoOtro: e.target.value })}
-                        className="w-full font-body bg-secondary border border-zinc-700 px-4 py-3 outline-none transition-colors focus:border-primary text-sm sm:text-base tracking-wide"
+                        className="w-full bg-secondary border border-zinc-700 rounded-xl px-4 py-3 outline-none transition-colors focus:border-primary text-sm sm:text-base"
                         autoFocus
                       />
                       <button
                         onClick={handleNichoOtroSubmit}
                         disabled={!formData.nichoOtro.trim()}
-                        className="flex items-center gap-2 font-heading bg-primary text-primary-foreground px-6 py-3 text-sm font-bold tracking-[2px] uppercase disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary/90 transition-all"
+                        className="flex items-center gap-2 bg-primary text-primary-foreground px-6 py-3 rounded-xl font-bold disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary/90 transition-all text-sm"
                       >
                         Continuar <ArrowRight className="w-4 h-4" />
                       </button>
@@ -175,81 +199,135 @@ export const QuizSection = () => {
                 </motion.div>
               )}
 
+              {/* Step 2: Situación actual */}
               {quizStep === 1 && (
-                <motion.div key="step2" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-4 sm:space-y-6">
-                  <h3 className="font-heading text-lg sm:text-xl font-bold tracking-wide uppercase">Selecciona la opción que mejor describe tu situación:</h3>
+                <motion.div
+                  key="step2"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  className="space-y-4 sm:space-y-6"
+                >
+                  <h3 className="text-lg sm:text-xl font-bold">Selecciona la opción que mejor describe tu situación:</h3>
+
                   <div className="space-y-3">
-                    {situacionOptions.map((situacion) => (
-                      <motion.button
-                        key={situacion.id}
-                        whileHover={{ scale: 1.01 }}
-                        whileTap={{ scale: 0.99 }}
-                        onClick={() => handleSituacionSelect(situacion.id)}
-                        className={`w-full p-4 sm:p-5 border-2 transition-all text-left ${
-                          formData.situacion === situacion.id
-                            ? "border-primary bg-primary/10"
-                            : "border-zinc-700 hover:border-zinc-500"
-                        }`}
-                      >
-                        <p className="font-heading font-bold text-sm sm:text-base mb-1 uppercase tracking-wide">{situacion.titulo}</p>
-                        <p className="font-body text-xs sm:text-sm text-muted-foreground tracking-wide">{situacion.descripcion}</p>
-                      </motion.button>
-                    ))}
+                    {situacionOptions.map((situacion) => {
+                      const isSelected = formData.situacion === situacion.id;
+                      return (
+                        <motion.button
+                          key={situacion.id}
+                          whileHover={{ scale: 1.01 }}
+                          whileTap={{ scale: 0.99 }}
+                          onClick={() => handleSituacionSelect(situacion.id)}
+                          className={`w-full p-4 sm:p-5 rounded-xl border-2 transition-all text-left ${
+                            isSelected
+                              ? "border-primary bg-primary/10"
+                              : "border-zinc-700 hover:border-zinc-500"
+                          }`}
+                        >
+                          <p className="font-bold text-sm sm:text-base mb-1">{situacion.titulo}</p>
+                          <p className="text-xs sm:text-sm text-muted-foreground">{situacion.descripcion}</p>
+                        </motion.button>
+                      );
+                    })}
                   </div>
+
                   <div className="flex justify-start pt-4">
-                    <button onClick={() => setQuizStep(0)} className="flex items-center gap-1 sm:gap-2 font-heading text-muted-foreground hover:text-foreground transition-colors text-xs tracking-[2px] uppercase">
+                    <button
+                      onClick={() => setQuizStep(0)}
+                      className="flex items-center gap-1 sm:gap-2 text-muted-foreground hover:text-foreground transition-colors text-sm"
+                    >
                       <ArrowLeft className="w-4 h-4" /> <span className="hidden sm:inline">Anterior</span>
                     </button>
                   </div>
                 </motion.div>
               )}
 
+              {/* Step 3: Problemáticas específicas */}
               {quizStep === 2 && (
-                <motion.div key="step3" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-4 sm:space-y-6">
-                  <h3 className="font-heading text-lg sm:text-xl font-bold tracking-wide uppercase">¿Cuál es tu principal desafío?</h3>
+                <motion.div
+                  key="step3"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  className="space-y-4 sm:space-y-6"
+                >
+                  <h3 className="text-lg sm:text-xl font-bold">¿Cuál es tu principal desafío?</h3>
+
                   <div className="space-y-2 sm:space-y-3">
-                    {currentProblematicas.map((prob) => (
-                      <motion.button
-                        key={prob.id}
-                        whileHover={{ scale: 1.01 }}
-                        whileTap={{ scale: 0.99 }}
-                        onClick={() => handleProblematicaSelect(prob.id)}
-                        className={optionClasses(formData.problematica === prob.id)}
-                      >
-                        {prob.label}
-                      </motion.button>
-                    ))}
+                    {currentProblematicas.map((prob) => {
+                      const isSelected = formData.problematica === prob.id;
+                      return (
+                        <motion.button
+                          key={prob.id}
+                          whileHover={{ scale: 1.01 }}
+                          whileTap={{ scale: 0.99 }}
+                          onClick={() => handleProblematicaSelect(prob.id)}
+                          className={`w-full p-3 sm:p-4 rounded-xl border-2 transition-all text-left text-sm sm:text-base ${
+                            isSelected
+                              ? "border-primary bg-primary/10 text-primary"
+                              : "border-zinc-700 hover:border-zinc-500"
+                          }`}
+                        >
+                          {prob.label}
+                        </motion.button>
+                      );
+                    })}
                   </div>
+
                   <div className="flex justify-start pt-4">
-                    <button onClick={() => setQuizStep(1)} className="flex items-center gap-1 sm:gap-2 font-heading text-muted-foreground hover:text-foreground transition-colors text-xs tracking-[2px] uppercase">
+                    <button
+                      onClick={() => setQuizStep(1)}
+                      className="flex items-center gap-1 sm:gap-2 text-muted-foreground hover:text-foreground transition-colors text-sm"
+                    >
                       <ArrowLeft className="w-4 h-4" /> <span className="hidden sm:inline">Anterior</span>
                     </button>
                   </div>
                 </motion.div>
               )}
 
+              {/* Step 4: Facturación */}
               {quizStep === 3 && (
-                <motion.div key="step4" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-4 sm:space-y-6">
-                  <h3 className="font-heading text-lg sm:text-xl font-bold tracking-wide uppercase">¿Cuál es tu facturación mensual aproximada?</h3>
+                <motion.div
+                  key="step4"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  className="space-y-4 sm:space-y-6"
+                >
+                  <h3 className="text-lg sm:text-xl font-bold">¿Cuál es tu facturación mensual aproximada?</h3>
+
                   <div className="space-y-2 sm:space-y-3">
-                    {facturacionOptions.map((fact) => (
-                      <motion.button
-                        key={fact.id}
-                        whileHover={{ scale: 1.01 }}
-                        whileTap={{ scale: 0.99 }}
-                        onClick={() => handleFacturacionSelect(fact.id)}
-                        className={`${optionClasses(formData.facturacion === fact.id)} font-medium`}
-                      >
-                        {fact.label}
-                      </motion.button>
-                    ))}
+                    {facturacionOptions.map((fact) => {
+                      const isSelected = formData.facturacion === fact.id;
+                      return (
+                        <motion.button
+                          key={fact.id}
+                          whileHover={{ scale: 1.01 }}
+                          whileTap={{ scale: 0.99 }}
+                          onClick={() => handleFacturacionSelect(fact.id)}
+                          className={`w-full p-3 sm:p-4 rounded-xl border-2 transition-all text-left font-medium text-sm sm:text-base ${
+                            isSelected
+                              ? "border-primary bg-primary/10 text-primary"
+                              : "border-zinc-700 hover:border-zinc-500"
+                          }`}
+                        >
+                          {fact.label}
+                        </motion.button>
+                      );
+                    })}
                   </div>
+
                   <div className="flex justify-start pt-4">
-                    <button onClick={() => setQuizStep(2)} className="flex items-center gap-1 sm:gap-2 font-heading text-muted-foreground hover:text-foreground transition-colors text-xs tracking-[2px] uppercase">
+                    <button
+                      onClick={() => setQuizStep(2)}
+                      className="flex items-center gap-1 sm:gap-2 text-muted-foreground hover:text-foreground transition-colors text-sm"
+                    >
                       <ArrowLeft className="w-4 h-4" /> <span className="hidden sm:inline">Anterior</span>
                     </button>
                   </div>
-                  <p className="text-center text-xs text-muted-foreground flex items-center justify-center gap-2 pt-2 font-body tracking-wide">
+
+                  <p className="text-center text-xs text-muted-foreground flex items-center justify-center gap-2 pt-2">
                     <Lock className="w-3 h-3" />
                     Tus datos están seguros y no serán compartidos.
                   </p>
@@ -264,7 +342,7 @@ export const QuizSection = () => {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          className="text-center text-xs sm:text-sm text-muted-foreground mt-6 font-heading tracking-[2px] uppercase"
+          className="text-center text-xs sm:text-sm text-muted-foreground mt-6"
         >
           <span className="text-primary font-semibold">+1500 empresas</span> ya recibieron su cotización gratis
         </motion.p>
