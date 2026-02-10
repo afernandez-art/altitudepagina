@@ -37,7 +37,7 @@ export const ServicesSection = () => {
           viewport={{ once: true }}
           className="text-sm font-bold text-primary tracking-[0.2em] uppercase mb-10 sm:mb-12"
         >
-          Nuestros Servicios
+          Lo que hacemos 💥
         </motion.h2>
         
         <div className="flex flex-col">
