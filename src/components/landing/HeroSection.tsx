@@ -60,11 +60,11 @@ export const HeroSection = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1]"
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] uppercase"
           >
-            <span className="text-zinc-400">Tu carga,</span>
+            <span className="text-zinc-400">Movemos tu</span>
             <br />
-            <span>nuestra responsabilidad.</span>
+            <span className="text-primary">carga</span> con actitud.
           </motion.h1>
 
           <motion.p
@@ -73,7 +73,7 @@ export const HeroSection = () => {
             transition={{ delay: 0.2 }}
             className="text-base sm:text-lg lg:text-xl text-zinc-400 max-w-2xl mx-auto"
           >
-            De origen a destino, sin intermediarios. Un solo operador para toda tu cadena logística.
+            No somos otra empresa de logística aburrida. Somos la fuerza que mueve tu negocio 🔥
           </motion.p>
 
           {/* Services inline */}
