@@ -116,13 +116,13 @@ export const HeroSection = () => {
               className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground px-6 sm:px-8 py-4 rounded-xl text-base sm:text-lg font-bold transition-all flex items-center justify-center gap-2 sm:gap-3 shadow-2xl shadow-primary/20"
             >
               <FileSearch className="w-5 h-5" />
-              Cotizar mi operación
+              COTIZAR AHORA 🚀
             </button>
             <button
               onClick={scrollToServices}
-              className="w-full sm:w-auto bg-foreground/5 hover:bg-foreground/10 border border-zinc-800 px-6 sm:px-8 py-4 rounded-xl text-base sm:text-lg font-bold transition-all flex items-center justify-center gap-2"
+              className="w-full sm:w-auto bg-foreground/5 hover:bg-foreground/10 border border-zinc-800 px-6 sm:px-8 py-4 rounded-xl text-base sm:text-lg font-bold transition-all flex items-center justify-center gap-2 uppercase"
             >
-              Conocer más
+              Ver servicios
               <ChevronDown className="w-5 h-5" />
             </button>
           </motion.div>
