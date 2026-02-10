@@ -7,6 +7,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 
 // Lazy load secondary routes for faster initial load
+const Video = lazy(() => import("./pages/Video"));
+const Cotizar = lazy(() => import("./pages/Cotizar"));
+const WhatsAppRedirect = lazy(() => import("./pages/WhatsAppRedirect"));
 const VideoPersonalizado = lazy(() => import("./pages/VideoPersonalizado"));
 const Admin = lazy(() => import("./pages/Admin"));
 const NotFound = lazy(() => import("./pages/NotFound"));
@@ -38,6 +41,30 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route
+            path="/video"
+            element={
+              <Suspense fallback={<RouteLoader />}>
+                <Video />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/cotizar"
+            element={
+              <Suspense fallback={<RouteLoader />}>
+                <Cotizar />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/whatsapp"
+            element={
+              <Suspense fallback={<RouteLoader />}>
+                <WhatsAppRedirect />
+              </Suspense>
+            }
+          />
           <Route
             path="/video-personalizado"
             element={

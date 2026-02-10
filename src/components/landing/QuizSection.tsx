@@ -1,10 +1,9 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   ArrowRight,
   ArrowLeft,
-  FileSearch,
-  CheckCircle,
   Lock,
   Sparkles,
 } from "lucide-react";
@@ -20,9 +19,9 @@ import { Progress } from "@/components/ui/progress";
 import { analytics } from "@/lib/analytics";
 
 export const QuizSection = () => {
+  const navigate = useNavigate();
   const { formData, updateFormData, saveToStorage } = useLeadMagnet();
   const [quizStep, setQuizStep] = useState(0);
-  const [isCompleted, setIsCompleted] = useState(false);
   const [showNichoOtro, setShowNichoOtro] = useState(false);
   const [pendingSave, setPendingSave] = useState(false);
 
@@ -56,11 +55,11 @@ export const QuizSection = () => {
   useEffect(() => {
     if (pendingSave && formData.facturacion) {
       saveToStorage();
-      setIsCompleted(true);
       setPendingSave(false);
-      window.open("/video-personalizado", "_blank");
+      // Navigate to video page in the same tab
+      navigate("/video");
     }
-  }, [pendingSave, formData.facturacion, saveToStorage]);
+  }, [pendingSave, formData.facturacion, saveToStorage, navigate]);
 
   const handleNichoSelect = (id: string) => {
     updateFormData({ nicho: id, nichoOtro: "" });
@@ -99,39 +98,6 @@ export const QuizSection = () => {
     analytics.form1.complete();
     setPendingSave(true);
   };
-
-  if (isCompleted) {
-    return (
-      <section id="quiz-section" className="py-12 sm:py-20 px-4 sm:px-6 bg-gradient-to-b from-secondary/30 to-background">
-        <div className="max-w-xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="bg-card p-8 sm:p-12 rounded-2xl border border-zinc-800"
-          >
-            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
-              <CheckCircle className="w-8 h-8 sm:w-10 sm:h-10 text-green-500" />
-            </div>
-            <h2 className="text-xl sm:text-2xl font-black mb-4">¡Tu cotización está lista!</h2>
-            <p className="text-muted-foreground mb-8 text-sm sm:text-base">
-              Abrimos una nueva pestaña con tu propuesta personalizada.
-              <br />
-              <span className="text-xs sm:text-sm">¿No se abrió? Hacé click abajo.</span>
-            </p>
-            <a
-              href="/video-personalizado"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-bold hover:bg-primary/90 transition-all text-sm sm:text-base"
-            >
-              <FileSearch className="w-5 h-5" />
-              Ver mi Cotización
-            </a>
-          </motion.div>
-        </div>
-      </section>
-    );
-  }
 
   return (
     <section id="quiz-section" className="py-12 sm:py-20 px-4 sm:px-6 bg-gradient-to-b from-secondary/30 to-background">
