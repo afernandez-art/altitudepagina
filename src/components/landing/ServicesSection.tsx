@@ -37,7 +37,7 @@ export const ServicesSection = () => {
           viewport={{ once: true }}
           className="text-sm font-bold text-primary tracking-[0.2em] uppercase mb-10 sm:mb-12"
         >
-          Lo que hacemos 💥
+          Nuestros Servicios
         </motion.h2>
         
         <div className="flex flex-col">
@@ -98,7 +98,7 @@ export const ServicesSection = () => {
             className="inline-flex items-center gap-3 bg-primary text-primary-foreground px-8 py-4 rounded-xl font-bold hover:bg-primary/90 transition-all shadow-lg shadow-primary/20"
           >
             <FileSearch className="w-5 h-5" />
-            COTIZAR AHORA 🚀
+            Cotizar mi operación
             <ArrowRight className="w-5 h-5" />
           </a>
         </motion.div>

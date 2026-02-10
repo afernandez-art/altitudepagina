@@ -4,18 +4,18 @@ import { User, MapPin, DollarSign, ArrowRight, FileSearch } from "lucide-react";
 const benefits = [
   {
     icon: User,
-    title: "Un solo contacto 📱",
-    description: "Basta de hablar con 10 proveedores distintos. Un equipo, un WhatsApp, todo resuelto."
+    title: "Un solo contacto",
+    description: "No coordinás entre múltiples proveedores. Ya sea una importación, un envío nacional o tu almacén, tenés un solo equipo."
   },
   {
     icon: MapPin,
-    title: "Sabés todo, siempre 📍",
-    description: "Tracking real de tu carga. Nada de 'te aviso mañana'. Sabés dónde está en cada momento."
+    title: "Visibilidad total",
+    description: "Sabés dónde está tu mercadería en cada momento. Tracking en tiempo real para todas tus operaciones."
   },
   {
     icon: DollarSign,
-    title: "Precio cerrado, sin humo 💰",
-    description: "Te decimos cuánto sale y punto. Sin costos ocultos, sin sorpresas al final."
+    title: "Precio cerrado",
+    description: "Cotización integral sin sorpresas. Sabés el costo total de tu operación antes de arrancar."
   }
 ];
 
@@ -29,9 +29,9 @@ export const WhyAltitudeSection = () => {
           viewport={{ once: true }}
           className="text-center mb-12 sm:mb-16"
         >
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter uppercase">
-            ¿Por qué elegirnos?{" "}
-            <span className="text-primary">Porque no jodemos 🤘</span>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter">
+            ¿Por qué trabajar con un{" "}
+            <span className="text-primary">solo operador</span>?
           </h2>
         </motion.div>
 
@@ -65,7 +65,7 @@ export const WhyAltitudeSection = () => {
             className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-8 py-4 rounded-xl font-bold hover:bg-primary/90 transition-all shadow-lg shadow-primary/20"
           >
             <FileSearch className="w-5 h-5" />
-            COTIZAR AHORA 🚀
+            Cotizar mi operación
           </a>
           <a
             href="#proceso"

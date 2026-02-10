@@ -33,7 +33,7 @@ export const Navbar = () => {
             className="bg-primary hover:bg-primary/90 text-primary-foreground px-5 py-2.5 rounded-lg text-sm font-bold tracking-tight transition-all flex items-center gap-2"
           >
             <FileSearch className="w-4 h-4" />
-            COTIZAR 🔥
+            Cotizar operación
           </a>
         </div>
       </div>
