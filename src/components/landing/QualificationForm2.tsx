@@ -178,8 +178,7 @@ export const QualificationForm2 = () => {
 
   // Validaciones
   const validateName = (name: string): boolean => {
-    const words = name.trim().split(/\s+/);
-    return words.length >= 2 && words.every(w => w.length >= 1);
+    return name.trim().length >= 2; // Just require at least 2 characters
   };
 
   const validateEmail = (email: string): boolean => {
@@ -205,7 +204,7 @@ export const QualificationForm2 = () => {
     const newErrors: Record<string, string> = {};
 
     if (!formData.nombre || !validateName(formData.nombre)) {
-      newErrors.nombre = "Ingresá tu nombre completo (nombre y apellido)";
+      newErrors.nombre = "Ingresá tu nombre";
     }
 
     if (!formData.email || !validateEmail(formData.email)) {

@@ -56,14 +56,13 @@ export interface Lead {
 // Save lead to Supabase
 export const saveLead = async (lead: Omit<Lead, 'id' | 'created_at'>): Promise<{ data: Lead | null; error: Error | null }> => {
   try {
-    const { data, error } = await supabase
+    // Don't use .select() after insert - anon users can INSERT but not SELECT with RLS
+    const { error } = await supabase
       .from('leads')
-      .insert([lead])
-      .select()
-      .single();
+      .insert([lead]);
 
     if (error) throw error;
-    return { data, error: null };
+    return { data: null, error: null }; // Return null data, insert succeeded
   } catch (error) {
     console.error('Error saving lead:', error);
     return { data: null, error: error as Error };
