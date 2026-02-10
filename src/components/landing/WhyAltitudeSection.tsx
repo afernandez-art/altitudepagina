@@ -29,9 +29,9 @@ export const WhyAltitudeSection = () => {
           viewport={{ once: true }}
           className="text-center mb-12 sm:mb-16"
         >
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter">
-            ¿Por qué trabajar con un{" "}
-            <span className="text-primary">solo operador</span>?
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter uppercase">
+            ¿Por qué elegirnos?{" "}
+            <span className="text-primary">Porque no jodemos 🤘</span>
           </h2>
         </motion.div>
 
