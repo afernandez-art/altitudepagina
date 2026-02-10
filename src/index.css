@@ -2,27 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@300;400;500;600;700&family=Barlow+Condensed:wght@300;400;500;600;700&display=swap');
 
 @layer base {
   :root {
     --background: 0 0% 4%;
-    --foreground: 0 0% 100%;
+    --foreground: 0 0% 96%;
 
     --card: 0 0% 7%;
-    --card-foreground: 0 0% 100%;
+    --card-foreground: 0 0% 96%;
 
     --popover: 0 0% 7%;
-    --popover-foreground: 0 0% 100%;
+    --popover-foreground: 0 0% 96%;
 
     --primary: 21 100% 50%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 0 0% 7%;
-    --secondary-foreground: 0 0% 100%;
+    --secondary-foreground: 0 0% 96%;
 
     --muted: 240 4% 16%;
-    --muted-foreground: 240 5% 65%;
+    --muted-foreground: 0 0% 54%;
 
     --accent: 21 100% 50%;
     --accent-foreground: 0 0% 100%;
@@ -30,23 +30,23 @@
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 240 4% 16%;
-    --input: 240 4% 16%;
+    --border: 0 0% 15%;
+    --input: 0 0% 15%;
     --ring: 21 100% 50%;
 
-    --radius: 0.5rem;
+    --radius: 0.25rem;
 
     /* Custom tokens */
-    --zinc-400: 240 5% 65%;
-    --zinc-500: 240 4% 46%;
-    --zinc-600: 240 5% 34%;
-    --zinc-700: 240 5% 26%;
-    --zinc-800: 240 4% 16%;
-    --zinc-900: 240 6% 10%;
-    
+    --zinc-400: 0 0% 63%;
+    --zinc-500: 0 0% 46%;
+    --zinc-600: 0 0% 34%;
+    --zinc-700: 0 0% 20%;
+    --zinc-800: 0 0% 12%;
+    --zinc-900: 0 0% 7%;
+
     --green-500: 142 71% 45%;
-    
-    --glass-bg: 0 0% 4% / 0.8;
+
+    --glass-bg: 0 0% 4% / 0.9;
     --vsl-shadow: 0 0 50px -12px hsl(21 100% 50% / 0.3);
   }
 }
@@ -61,16 +61,36 @@
   }
 
   body {
-    @apply bg-background text-foreground font-sans antialiased;
-    font-family: 'Inter', sans-serif;
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Barlow Condensed', 'Inter', sans-serif;
+  }
+
+  /* Noise texture overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: hsl(var(--background)); }
+  ::-webkit-scrollbar-thumb { background: hsl(var(--primary)); }
+
+  ::selection {
+    background: hsl(var(--primary));
+    color: hsl(var(--background));
   }
 }
 
 @layer components {
   .glass-nav {
     background: hsl(var(--glass-bg));
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid hsl(0 0% 100% / 0.1);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid hsl(21 100% 50% / 0.12);
   }
 
   .vsl-shadow {
@@ -82,5 +102,23 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+  }
+
+  .font-display {
+    font-family: 'Bebas Neue', sans-serif;
+  }
+
+  .font-heading {
+    font-family: 'Oswald', sans-serif;
+  }
+
+  .font-body {
+    font-family: 'Barlow Condensed', sans-serif;
+  }
+
+  /* Industrial divider */
+  .divider-electric {
+    height: 2px;
+    background: linear-gradient(90deg, transparent, hsl(var(--primary)), transparent);
   }
 }
