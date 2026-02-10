@@ -19,6 +19,7 @@ import {
   tercerizarOptions,
   urgenciaOptions,
   SituacionType,
+  LeadMagnetFormData,
 } from "@/contexts/LeadMagnetContext";
 import { Progress } from "@/components/ui/progress";
 import { analytics } from "@/lib/analytics";
@@ -44,12 +45,11 @@ const getQuestionsConfig = (situacion: SituacionType | "") => {
             field: "origen" as const,
           },
           {
-            id: "mejoras",
+            id: "mejoraPrincipal",
             title: "¿Qué te gustaría mejorar principalmente?",
-            subtitle: "Seleccioná todo lo que aplique",
-            type: "checkbox" as const,
+            type: "single" as const,
             options: mejorarOptions,
-            field: "mejoras" as const,
+            field: "mejoraPrincipal" as const,
           },
         ],
         totalSteps: 6,
@@ -92,12 +92,11 @@ const getQuestionsConfig = (situacion: SituacionType | "") => {
             field: "espacio" as const,
           },
           {
-            id: "serviciosAdicionales",
-            title: "¿Necesitas servicios adicionales de valor agregado?",
-            subtitle: "Seleccioná todo lo que aplique",
-            type: "checkbox" as const,
+            id: "servicioAdicionalPrincipal",
+            title: "¿Qué servicio adicional te interesa más?",
+            type: "single" as const,
             options: serviciosAdicionalesOptions,
-            field: "serviciosAdicionales" as const,
+            field: "servicioAdicionalPrincipal" as const,
           },
           {
             id: "frecuencia",
@@ -127,12 +126,11 @@ const getQuestionsConfig = (situacion: SituacionType | "") => {
             field: "origen" as const,
           },
           {
-            id: "tercerizar",
-            title: "¿Qué servicios te gustaría tercerizar?",
-            subtitle: "Seleccioná todo lo que aplique",
-            type: "checkbox" as const,
+            id: "tercerizarPrincipal",
+            title: "¿Qué servicio te gustaría tercerizar principalmente?",
+            type: "single" as const,
             options: tercerizarOptions,
-            field: "tercerizar" as const,
+            field: "tercerizarPrincipal" as const,
           },
         ],
         totalSteps: 6,
@@ -194,37 +192,11 @@ export const QualificationForm2 = () => {
     return phoneRegex.test(phone.replace(/\s/g, ''));
   };
 
-  // Handle checkbox toggle
-  const handleCheckboxToggle = (field: "mejoras" | "serviciosAdicionales" | "tercerizar", id: string) => {
-    const current = formData[field] || [];
-    if (current.includes(id)) {
-      updateFormData({ [field]: current.filter((t: string) => t !== id) });
-    } else {
-      updateFormData({ [field]: [...current, id] });
-    }
-  };
-
-  // Handle single select (button click)
+  // Handle single select (button click) - auto advance to next step
   const handleSingleSelect = (field: string, value: string) => {
-    updateFormData({ [field]: value });
+    updateFormData({ [field]: value } as Partial<LeadMagnetFormData>);
     analytics.form2.stepComplete(formStep + 1, field, value);
-    setTimeout(() => setFormStep(prev => prev + 1), 300);
-  };
-
-  // Validation for current step
-  const canProceedCurrentStep = () => {
-    if (formStep < specificQuestions.length) {
-      const question = specificQuestions[formStep];
-      if (question.type === "checkbox") {
-        const fieldValue = formData[question.field as keyof typeof formData];
-        return Array.isArray(fieldValue) && fieldValue.length > 0;
-      }
-      return !!formData[question.field as keyof typeof formData];
-    }
-    if (formStep === specificQuestions.length) {
-      return !!formData.urgencia;
-    }
-    return true;
+    setTimeout(() => setFormStep(prev => prev + 1), 250);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -329,86 +301,37 @@ export const QualificationForm2 = () => {
                       <>
                         <div>
                           <h3 className="text-lg md:text-xl font-bold mb-1">{question.title}</h3>
-                          {'subtitle' in question && question.subtitle && (
-                            <p className="text-xs md:text-sm text-muted-foreground">{question.subtitle as string}</p>
-                          )}
                         </div>
 
-                        {question.type === "single" && (
-                          <>
-                            <div className="space-y-2 sm:space-y-3">
-                              {question.options.map((opt) => {
-                                const isSelected = formData[question.field as keyof typeof formData] === opt.id;
-                                return (
-                                  <motion.button
-                                    key={opt.id}
-                                    whileHover={{ scale: 1.01 }}
-                                    whileTap={{ scale: 0.99 }}
-                                    onClick={() => handleSingleSelect(question.field, opt.id)}
-                                    className={`w-full p-3 sm:p-4 rounded-xl border-2 transition-all text-left text-sm sm:text-base ${
-                                      isSelected
-                                        ? "border-primary bg-primary/10 text-primary"
-                                        : "border-zinc-700 hover:border-zinc-500"
-                                    }`}
-                                  >
-                                    {opt.label}
-                                  </motion.button>
-                                );
-                              })}
-                            </div>
-                            <div className="flex justify-start pt-4">
-                              <button
-                                onClick={() => setFormStep(prev => prev - 1)}
-                                disabled={formStep === 0}
-                                className="flex items-center gap-1 md:gap-2 text-muted-foreground hover:text-foreground transition-colors text-sm disabled:opacity-50"
+                        <div className="space-y-2 sm:space-y-3">
+                          {question.options.map((opt) => {
+                            const isSelected = formData[question.field as keyof typeof formData] === opt.id;
+                            return (
+                              <motion.button
+                                key={opt.id}
+                                whileHover={{ scale: 1.01 }}
+                                whileTap={{ scale: 0.99 }}
+                                onClick={() => handleSingleSelect(question.field, opt.id)}
+                                className={`w-full p-3 sm:p-4 rounded-xl border-2 transition-all text-left text-sm sm:text-base ${
+                                  isSelected
+                                    ? "border-primary bg-primary/10 text-primary"
+                                    : "border-zinc-700 hover:border-zinc-500"
+                                }`}
                               >
-                                <ArrowLeft className="w-4 h-4" /> <span className="hidden sm:inline">Anterior</span>
-                              </button>
-                            </div>
-                          </>
-                        )}
-
-                        {question.type === "checkbox" && (
-                          <>
-                            <div className="space-y-2 sm:space-y-3">
-                              {question.options.map((opt) => {
-                                const fieldValue = formData[question.field as keyof typeof formData];
-                                const isSelected = Array.isArray(fieldValue) && fieldValue.includes(opt.id);
-                                return (
-                                  <motion.button
-                                    key={opt.id}
-                                    whileHover={{ scale: 1.01 }}
-                                    whileTap={{ scale: 0.99 }}
-                                    onClick={() => handleCheckboxToggle(question.field as "mejoras" | "serviciosAdicionales" | "tercerizar", opt.id)}
-                                    className={`w-full p-3 sm:p-4 rounded-xl border-2 transition-all text-left text-sm sm:text-base ${
-                                      isSelected
-                                        ? "border-primary bg-primary/10 text-primary"
-                                        : "border-zinc-700 hover:border-zinc-500"
-                                    }`}
-                                  >
-                                    {opt.label}
-                                  </motion.button>
-                                );
-                              })}
-                            </div>
-                            <div className="flex justify-between pt-4 gap-4">
-                              <button
-                                onClick={() => setFormStep(prev => prev - 1)}
-                                disabled={formStep === 0}
-                                className="flex items-center gap-1 md:gap-2 text-muted-foreground hover:text-foreground transition-colors text-sm disabled:opacity-50"
-                              >
-                                <ArrowLeft className="w-4 h-4" /> <span className="hidden sm:inline">Anterior</span>
-                              </button>
-                              <button
-                                onClick={() => setFormStep(prev => prev + 1)}
-                                disabled={!canProceedCurrentStep()}
-                                className="flex items-center gap-2 bg-primary text-primary-foreground px-5 md:px-6 py-2.5 md:py-3 rounded-xl font-bold disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary/90 transition-all text-sm"
-                              >
-                                Siguiente <ArrowRight className="w-4 h-4" />
-                              </button>
-                            </div>
-                          </>
-                        )}
+                                {opt.label}
+                              </motion.button>
+                            );
+                          })}
+                        </div>
+                        <div className="flex justify-start pt-4">
+                          <button
+                            onClick={() => setFormStep(prev => prev - 1)}
+                            disabled={formStep === 0}
+                            className="flex items-center gap-1 md:gap-2 text-muted-foreground hover:text-foreground transition-colors text-sm disabled:opacity-50"
+                          >
+                            <ArrowLeft className="w-4 h-4" /> <span className="hidden sm:inline">Anterior</span>
+                          </button>
+                        </div>
                       </>
                     );
                   })()}

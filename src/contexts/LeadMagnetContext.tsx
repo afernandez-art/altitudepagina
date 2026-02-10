@@ -184,17 +184,20 @@ export interface LeadMagnetFormData {
   experiencia: string;
   // Para mejorar-costos, contenedor-compartido, escalar-negocio
   origen: string;
-  // Para mejorar-costos (checkbox)
-  mejoras: string[];
+  // Para mejorar-costos (single select - principal mejora)
+  mejoraPrincipal: string;
+  mejoras: string[]; // legacy - mantener para compatibilidad
   // Para contenedor-compartido
   volumen: string;
   etapa: string;
   // Para deposito-fulfillment
   espacio: string;
-  serviciosAdicionales: string[];
+  servicioAdicionalPrincipal: string; // single select
+  serviciosAdicionales: string[]; // legacy
   frecuencia: string;
-  // Para escalar-negocio (checkbox)
-  tercerizar: string[];
+  // Para escalar-negocio (single select - principal servicio a tercerizar)
+  tercerizarPrincipal: string;
+  tercerizar: string[]; // legacy
 
   // Preguntas finales (para todos)
   urgencia: string;
@@ -250,12 +253,15 @@ const initialFormData: LeadMagnetFormData = {
   facturacion: "",
   experiencia: "",
   origen: "",
+  mejoraPrincipal: "",
   mejoras: [],
   volumen: "",
   etapa: "",
   espacio: "",
+  servicioAdicionalPrincipal: "",
   serviciosAdicionales: [],
   frecuencia: "",
+  tercerizarPrincipal: "",
   tercerizar: [],
   urgencia: "",
   nombre: "",
