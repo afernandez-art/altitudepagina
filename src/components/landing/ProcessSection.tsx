@@ -88,44 +88,6 @@ export const ProcessSection = () => {
           </div>
         </div>
       </section>
-
-      {/* SECCIÓN 2 — Casos reales */}
-      <section className="py-24 sm:py-32" id="casos">
-        <div className="max-w-7xl mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl md:text-5xl font-black tracking-tighter mb-4">
-              OPERACIONES REALES, <br />
-              <span className="text-primary italic">RESULTADOS REALES.</span>
-            </h2>
-            <p className="text-muted-foreground text-lg">
-              Algunos ejemplos de lo que hacemos todos los días.
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {cases.map((c, i) => (
-              <motion.div
-                key={c.tag}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="p-6 rounded-xl bg-muted/40 border-l-4 border-l-primary border border-border"
-              >
-                <span className="inline-block px-3 py-1 rounded-full bg-primary text-primary-foreground text-xs font-bold mb-4">
-                  {c.tag}
-                </span>
-                <p className="text-muted-foreground text-sm leading-relaxed">{c.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
     </>
   );
 };
