@@ -14,7 +14,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ["DM Sans", "system-ui", "sans-serif"],
+        sans: ["Space Grotesk", "system-ui", "sans-serif"],
+        display: ["Space Grotesk", "sans-serif"],
         mono: ["ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "monospace"],
       },
       colors: {
@@ -60,7 +61,6 @@ export default {
           800: "hsl(var(--slate-800))",
           900: "hsl(var(--slate-900))",
         },
-        // Backward compat aliases - map zinc to new slate values
         zinc: {
           300: "hsl(var(--slate-300))",
           400: "hsl(var(--slate-400))",
@@ -78,9 +78,9 @@ export default {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
-        xl: "1rem",
-        "2xl": "1.5rem",
-        "3xl": "2rem",
+        xl: "1.5rem",
+        "2xl": "2rem",
+        "3xl": "3rem",
       },
       keyframes: {
         "accordion-down": {
@@ -92,8 +92,8 @@ export default {
           to: { height: "0" },
         },
         "pulse-glow": {
-          "0%, 100%": { boxShadow: "0 0 20px 0 hsl(110 100% 54% / 0.3)" },
-          "50%": { boxShadow: "0 0 40px 10px hsl(110 100% 54% / 0.5)" },
+          "0%, 100%": { boxShadow: "0 0 20px 0 hsl(72 100% 50% / 0.3)" },
+          "50%": { boxShadow: "0 0 40px 10px hsl(72 100% 50% / 0.5)" },
         },
       },
       animation: {

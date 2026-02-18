@@ -1,46 +1,62 @@
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { Menu, X } from "lucide-react";
+import { useState } from "react";
 
 export const Navbar = () => {
+  const [mobileOpen, setMobileOpen] = useState(false);
+
   return (
-    <motion.nav
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      className="fixed top-0 w-full z-50 glass-nav"
-    >
-      <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+    <nav className="glass-nav fixed top-0 w-full z-50 px-6 py-4">
+      <div className="max-w-7xl mx-auto flex items-center justify-between">
         <a
           href="#"
           onClick={(e) => {
             e.preventDefault();
             window.scrollTo({ top: 0, behavior: "smooth" });
           }}
-          className="flex items-center cursor-pointer"
+          className="flex items-center gap-2 cursor-pointer"
         >
-          <span className="text-xl font-black tracking-tight">
+          <span className="text-xl font-bold tracking-tighter">
             ADUA<span className="text-primary">NEX</span>
           </span>
         </a>
 
-        <div className="hidden md:flex items-center gap-8">
-          <a href="#historia" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-            Historia
+        <div className="hidden md:flex items-center gap-8 text-sm font-medium">
+          <a href="#historia" className="hover:text-primary transition-colors uppercase tracking-widest">
+            Personal
           </a>
-          <a href="#proceso" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-            Cómo ayudamos
-          </a>
-          <a href="#b2box" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+          <a href="#b2box" className="hover:text-secondary transition-colors uppercase tracking-widest">
             B2BOX
+          </a>
+          <a href="#pasos" className="hover:text-primary transition-colors uppercase tracking-widest">
+            Cómo trabajamos
           </a>
           <a
             href="#quiz-section"
-            className="bg-primary hover:bg-primary/90 text-primary-foreground px-5 py-2 rounded-lg text-sm font-semibold tracking-tight transition-all flex items-center gap-2"
+            className="bg-foreground text-background px-6 py-2 rounded-full font-bold hover:bg-primary hover:text-primary-foreground transition-colors"
           >
-            Cotizá gratis
-            <ArrowRight className="w-4 h-4" />
+            COTIZAR
           </a>
         </div>
+
+        <button className="md:hidden text-foreground" onClick={() => setMobileOpen(!mobileOpen)}>
+          {mobileOpen ? <X className="w-7 h-7" /> : <Menu className="w-7 h-7" />}
+        </button>
       </div>
-    </motion.nav>
+
+      {/* Mobile menu */}
+      {mobileOpen && (
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="md:hidden mt-4 pb-4 flex flex-col gap-4 text-sm font-medium"
+        >
+          <a href="#historia" onClick={() => setMobileOpen(false)} className="hover:text-primary transition-colors uppercase tracking-widest">Personal</a>
+          <a href="#b2box" onClick={() => setMobileOpen(false)} className="hover:text-secondary transition-colors uppercase tracking-widest">B2BOX</a>
+          <a href="#pasos" onClick={() => setMobileOpen(false)} className="hover:text-primary transition-colors uppercase tracking-widest">Cómo trabajamos</a>
+          <a href="#quiz-section" onClick={() => setMobileOpen(false)} className="bg-foreground text-background px-6 py-2 rounded-full font-bold text-center hover:bg-primary hover:text-primary-foreground transition-colors">COTIZAR</a>
+        </motion.div>
+      )}
+    </nav>
   );
 };

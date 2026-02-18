@@ -100,7 +100,7 @@ export const QuizSection = () => {
   };
 
   return (
-    <section id="quiz-section" className="py-12 sm:py-20 px-4 sm:px-6 bg-gradient-to-b from-secondary/30 to-background">
+    <section id="quiz-section" className="py-24 sm:py-32 px-4 sm:px-6 bg-card/20">
       <div className="max-w-3xl mx-auto">
         {/* Header */}
         <motion.div
@@ -109,15 +109,11 @@ export const QuizSection = () => {
           viewport={{ once: true }}
           className="text-center mb-8 sm:mb-12"
         >
-          <span className="inline-flex items-center gap-2 bg-primary/10 text-primary px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-semibold mb-4">
-            <Sparkles className="w-4 h-4" />
-            Cotización gratis en 2 minutos
-          </span>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight mb-3 sm:mb-4">
-            Obtené tu cotización personalizada
+          <h2 className="text-3xl sm:text-4xl font-black tracking-tighter mb-4">
+            ¿QUÉ QUERÉS TRAER?
           </h2>
-          <p className="text-muted-foreground text-sm sm:text-base">
-            Respondé 4 preguntas rápidas y te preparamos una propuesta con soluciones para tu negocio
+          <p className="text-muted-foreground">
+            Contestá 4 preguntas y te damos un diagnóstico rápido.
           </p>
         </motion.div>
 
@@ -126,19 +122,21 @@ export const QuizSection = () => {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="bg-card rounded-2xl border border-zinc-800 overflow-hidden"
+          className="bg-card p-8 md:p-12 rounded-3xl border border-border"
         >
           {/* Progress bar */}
-          <div className="p-4 sm:p-6 border-b border-zinc-800">
-            <div className="flex items-center justify-between text-xs sm:text-sm mb-2">
-              <span className="text-muted-foreground">Paso {quizStep + 1} de {totalSteps}</span>
-              <span className="text-primary font-medium">{Math.round(progress)}%</span>
+          <div className="mb-12">
+            <div className="flex items-center justify-between text-sm mb-3">
+              <span className="text-primary text-xs font-bold uppercase tracking-widest">Paso {quizStep + 1} de {totalSteps}</span>
+              <span className="text-muted-foreground text-xs">{Math.round(progress)}%</span>
             </div>
-            <Progress value={progress} className="h-2" />
+            <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
+              <div className="h-full bg-primary rounded-full transition-all" style={{ width: `${progress}%`, boxShadow: '0 0 10px hsl(72 100% 50% / 0.6)' }} />
+            </div>
           </div>
 
           {/* Quiz Steps */}
-          <div className="p-4 sm:p-8">
+          <div>
             <AnimatePresence mode="wait">
               {/* Step 1: Nicho */}
               {quizStep === 0 && (
