@@ -60,29 +60,17 @@ export const HeroSection = () => {
         </motion.div>
       </div>
 
-      {/* Problem cards */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 pb-20">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {[
-            { icon: "🌏", title: "Solución integral, de China a Argentina", desc: "Nos encargamos de todo el proceso: sourcing, logística, aduana y entrega. Vos solo recibís la mercadería." },
-            { icon: "🏷️", title: "Desarrollamos tu línea de productos", desc: "Diseño, packaging, branding y producción con fábricas en China. Tu producto listo para vender con tu marca." },
-            { icon: "📋", title: "Cotización desglosada al detalle", desc: "Sabés exactamente qué estás pagando. Cada costo discriminado, sin sorpresas ni letra chica." },
-          ].map((item, i) => (
-            <motion.div
-              key={item.title}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              className="p-8 bg-card/50 rounded-xl border border-border"
-            >
-              <span className="text-2xl mb-3 block">{item.icon}</span>
-              <h3 className="text-xl font-bold mb-2">{item.title}</h3>
-              <p className="text-muted-foreground text-sm">{item.desc}</p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
+      {/* Value proposition */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="relative z-10 max-w-4xl mx-auto px-6 pb-20"
+      >
+        <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground leading-relaxed text-center">
+          Sabemos que tu negocio necesita mejores márgenes, no más intermediarios. Mientras otros despachantes te mandan un PDF y desaparecen, nosotros nos sentamos con vos, te damos números reales y hacemos que cada operación sea más rentable.
+        </p>
+      </motion.div>
     </section>
   );
 };
