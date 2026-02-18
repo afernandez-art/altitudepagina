@@ -68,7 +68,7 @@ export const HeroSection = () => {
         className="relative z-10 max-w-4xl mx-auto px-6 pb-20">
 
         <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground leading-relaxed text-center">
-          Sabemos que tu negocio necesita mejores márgenes, no más intermediarios. Mientras otros despachantes te mandan un PDF y desaparecen, nosotros nos sentamos con vos, te damos números reales y hacemos que cada operación sea más rentable.
+          Sabemos que tu negocio necesita <span className="text-primary font-semibold">mejores márgenes</span>, no más intermediarios. Mientras otros despachantes te mandan un PDF y desaparecen, nosotros nos sentamos con vos, te damos <span className="text-primary font-semibold">números reales</span> y hacemos que cada operación sea <span className="text-primary font-semibold">más rentable</span>.
         </p>
       </motion.div>
     </section>);
