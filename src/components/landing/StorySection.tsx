@@ -40,34 +40,11 @@ export const StorySection = () => {
 
         {/* Team cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12">
-          {/* Agustín */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="group relative overflow-hidden rounded-xl bg-card border border-border card-glow-lime transition-all"
-          >
-            <div className="aspect-[4/5] overflow-hidden bg-muted flex items-center justify-center">
-              <span className="text-8xl font-black text-primary/20">A</span>
-            </div>
-            <div className="p-8">
-              <h4 className="text-3xl font-black mb-1 tracking-tighter">AGUSTÍN</h4>
-              <p className="text-primary font-bold mb-6">Especialista en Aduana</p>
-              <p className="text-muted-foreground mb-8">
-                Fanático de la eficiencia. Agustín se encarga de que cada documento sea perfecto para que Aduana no sea un problema sino un trámite.
-              </p>
-              <span className="inline-flex items-center gap-2 bg-muted px-6 py-3 rounded-full text-sm">
-                @agusimportador
-              </span>
-            </div>
-          </motion.div>
-
           {/* Emanuel */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.15 }}
             className="group relative overflow-hidden rounded-xl bg-card border border-border card-glow-lime transition-all"
           >
             <div className="aspect-[4/5] overflow-hidden bg-muted flex items-center justify-center">
@@ -81,6 +58,29 @@ export const StorySection = () => {
               </p>
               <span className="inline-flex items-center gap-2 bg-muted px-6 py-3 rounded-full text-sm">
                 @despachantedeaduanas
+              </span>
+            </div>
+          </motion.div>
+
+          {/* Agustín */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.15 }}
+            className="group relative overflow-hidden rounded-xl bg-card border border-border card-glow-lime transition-all"
+          >
+            <div className="aspect-[4/5] overflow-hidden bg-muted flex items-center justify-center">
+              <span className="text-8xl font-black text-primary/20">A</span>
+            </div>
+            <div className="p-8">
+              <h4 className="text-3xl font-black mb-1 tracking-tighter">AGUSTÍN</h4>
+              <p className="text-primary font-bold mb-6">Especialista en Aduana</p>
+              <p className="text-muted-foreground mb-8">
+                Fanático de la eficiencia. Agustín se encarga de que cada documento sea perfecto para que Aduana no sea un problema sino un trámite.
+              </p>
+              <span className="inline-flex items-center gap-2 bg-muted px-6 py-3 rounded-full text-sm">
+                @agusimportador
               </span>
             </div>
           </motion.div>
