@@ -272,7 +272,7 @@ const initialFormData: LeadMagnetFormData = {
 
 const LeadMagnetContext = createContext<LeadMagnetContextType | undefined>(undefined);
 
-// Número de WhatsApp de Altitude
+// Número de WhatsApp de ADUANEX
 const WHATSAPP_NUMBER = "5492257617922";
 
 export function LeadMagnetProvider({ children }: { children: ReactNode }) {
@@ -286,7 +286,7 @@ export function LeadMagnetProvider({ children }: { children: ReactNode }) {
   const resetFlow = () => {
     setCurrentStep("form1");
     setFormData(initialFormData);
-    localStorage.removeItem("altitude_lead_data");
+    localStorage.removeItem("aduanex_lead_data");
   };
 
   // Save form data to localStorage
@@ -295,13 +295,13 @@ export function LeadMagnetProvider({ children }: { children: ReactNode }) {
       formData,
       timestamp: Date.now(),
     };
-    localStorage.setItem("altitude_lead_data", JSON.stringify(dataToSave));
+    localStorage.setItem("aduanex_lead_data", JSON.stringify(dataToSave));
   };
 
   // Load form data from localStorage
   const loadFromStorage = () => {
     try {
-      const saved = localStorage.getItem("altitude_lead_data");
+      const saved = localStorage.getItem("aduanex_lead_data");
       if (saved) {
         const parsed = JSON.parse(saved);
         // Check if data is less than 1 hour old

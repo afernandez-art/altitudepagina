@@ -98,7 +98,7 @@ export const DynamicVSLSection = () => {
                   className="w-full h-full"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
-                  title="Video explicativo Altitude"
+                  title="Video explicativo ADUANEX"
                 />
               </div>
             )}

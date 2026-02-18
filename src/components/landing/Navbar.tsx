@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
-import { FileSearch } from "lucide-react";
-import altitudeLogo from "@/assets/altitude-logo.png";
+import { ArrowRight } from "lucide-react";
 
 export const Navbar = () => {
   return (
@@ -9,7 +8,7 @@ export const Navbar = () => {
       animate={{ y: 0 }}
       className="fixed top-0 w-full z-50 glass-nav"
     >
-      <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
         <a
           href="#"
           onClick={(e) => {
@@ -18,22 +17,27 @@ export const Navbar = () => {
           }}
           className="flex items-center cursor-pointer"
         >
-          <img src={altitudeLogo} alt="Altitude Logistics Group" className="h-8 w-auto" />
+          <span className="text-xl font-black tracking-tight">
+            ADUA<span className="text-primary">NEX</span>
+          </span>
         </a>
 
         <div className="hidden md:flex items-center gap-8">
-          <a href="#servicios" className="text-sm font-medium text-zinc-400 hover:text-foreground transition-colors">
+          <a href="#servicios" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
             Servicios
           </a>
-          <a href="#proceso" className="text-sm font-medium text-zinc-400 hover:text-foreground transition-colors">
-            Cómo funciona
+          <a href="#por-que" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+            Por qué Aduanex
+          </a>
+          <a href="#proceso" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+            Proceso
           </a>
           <a
             href="#quiz-section"
-            className="bg-primary hover:bg-primary/90 text-primary-foreground px-5 py-2.5 rounded-lg text-sm font-bold tracking-tight transition-all flex items-center gap-2"
+            className="bg-primary hover:bg-primary/90 text-primary-foreground px-5 py-2 rounded-lg text-sm font-semibold tracking-tight transition-all flex items-center gap-2"
           >
-            <FileSearch className="w-4 h-4" />
             Cotizar operación
+            <ArrowRight className="w-4 h-4" />
           </a>
         </div>
       </div>

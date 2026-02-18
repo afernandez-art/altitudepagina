@@ -83,7 +83,7 @@ const VideoContent = () => {
             <span className="text-xs md:text-sm">Volver</span>
           </a>
           <div className="text-xs md:text-sm text-muted-foreground">
-            Altitude Logistics Group
+            ADUANEX
           </div>
         </div>
       </header>
@@ -145,7 +145,7 @@ const VideoContent = () => {
                       className="w-full h-full"
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                       allowFullScreen
-                      title="Video explicativo Altitude"
+                      title="Video explicativo ADUANEX"
                     />
                   </div>
                 )}
@@ -201,7 +201,7 @@ const VideoContent = () => {
 
       {/* Simple footer */}
       <footer className="py-6 md:py-8 px-4 md:px-6 border-t border-zinc-800 text-center text-xs md:text-sm text-muted-foreground">
-        <p>© {new Date().getFullYear()} Altitude Logistics Group. Todos los derechos reservados.</p>
+        <p>© {new Date().getFullYear()} ADUANEX. Todos los derechos reservados.</p>
       </footer>
     </div>
   );

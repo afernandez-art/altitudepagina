@@ -1,5 +1,5 @@
 -- ===========================================
--- SCHEMA PARA ALTITUDE LOGISTICS - LEADS
+-- SCHEMA PARA ADUANEX - LEADS
 -- Ejecutar este SQL en tu proyecto de Supabase
 -- ===========================================
 

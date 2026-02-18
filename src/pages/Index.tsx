@@ -42,7 +42,7 @@ const Index = () => {
           {/* 2. Servicios - Conocen el alcance (critical - no lazy) */}
           <ServicesSection />
 
-          {/* 3. Por qué Altitude - Confían (critical - no lazy) */}
+          {/* 3. Por qué ADUANEX - Confían (critical - no lazy) */}
           <WhyAltitudeSection />
 
           {/* 4. Quiz - Lead Magnet Dinámico (critical - no lazy) */}

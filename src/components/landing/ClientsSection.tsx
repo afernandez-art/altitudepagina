@@ -58,7 +58,7 @@ export const ClientsSection = () => {
           className="text-center mb-10"
         >
           <h2 className="text-sm font-bold text-primary tracking-[0.2em] uppercase mb-3">
-            Social Proof
+            Nuestros clientes
           </h2>
           <p className="text-3xl md:text-4xl font-black tracking-tighter">
             Empresas que <span className="text-primary">confían</span> en nosotros

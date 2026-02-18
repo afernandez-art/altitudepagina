@@ -34,7 +34,7 @@ interface EventData {
 
 // Generar ID único para el visitante (persiste en localStorage)
 const getVisitorId = (): string => {
-  const key = 'altitude_visitor_id';
+  const key = 'aduanex_visitor_id';
   let visitorId = localStorage.getItem(key);
   if (!visitorId) {
     visitorId = `v_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
@@ -45,7 +45,7 @@ const getVisitorId = (): string => {
 
 // Generar ID de sesión (persiste solo durante la sesión)
 const getSessionId = (): string => {
-  const key = 'altitude_session_id';
+  const key = 'aduanex_session_id';
   let sessionId = sessionStorage.getItem(key);
   if (!sessionId) {
     sessionId = `s_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
@@ -80,11 +80,11 @@ const getUTMParams = (): Record<string, string> => {
 
   // Guardar UTMs en sessionStorage para persistir durante la sesión
   if (Object.keys(utmParams).length > 0) {
-    sessionStorage.setItem('altitude_utm', JSON.stringify(utmParams));
+    sessionStorage.setItem('aduanex_utm', JSON.stringify(utmParams));
   }
 
   // Recuperar UTMs guardados si no hay nuevos
-  const savedUtm = sessionStorage.getItem('altitude_utm');
+  const savedUtm = sessionStorage.getItem('aduanex_utm');
   if (savedUtm && Object.keys(utmParams).length === 0) {
     return JSON.parse(savedUtm);
   }

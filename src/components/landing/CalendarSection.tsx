@@ -158,7 +158,7 @@ export const CalendarSection = () => {
                 </div>
                 <div className="flex items-center gap-2 md:gap-3 text-sm md:text-base">
                   <User className="w-4 h-4 md:w-5 md:h-5 text-primary" />
-                  <span>Con un especialista de Altitude</span>
+                  <span>Con un especialista de ADUANEX</span>
                 </div>
               </div>
             </div>

@@ -14,7 +14,7 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ["Inter", "sans-serif"],
+        sans: ["DM Sans", "system-ui", "sans-serif"],
         mono: ["ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "monospace"],
       },
       colors: {
@@ -51,13 +51,24 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        slate: {
+          300: "hsl(var(--slate-300))",
+          400: "hsl(var(--slate-400))",
+          500: "hsl(var(--slate-500))",
+          600: "hsl(var(--slate-600))",
+          700: "hsl(var(--slate-700))",
+          800: "hsl(var(--slate-800))",
+          900: "hsl(var(--slate-900))",
+        },
+        // Backward compat aliases - map zinc to new slate values
         zinc: {
-          400: "hsl(var(--zinc-400))",
-          500: "hsl(var(--zinc-500))",
-          600: "hsl(var(--zinc-600))",
-          700: "hsl(var(--zinc-700))",
-          800: "hsl(var(--zinc-800))",
-          900: "hsl(var(--zinc-900))",
+          300: "hsl(var(--slate-300))",
+          400: "hsl(var(--slate-400))",
+          500: "hsl(var(--slate-500))",
+          600: "hsl(var(--slate-600))",
+          700: "hsl(var(--slate-700))",
+          800: "hsl(var(--slate-800))",
+          900: "hsl(var(--slate-900))",
         },
         green: {
           500: "hsl(var(--green-500))",
@@ -69,6 +80,7 @@ export default {
         sm: "calc(var(--radius) - 4px)",
         xl: "1rem",
         "2xl": "1.5rem",
+        "3xl": "2rem",
       },
       keyframes: {
         "accordion-down": {
@@ -80,8 +92,8 @@ export default {
           to: { height: "0" },
         },
         "pulse-glow": {
-          "0%, 100%": { boxShadow: "0 0 20px 0 hsl(21 100% 50% / 0.4)" },
-          "50%": { boxShadow: "0 0 40px 10px hsl(21 100% 50% / 0.6)" },
+          "0%, 100%": { boxShadow: "0 0 20px 0 hsl(217 91% 60% / 0.3)" },
+          "50%": { boxShadow: "0 0 40px 10px hsl(217 91% 60% / 0.5)" },
         },
       },
       animation: {
