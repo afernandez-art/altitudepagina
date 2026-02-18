@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
 import { memo } from "react";
 import { ArrowRight, ChevronDown, Ship, FileCheck } from "lucide-react";
-import heroImage from "@/assets/hero-warehouse.jpg";
-import heroImageMobile from "@/assets/hero-warehouse-mobile.jpg";
+import heroImage from "@/assets/hero-canton-fair.jpeg";
+import heroImageMobile from "@/assets/hero-canton-fair.jpeg";
 
 const HeroBackground = memo(() => (
   <>
