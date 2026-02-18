@@ -64,9 +64,9 @@ export const HeroSection = () => {
       <div className="relative z-10 max-w-7xl mx-auto px-6 pb-20">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {[
-            { title: "Trabas infinitas", desc: "Aduana, AFIP, fletes... el sistema está hecho para que te canses. Nosotros somos tu escudo." },
-            { title: "Tiempos muertos", desc: "Cargas frenadas por falta de papeles. Optimizamos cada minuto para que tu mercadería vuele." },
-            { title: "Costos ocultos", desc: "Sorpresas de último momento que matan tu margen. Cotización final real desde el día 1." },
+            { icon: "🌏", title: "Solución integral, de China a Argentina", desc: "Nos encargamos de todo el proceso: sourcing, logística, aduana y entrega. Vos solo recibís la mercadería." },
+            { icon: "🏷️", title: "Desarrollamos tu línea de productos", desc: "Diseño, packaging, branding y producción con fábricas en China. Tu producto listo para vender con tu marca." },
+            { icon: "📋", title: "Cotización desglosada al detalle", desc: "Sabés exactamente qué estás pagando. Cada costo discriminado, sin sorpresas ni letra chica." },
           ].map((item, i) => (
             <motion.div
               key={item.title}
@@ -76,6 +76,7 @@ export const HeroSection = () => {
               transition={{ delay: i * 0.1 }}
               className="p-8 bg-card/50 rounded-xl border border-border"
             >
+              <span className="text-2xl mb-3 block">{item.icon}</span>
               <h3 className="text-xl font-bold mb-2">{item.title}</h3>
               <p className="text-muted-foreground text-sm">{item.desc}</p>
             </motion.div>
