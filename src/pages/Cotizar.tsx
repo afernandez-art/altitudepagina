@@ -15,10 +15,6 @@ import {
   mejorarOptions,
   volumenOptions,
   etapaOptions,
-  espacioOptions,
-  serviciosAdicionalesOptions,
-  frecuenciaOptions,
-  tercerizarOptions,
   urgenciaOptions,
   SituacionType,
   LeadMagnetFormData,
@@ -79,60 +75,6 @@ const getQuestionsConfig = (situacion: SituacionType | "") => {
             type: "single" as const,
             options: etapaOptions,
             field: "etapa" as const,
-          },
-        ],
-        totalSteps: 6,
-      };
-    case "deposito-fulfillment":
-      return {
-        questions: [
-          {
-            id: "espacio",
-            title: "¿Cuánto espacio aproximado necesitas?",
-            type: "single" as const,
-            options: espacioOptions,
-            field: "espacio" as const,
-          },
-          {
-            id: "servicioAdicionalPrincipal",
-            title: "¿Qué servicio adicional te interesa más?",
-            type: "single" as const,
-            options: serviciosAdicionalesOptions,
-            field: "servicioAdicionalPrincipal" as const,
-          },
-          {
-            id: "frecuencia",
-            title: "¿Con qué frecuencia realizas despachos?",
-            type: "single" as const,
-            options: frecuenciaOptions,
-            field: "frecuencia" as const,
-          },
-        ],
-        totalSteps: 6,
-      };
-    case "escalar-negocio":
-      return {
-        questions: [
-          {
-            id: "experiencia",
-            title: "Experiencia importando",
-            type: "single" as const,
-            options: experienciaOptions,
-            field: "experiencia" as const,
-          },
-          {
-            id: "origen",
-            title: "¿Desde dónde importas principalmente?",
-            type: "single" as const,
-            options: origenOptions,
-            field: "origen" as const,
-          },
-          {
-            id: "tercerizarPrincipal",
-            title: "¿Qué servicio te gustaría tercerizar principalmente?",
-            type: "single" as const,
-            options: tercerizarOptions,
-            field: "tercerizarPrincipal" as const,
           },
         ],
         totalSteps: 6,

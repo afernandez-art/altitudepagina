@@ -21,7 +21,7 @@ export const nichoOptions = [
 ];
 
 // Paso 2: Situación actual
-export type SituacionType = "mejorar-costos" | "contenedor-compartido" | "deposito-fulfillment" | "escalar-negocio";
+export type SituacionType = "mejorar-costos" | "contenedor-compartido";
 
 export const situacionOptions: { id: SituacionType; titulo: string; descripcion: string }[] = [
   {
@@ -33,16 +33,6 @@ export const situacionOptions: { id: SituacionType; titulo: string; descripcion:
     id: "contenedor-compartido",
     titulo: "Tengo capital para importar en un contenedor compartido",
     descripcion: "Tienes capital disponible y quieres maximizarlo importando en un contenedor compartido (LCL)",
-  },
-  {
-    id: "deposito-fulfillment",
-    titulo: "Necesito un depósito/fulfillment",
-    descripcion: "Necesitas un espacio de almacenamiento y gestión logística para tus productos",
-  },
-  {
-    id: "escalar-negocio",
-    titulo: "Necesito escalar mi negocio",
-    descripcion: "Necesito escalar mi negocio con una solución integral que maneje tanto la importación (comex) como toda la logística",
   },
 ];
 
@@ -60,18 +50,6 @@ export const problematicasPorSituacion: Record<SituacionType, { id: string; labe
     { id: "varias-referencias", label: "Necesito importar varias referencias pero no llego al volumen de un contenedor" },
     { id: "minimizar-riesgos", label: "Busco minimizar riesgos importando cantidades más pequeñas" },
   ],
-  "deposito-fulfillment": [
-    { id: "almacenar-preparar", label: "Necesito almacenar y preparar pedidos para mis canales de distribución" },
-    { id: "entregas-rapidas", label: "Mis clientes mayoristas exigen entregas más rápidas y profesionales" },
-    { id: "pickeo-packing", label: "Necesito capacidad de pickeo y packing para pedidos corporativos/mayoristas" },
-    { id: "sin-capacidad", label: "Mi operación actual no tiene capacidad para manejar más volumen" },
-  ],
-  "escalar-negocio": [
-    { id: "mucho-tiempo", label: "Paso demasiado tiempo gestionando importaciones y logística" },
-    { id: "expandir-canales", label: "Quiero expandirme a nuevos canales pero no tengo capacidad operativa" },
-    { id: "profesionalizar", label: "Necesito profesionalizar mi operación para competir mejor" },
-    { id: "socio-estrategico", label: "Busco un socio estratégico que entienda mi negocio de punta a punta" },
-  ],
 };
 
 // Paso 4: Facturación mensual
@@ -86,7 +64,7 @@ export const facturacionOptions = [
 // FORM 2 - PROFUNDIZACIÓN (según situación)
 // ==========================================
 
-// Experiencia importando (para mejorar-costos y escalar-negocio)
+// Experiencia importando (para mejorar-costos)
 export const experienciaOptions = [
   { id: "primera-vez", label: "Es mi primera vez importando" },
   { id: "ocasionalmente", label: "Importo ocasionalmente (1-2 veces al año)" },
@@ -94,7 +72,7 @@ export const experienciaOptions = [
   { id: "frecuentemente", label: "Importo frecuentemente (más de 6 veces al año)" },
 ];
 
-// Origen de importación (para mejorar-costos, contenedor-compartido, escalar-negocio)
+// Origen de importación (para mejorar-costos, contenedor-compartido)
 export const origenOptions = [
   { id: "china", label: "China" },
   { id: "usa", label: "USA" },
@@ -127,38 +105,6 @@ export const etapaOptions = [
   { id: "necesito-ayuda", label: "Necesito ayuda para encontrar proveedores" },
 ];
 
-// Espacio necesario (para deposito-fulfillment)
-export const espacioOptions = [
-  { id: "hasta-10-pallets", label: "Hasta 10 pallets (pequeño)" },
-  { id: "10-30-pallets", label: "10 - 30 pallets (mediano)" },
-  { id: "30-60-pallets", label: "30 - 60 pallets (grande)" },
-  { id: "mas-60-pallets", label: "Más de 60 pallets (muy grande)" },
-];
-
-// Servicios adicionales (para deposito-fulfillment) - checkbox
-export const serviciosAdicionalesOptions = [
-  { id: "etiquetado", label: "Etiquetado/re-etiquetado de productos" },
-  { id: "reempaque", label: "Reempaque" },
-  { id: "personalizacion", label: "Personalización de pedidos" },
-  { id: "solo-estandar", label: "No, solo almacenamiento y despacho estándar" },
-];
-
-// Frecuencia de despachos (para deposito-fulfillment)
-export const frecuenciaOptions = [
-  { id: "diario", label: "Diario" },
-  { id: "semanal", label: "Semanal" },
-  { id: "quincenal", label: "Quincenal" },
-  { id: "mensual", label: "Mensual" },
-];
-
-// Servicios a tercerizar (para escalar-negocio) - checkbox
-export const tercerizarOptions = [
-  { id: "gestion-importacion", label: "Gestión de importación (comex completo)" },
-  { id: "almacenamiento", label: "Almacenamiento y preparación de pedidos" },
-  { id: "distribucion", label: "Distribución a clientes" },
-  { id: "todo", label: "Todo el proceso de punta a punta" },
-];
-
 // Urgencia (para todos)
 export const urgenciaOptions = [
   { id: "inmediatamente", label: "Inmediatamente" },
@@ -180,9 +126,9 @@ export interface LeadMagnetFormData {
   facturacion: string;
 
   // FORM 2 - Profundización (según situación)
-  // Para mejorar-costos y escalar-negocio
+  // Para mejorar-costos
   experiencia: string;
-  // Para mejorar-costos, contenedor-compartido, escalar-negocio
+  // Para mejorar-costos, contenedor-compartido
   origen: string;
   // Para mejorar-costos (single select - principal mejora)
   mejoraPrincipal: string;
@@ -190,14 +136,6 @@ export interface LeadMagnetFormData {
   // Para contenedor-compartido
   volumen: string;
   etapa: string;
-  // Para deposito-fulfillment
-  espacio: string;
-  servicioAdicionalPrincipal: string; // single select
-  serviciosAdicionales: string[]; // legacy
-  frecuencia: string;
-  // Para escalar-negocio (single select - principal servicio a tercerizar)
-  tercerizarPrincipal: string;
-  tercerizar: string[]; // legacy
 
   // Preguntas finales (para todos)
   urgencia: string;
@@ -257,12 +195,6 @@ const initialFormData: LeadMagnetFormData = {
   mejoras: [],
   volumen: "",
   etapa: "",
-  espacio: "",
-  servicioAdicionalPrincipal: "",
-  serviciosAdicionales: [],
-  frecuencia: "",
-  tercerizarPrincipal: "",
-  tercerizar: [],
   urgencia: "",
   nombre: "",
   email: "",
@@ -358,16 +290,6 @@ ${problematicaLabel}
 - Origen: ${getLabel(origenOptions, formData.origen)}
 - Volumen: ${getLabel(volumenOptions, formData.volumen)}
 - Etapa: ${getLabel(etapaOptions, formData.etapa)}`;
-    } else if (formData.situacion === "deposito-fulfillment") {
-      mensaje += `
-- Espacio necesario: ${getLabel(espacioOptions, formData.espacio)}
-- Servicios adicionales: ${formData.serviciosAdicionales.map(s => getLabel(serviciosAdicionalesOptions, s)).join(", ")}
-- Frecuencia de despachos: ${getLabel(frecuenciaOptions, formData.frecuencia)}`;
-    } else if (formData.situacion === "escalar-negocio") {
-      mensaje += `
-- Experiencia: ${getLabel(experienciaOptions, formData.experiencia)}
-- Origen: ${getLabel(origenOptions, formData.origen)}
-- Quiero tercerizar: ${formData.tercerizar.map(t => getLabel(tercerizarOptions, t)).join(", ")}`;
     }
 
     mensaje += `
@@ -420,16 +342,6 @@ ${urgenciaLabel}`;
       volumen_label: formData.volumen ? getLabel(volumenOptions, formData.volumen) : null,
       etapa: formData.etapa || null,
       etapa_label: formData.etapa ? getLabel(etapaOptions, formData.etapa) : null,
-      espacio: formData.espacio || null,
-      espacio_label: formData.espacio ? getLabel(espacioOptions, formData.espacio) : null,
-      servicios_adicionales: formData.serviciosAdicionales.length > 0 ? formData.serviciosAdicionales : null,
-      servicios_adicionales_labels: formData.serviciosAdicionales.length > 0
-        ? getLabels(serviciosAdicionalesOptions, formData.serviciosAdicionales)
-        : null,
-      frecuencia: formData.frecuencia || null,
-      frecuencia_label: formData.frecuencia ? getLabel(frecuenciaOptions, formData.frecuencia) : null,
-      tercerizar: formData.tercerizar.length > 0 ? formData.tercerizar : null,
-      tercerizar_labels: formData.tercerizar.length > 0 ? getLabels(tercerizarOptions, formData.tercerizar) : null,
 
       // Urgencia
       urgencia: formData.urgencia,

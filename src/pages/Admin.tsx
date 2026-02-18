@@ -847,8 +847,6 @@ const Admin = () => {
                 <option value="">Todas las situaciones</option>
                 <option value="mejorar-costos">Mejorar costos</option>
                 <option value="contenedor-compartido">Contenedor compartido</option>
-                <option value="deposito-fulfillment">Depósito/Fulfillment</option>
-                <option value="escalar-negocio">Escalar negocio</option>
               </select>
               <select
                 value={filterEstado}
