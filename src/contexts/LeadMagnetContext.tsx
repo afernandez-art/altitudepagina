@@ -351,6 +351,16 @@ ${urgenciaLabel}`;
       estado: "nuevo",
       contactado_whatsapp: false,
       notas: null,
+
+      // Missing nullable fields
+      espacio: null,
+      espacio_label: null,
+      servicios_adicionales: null,
+      servicios_adicionales_labels: null,
+      frecuencia: null,
+      frecuencia_label: null,
+      tercerizar: null,
+      tercerizar_labels: null,
     };
 
     // Save to Supabase if configured
