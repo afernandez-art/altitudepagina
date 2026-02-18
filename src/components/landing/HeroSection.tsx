@@ -13,8 +13,8 @@ export const HeroSection = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.05 }}
-          className="inline-block px-4 py-1 border border-primary text-primary rounded-full text-xs font-bold uppercase tracking-[0.2em] mb-6"
-        >
+          className="inline-block px-4 py-1 border border-primary text-primary rounded-full text-xs font-bold uppercase tracking-[0.2em] mb-6">
+
           Comercio Internacional
         </motion.span>
 
@@ -22,8 +22,8 @@ export const HeroSection = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.15 }}
-          className="text-5xl sm:text-6xl md:text-8xl font-black mb-8 leading-[0.9] tracking-tighter"
-        >
+          className="text-5xl sm:text-6xl md:text-8xl font-black mb-8 leading-[0.9] tracking-tighter">
+
           IMPORTAR ES UN <br />
           <span className="text-primary italic">QUILOMBO</span>,<br />
           NOSOTROS LO HACEMOS FÁCIL.
@@ -33,28 +33,28 @@ export const HeroSection = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.25 }}
-          className="max-w-2xl mx-auto text-lg sm:text-xl text-muted-foreground mb-10 leading-relaxed"
-        >
-          Somos Agustín y Emanuel. Te acompañamos en cada paso para que traer tus productos sea simple, rápido y sin vueltas. Olvidate de la burocracia.
+          className="max-w-2xl mx-auto text-lg sm:text-xl text-muted-foreground mb-10 leading-relaxed">Somos Emanuel y Agustín. Te acompañamos en cada paso para que traer tus productos sea simple, rápido y sin vueltas. Olvidate de la burocracia.
+
+
         </motion.p>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.35 }}
-          className="flex flex-col sm:flex-row gap-4 justify-center"
-        >
+          className="flex flex-col sm:flex-row gap-4 justify-center">
+
           <a
             href="#quiz-section"
-            className="bg-primary text-primary-foreground px-10 py-5 rounded-full text-lg font-bold hover:scale-105 transition-transform inline-flex items-center justify-center gap-2"
-          >
+            className="bg-primary text-primary-foreground px-10 py-5 rounded-full text-lg font-bold hover:scale-105 transition-transform inline-flex items-center justify-center gap-2">
+
             Empezá ahora
             <ArrowRight className="w-5 h-5" />
           </a>
           <a
             href="#historia"
-            className="bg-card border border-border px-10 py-5 rounded-full text-lg font-bold hover:bg-muted transition-colors inline-flex items-center justify-center"
-          >
+            className="bg-card border border-border px-10 py-5 rounded-full text-lg font-bold hover:bg-muted transition-colors inline-flex items-center justify-center">
+
             Conocenos
           </a>
         </motion.div>
@@ -65,12 +65,12 @@ export const HeroSection = () => {
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        className="relative z-10 max-w-4xl mx-auto px-6 pb-20"
-      >
+        className="relative z-10 max-w-4xl mx-auto px-6 pb-20">
+
         <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground leading-relaxed text-center">
           Sabemos que tu negocio necesita mejores márgenes, no más intermediarios. Mientras otros despachantes te mandan un PDF y desaparecen, nosotros nos sentamos con vos, te damos números reales y hacemos que cada operación sea más rentable.
         </p>
       </motion.div>
-    </section>
-  );
+    </section>);
+
 };
