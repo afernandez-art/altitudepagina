@@ -93,22 +93,6 @@ export const HeroSection = () => {
             con tecnología y experiencia. Sin burocracia.
           </motion.p>
 
-          {/* Service pills */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="flex flex-wrap items-center justify-center gap-3"
-          >
-            <span className="flex items-center gap-2 px-4 py-2 rounded-xl bg-card/80 border border-border/50 text-sm text-foreground/90">
-              <Ship className="w-4 h-4 text-primary" />
-              Forwarding Internacional
-            </span>
-            <span className="flex items-center gap-2 px-4 py-2 rounded-xl bg-card/80 border border-border/50 text-sm text-foreground/90">
-              <FileCheck className="w-4 h-4 text-accent" />
-              Estudio Aduanero
-            </span>
-          </motion.div>
 
           {/* CTAs */}
           <motion.div
