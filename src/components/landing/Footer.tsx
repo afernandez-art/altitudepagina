@@ -12,8 +12,8 @@ export const Footer = () => {
                 ADUA<span className="text-primary">NEX</span>
               </span>
             </div>
-            <p className="text-muted-foreground max-w-sm mb-8 leading-relaxed">
-              Haciendo que el comercio internacional sea tan simple como comprar en el súper. Sin vueltas, sin letra chica.
+            <p className="text-muted-foreground max-w-sm mb-8 leading-relaxed">Haciendo que el comercio internacional sea tan simple como comprar en el chino. Sin vueltas, sin letra chica.
+
             </p>
             <div className="flex gap-4">
               <a href="#" className="w-10 h-10 rounded-full bg-card border border-border flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all">
@@ -67,6 +67,6 @@ export const Footer = () => {
           </div>
         </div>
       </div>
-    </footer>
-  );
+    </footer>);
+
 };
