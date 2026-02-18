@@ -1,18 +1,14 @@
 import { useEffect, lazy, Suspense } from "react";
 import { Navbar } from "@/components/landing/Navbar";
 import { HeroSection } from "@/components/landing/HeroSection";
-import { PainPointsSection } from "@/components/landing/PainPointsSection";
 import { QuizSection } from "@/components/landing/QuizSection";
 import { FloatingCTA } from "@/components/landing/FloatingCTA";
 import { LeadMagnetProvider } from "@/contexts/LeadMagnetContext";
 import { analytics, setupScrollTracking } from "@/lib/analytics";
 
-// Lazy load below-the-fold sections
 const StorySection = lazy(() => import("@/components/landing/StorySection").then(m => ({ default: m.StorySection })));
 const ProcessSection = lazy(() => import("@/components/landing/ProcessSection").then(m => ({ default: m.ProcessSection })));
 const B2BOXSection = lazy(() => import("@/components/landing/B2BOXSection").then(m => ({ default: m.B2BOXSection })));
-const TestimonialsSection = lazy(() => import("@/components/landing/TestimonialsSection").then(m => ({ default: m.TestimonialsSection })));
-const CTASection = lazy(() => import("@/components/landing/CTASection").then(m => ({ default: m.CTASection })));
 const Footer = lazy(() => import("@/components/landing/Footer").then(m => ({ default: m.Footer })));
 
 const SectionLoader = () => (
@@ -33,39 +29,26 @@ const Index = () => {
       <div className="min-h-screen bg-background text-foreground selection:bg-primary selection:text-primary-foreground">
         <Navbar />
         <main>
-          {/* 1. Hero */}
+          {/* Hero + Problem Cards */}
           <HeroSection />
 
-          {/* 2. Pain Points - "Importar es un quilombo" */}
-          <PainPointsSection />
-
-          {/* 3. Historia */}
+          {/* Nuestra Historia */}
           <Suspense fallback={<SectionLoader />}>
             <StorySection />
           </Suspense>
 
-          {/* 4. Proceso - 4 pasos */}
+          {/* 4 Pasos */}
           <Suspense fallback={<SectionLoader />}>
             <ProcessSection />
           </Suspense>
 
-          {/* 5. B2BOX Ecosystem */}
+          {/* B2BOX World */}
           <Suspense fallback={<SectionLoader />}>
             <B2BOXSection />
           </Suspense>
 
-          {/* 6. Quiz / Cotizador */}
+          {/* Quiz / Cotizador */}
           <QuizSection />
-
-          {/* 7. Testimonios */}
-          <Suspense fallback={<SectionLoader />}>
-            <TestimonialsSection />
-          </Suspense>
-
-          {/* 8. CTA Final */}
-          <Suspense fallback={<SectionLoader />}>
-            <CTASection />
-          </Suspense>
         </main>
 
         <Suspense fallback={null}>

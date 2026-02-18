@@ -14,83 +14,74 @@ const AnimatedCounter = ({ value, suffix = "" }: { value: number; suffix?: strin
 
 export const StorySection = () => {
   return (
-    <section className="py-20 sm:py-28 px-4 sm:px-6 bg-card/30" id="historia">
-      <div className="max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="mb-4"
-        >
-          <span className="text-xs sm:text-sm font-semibold text-primary tracking-[0.15em] uppercase">
-            Nuestra Historia
-          </span>
-        </motion.div>
+    <section className="py-24 sm:py-32 bg-card/30" id="historia">
+      <div className="max-w-7xl mx-auto px-6">
+        {/* Header */}
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-4xl md:text-5xl font-black tracking-tighter uppercase">Nuestra Historia</h2>
+            <p className="text-muted-foreground mt-4 max-w-lg">
+              Dos amigos apasionados por el Comex que decidieron que traer cosas de afuera no tenía por qué ser un dolor de cabeza.
+            </p>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="text-primary font-bold text-lg flex items-center gap-2"
+          >
+            📈 10+ Años de experiencia
+          </motion.div>
+        </div>
 
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
-          {/* Left - Story text */}
+        {/* Team cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12">
+          {/* Agustín */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
+            className="group relative overflow-hidden rounded-xl bg-card border border-border card-glow-lime transition-all"
           >
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight mb-6">
-              De colegas a socios con una{" "}
-              <span className="italic text-gradient">misión clara.</span>
-            </h2>
-            <p className="text-muted-foreground leading-relaxed text-base sm:text-lg mb-8">
-              Nos conocimos en el fragor de la aduana, gestionando despachos imposibles.
-              Descubrimos que compartíamos la misma frustración: la falta de transparencia del sistema.
-              Agustín traía la visión comercial y el sourcing, Emanuel la experiencia técnica y aduanera.
-              Juntos, decidimos que importar no tiene por qué ser una pesadilla.
-            </p>
-
-            <div className="flex gap-12">
-              <div>
-                <AnimatedCounter value={500} />
-                <p className="text-muted-foreground text-sm mt-1">Contenedores gestionados</p>
-              </div>
-              <div>
-                <span className="text-4xl sm:text-5xl font-black text-primary">100%</span>
-                <p className="text-muted-foreground text-sm mt-1">Transparencia en costos</p>
-              </div>
+            <div className="aspect-[4/5] overflow-hidden bg-muted flex items-center justify-center">
+              <span className="text-8xl font-black text-primary/20">A</span>
+            </div>
+            <div className="p-8">
+              <h4 className="text-3xl font-black mb-1 tracking-tighter">AGUSTÍN</h4>
+              <p className="text-primary font-bold mb-6">Especialista en Aduana</p>
+              <p className="text-muted-foreground mb-8">
+                Fanático de la eficiencia. Agustín se encarga de que cada documento sea perfecto para que Aduana no sea un problema sino un trámite.
+              </p>
+              <span className="inline-flex items-center gap-2 bg-muted px-6 py-3 rounded-full text-sm">
+                @agusimportador
+              </span>
             </div>
           </motion.div>
 
-          {/* Right - Team cards */}
+          {/* Emanuel */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="space-y-6"
+            transition={{ delay: 0.15 }}
+            className="group relative overflow-hidden rounded-xl bg-card border border-border card-glow-lime transition-all"
           >
-            {/* Agustín */}
-            <div className="bento-item flex gap-5 items-center">
-              <div className="w-20 h-20 rounded-2xl bg-muted flex items-center justify-center flex-shrink-0 text-2xl font-black text-primary">
-                A
-              </div>
-              <div>
-                <h3 className="text-xl font-bold tracking-tight">Agustín</h3>
-                <p className="text-primary text-sm font-medium">@agusimportador</p>
-                <p className="text-muted-foreground text-sm mt-1">
-                  Especialista en Sourcing Estratégico y Negociación Internacional.
-                </p>
-              </div>
+            <div className="aspect-[4/5] overflow-hidden bg-muted flex items-center justify-center">
+              <span className="text-8xl font-black text-primary/20">E</span>
             </div>
-
-            {/* Emanuel */}
-            <div className="bento-item flex gap-5 items-center">
-              <div className="w-20 h-20 rounded-2xl bg-muted flex items-center justify-center flex-shrink-0 text-2xl font-black text-primary">
-                E
-              </div>
-              <div>
-                <h3 className="text-xl font-bold tracking-tight">Emanuel</h3>
-                <p className="text-primary text-sm font-medium">@despachantedeaduanas</p>
-                <p className="text-muted-foreground text-sm mt-1">
-                  Despachante de Aduana matriculado. El cerebro detrás de la logística técnica.
-                </p>
-              </div>
+            <div className="p-8">
+              <h4 className="text-3xl font-black mb-1 tracking-tighter">EMANUEL</h4>
+              <p className="text-primary font-bold mb-6">Experto en Logística</p>
+              <p className="text-muted-foreground mb-8">
+                El que mueve los hilos. Emanuel tiene el mapa del mundo en la cabeza y sabe exactamente qué ruta tomar para que pagues menos.
+              </p>
+              <span className="inline-flex items-center gap-2 bg-muted px-6 py-3 rounded-full text-sm">
+                @despachantedeaduanas
+              </span>
             </div>
           </motion.div>
         </div>

@@ -1,45 +1,70 @@
-import { Linkedin, Instagram, Youtube } from "lucide-react";
+import { Instagram, Linkedin, Youtube, Mail, MapPin, Clock } from "lucide-react";
 
 export const Footer = () => {
   return (
-    <footer className="py-12 px-6 border-t border-border bg-background">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-          {/* Logo */}
-          <span className="text-xl font-black tracking-tight">
-            ADUA<span className="text-primary">NEX</span>
-          </span>
+    <footer className="py-20 bg-background border-t border-border">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-20">
+          {/* Brand */}
+          <div className="col-span-1 lg:col-span-2">
+            <div className="flex items-center gap-2 mb-6">
+              <span className="text-xl font-bold tracking-tighter">
+                ADUA<span className="text-primary">NEX</span>
+              </span>
+            </div>
+            <p className="text-muted-foreground max-w-sm mb-8 leading-relaxed">
+              Haciendo que el comercio internacional sea tan simple como comprar en el súper. Sin vueltas, sin letra chica.
+            </p>
+            <div className="flex gap-4">
+              <a href="#" className="w-10 h-10 rounded-full bg-card border border-border flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all">
+                <Instagram className="w-4 h-4" />
+              </a>
+              <a href="#" className="w-10 h-10 rounded-full bg-card border border-border flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all">
+                <Linkedin className="w-4 h-4" />
+              </a>
+              <a href="#" className="w-10 h-10 rounded-full bg-card border border-border flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all">
+                <Youtube className="w-4 h-4" />
+              </a>
+            </div>
+          </div>
 
-          {/* Social */}
-          <div className="flex gap-4">
-            <a
-              href="#"
-              className="text-muted-foreground hover:text-foreground transition-colors"
-              aria-label="Instagram"
-            >
-              <Instagram className="w-5 h-5" />
-            </a>
-            <a
-              href="#"
-              className="text-muted-foreground hover:text-foreground transition-colors"
-              aria-label="LinkedIn"
-            >
-              <Linkedin className="w-5 h-5" />
-            </a>
-            <a
-              href="#"
-              className="text-muted-foreground hover:text-foreground transition-colors"
-              aria-label="YouTube"
-            >
-              <Youtube className="w-5 h-5" />
-            </a>
+          {/* Links */}
+          <div>
+            <h5 className="font-bold mb-6 text-sm uppercase tracking-widest text-muted-foreground">Mundos</h5>
+            <ul className="space-y-4">
+              <li><a className="hover:text-primary transition-colors" href="#mundo1">Personal Brand</a></li>
+              <li><a className="hover:text-secondary transition-colors" href="#b2box">B2BOX Platform</a></li>
+              <li><a className="hover:text-primary transition-colors" href="#pasos">Servicios</a></li>
+              <li><a className="hover:text-primary transition-colors" href="#quiz-section">Cotizar</a></li>
+            </ul>
+          </div>
+
+          {/* Contact */}
+          <div>
+            <h5 className="font-bold mb-6 text-sm uppercase tracking-widest text-muted-foreground">Contacto</h5>
+            <ul className="space-y-4">
+              <li className="flex items-center gap-2 text-muted-foreground">
+                <Mail className="w-4 h-4 text-primary" />
+                hola@aduanex.com
+              </li>
+              <li className="flex items-center gap-2 text-muted-foreground">
+                <MapPin className="w-4 h-4 text-primary" />
+                Buenos Aires, Argentina
+              </li>
+              <li className="flex items-center gap-2 text-muted-foreground">
+                <Clock className="w-4 h-4 text-primary" />
+                Lun - Vie, 9hs a 18hs
+              </li>
+            </ul>
           </div>
         </div>
 
-        <div className="mt-8 pt-6 border-t border-border text-center">
-          <p className="text-muted-foreground text-xs">
-            © {new Date().getFullYear()} ADUANEX. Todos los derechos reservados.
-          </p>
+        <div className="pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-muted-foreground">
+          <p>© {new Date().getFullYear()} ADUANEX. Todos los derechos reservados.</p>
+          <div className="flex gap-6">
+            <a className="hover:text-foreground transition-colors" href="#">Términos y condiciones</a>
+            <a className="hover:text-foreground transition-colors" href="#">Privacidad</a>
+          </div>
         </div>
       </div>
     </footer>

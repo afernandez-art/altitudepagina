@@ -2,54 +2,53 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,900;1,9..40,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
 
 @layer base {
   :root {
-    /* ADUANEX — Deep + Emerald Green */
-    --background: 222 47% 4%;
-    --foreground: 210 40% 98%;
+    --background: 0 0% 2%;
+    --foreground: 0 0% 100%;
 
-    --card: 222 47% 7%;
-    --card-foreground: 210 40% 98%;
+    --card: 0 0% 7%;
+    --card-foreground: 0 0% 100%;
 
-    --popover: 222 47% 7%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 0 0% 7%;
+    --popover-foreground: 0 0% 100%;
 
-    --primary: 110 100% 54%;
+    --primary: 72 100% 50%;
     --primary-foreground: 0 0% 0%;
 
-    --secondary: 222 47% 9%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 220 100% 50%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 217 33% 17%;
-    --muted-foreground: 215 20% 65%;
+    --muted: 0 0% 12%;
+    --muted-foreground: 0 0% 64%;
 
-    --accent: 110 80% 60%;
+    --accent: 72 100% 50%;
     --accent-foreground: 0 0% 0%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 217 33% 17%;
-    --input: 217 33% 17%;
-    --ring: 110 100% 54%;
+    --border: 0 0% 15%;
+    --input: 0 0% 15%;
+    --ring: 72 100% 50%;
 
-    --radius: 0.75rem;
+    --radius: 1rem;
 
     /* Custom tokens */
-    --slate-300: 213 27% 84%;
-    --slate-400: 215 20% 65%;
-    --slate-500: 215 16% 47%;
-    --slate-600: 215 19% 35%;
-    --slate-700: 217 33% 17%;
-    --slate-800: 217 33% 12%;
-    --slate-900: 222 47% 7%;
+    --slate-300: 0 0% 80%;
+    --slate-400: 0 0% 64%;
+    --slate-500: 0 0% 47%;
+    --slate-600: 0 0% 35%;
+    --slate-700: 0 0% 15%;
+    --slate-800: 0 0% 10%;
+    --slate-900: 0 0% 7%;
 
-    --green-500: 110 100% 54%;
+    --green-500: 72 100% 50%;
 
-    --glass-bg: 222 47% 4% / 0.85;
-    --glass-border: 217 33% 17% / 0.5;
+    --glass-bg: 0 0% 2% / 0.8;
+    --glass-border: 0 0% 100% / 0.1;
   }
 }
 
@@ -64,45 +63,62 @@
 
   body {
     @apply bg-background text-foreground font-sans antialiased;
-    font-family: 'DM Sans', system-ui, sans-serif;
+    font-family: 'Space Grotesk', system-ui, sans-serif;
   }
 }
 
 @layer components {
   .glass-nav {
     background: hsl(var(--glass-bg));
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border-bottom: 1px solid hsl(var(--glass-border));
   }
 
   .glass-card {
-    background: hsl(222 47% 7% / 0.6);
+    background: hsl(0 0% 7% / 0.6);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border: 1px solid hsl(217 33% 17% / 0.5);
+    border: 1px solid hsl(0 0% 15% / 0.5);
   }
 
   .text-gradient {
-    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(110 100% 65%) 100%);
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(72 100% 65%) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
   .text-gradient-accent {
-    background: linear-gradient(135deg, hsl(var(--accent)) 0%, hsl(110 100% 65%) 100%);
+    background: linear-gradient(135deg, hsl(var(--accent)) 0%, hsl(72 100% 65%) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
+  .hero-grid {
+    background-image: radial-gradient(hsl(0 0% 100% / 0.06) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  .world-transition {
+    background: linear-gradient(180deg, hsl(var(--background)) 0%, hsl(220 100% 50% / 0.12) 50%, hsl(var(--background)) 100%);
+  }
+
+  .card-glow-lime:hover {
+    box-shadow: 0 0 30px hsl(72 100% 50% / 0.15);
+  }
+
+  .card-glow-blue:hover {
+    box-shadow: 0 0 30px hsl(220 100% 50% / 0.2);
+  }
+
   .bento-item {
-    @apply rounded-2xl border border-border/50 bg-card/60 backdrop-blur-sm p-6 md:p-8 transition-all duration-300;
+    @apply rounded-xl border border-border bg-card/60 backdrop-blur-sm p-6 md:p-8 transition-all duration-300;
   }
 
   .bento-item:hover {
     border-color: hsl(var(--primary) / 0.3);
-    box-shadow: 0 0 40px -12px hsl(110 100% 54% / 0.15);
+    box-shadow: 0 0 40px -12px hsl(72 100% 50% / 0.15);
   }
 }

@@ -1,80 +1,47 @@
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
 
 const steps = [
-  {
-    number: "1",
-    title: "Asesoramiento",
-    description: "Analizamos tu producto, su viabilidad y la mejor estrategia arancelaria para Argentina.",
-  },
-  {
-    number: "2",
-    title: "Sourcing",
-    description: "Buscamos proveedores confiables o auditamos a los que ya tenés. Negociamos precios y calidad.",
-  },
-  {
-    number: "3",
-    title: "Operación",
-    description: "Logística internacional y despacho de aduana. Nosotros nos peleamos con los papeles.",
-  },
-  {
-    number: "4",
-    title: "Entrega Final",
-    description: "Recibís la mercadería en tu depósito lista para vender. Sin vueltas, sin sorpresas.",
-  },
+  { number: "01", title: "ASESORAMOS", desc: "Analizamos qué querés traer y te decimos si es viable y cuánto te va a costar." },
+  { number: "02", title: "BUSCAMOS", desc: "Contactamos proveedores y negociamos las mejores tarifas de flete internacional." },
+  { number: "03", title: "MANEJAMOS", desc: "Hacemos todo el papeleo aduanero y legal. Vos solo esperás la notificación." },
+  { number: "04", title: "ENTREGAMOS", desc: "Llevamos la mercadería hasta tu depósito o puerta. Listo para vender." },
 ];
 
 export const ProcessSection = () => {
   return (
-    <section className="py-20 sm:py-28 px-4 sm:px-6" id="proceso">
-      <div className="max-w-7xl mx-auto">
-        <motion.div
+    <section className="py-24 sm:py-32" id="pasos">
+      <div className="max-w-7xl mx-auto px-6">
+        <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-12 sm:mb-16"
+          className="text-4xl md:text-5xl font-black mb-20 text-center tracking-tighter"
         >
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight">
-            Tu mercadería, en <span className="text-primary">4 pasos.</span>
-          </h2>
-          <p className="text-muted-foreground mt-4 max-w-2xl mx-auto">
-            Diseñamos un journey simple para que sepas exactamente qué está pasando en cada etapa.
-          </p>
-        </motion.div>
+          EL VIAJE DE TU CARGA <br />
+          <span className="text-primary italic">EN 4 PASOS</span>
+        </motion.h2>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 max-w-5xl mx-auto">
-          {steps.map((step, index) => (
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 relative">
+          {/* Connector line (desktop) */}
+          <div className="hidden md:block absolute top-12 left-0 w-full h-[2px] bg-border z-0" />
+
+          {steps.map((step, i) => (
             <motion.div
               key={step.number}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-              className="bento-item text-center"
+              transition={{ delay: i * 0.1 }}
+              className="relative z-10 flex flex-col items-center text-center p-6 group"
             >
-              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-5">
-                <span className="text-xl font-black text-primary">{step.number}</span>
+              <div className="w-24 h-24 rounded-full bg-card border-4 border-border flex items-center justify-center mb-6 group-hover:border-primary transition-colors">
+                <span className="text-4xl font-black text-primary">{step.number}</span>
               </div>
-              <h3 className="text-xl font-bold mb-2 tracking-tight">{step.title}</h3>
-              <p className="text-muted-foreground text-sm leading-relaxed">{step.description}</p>
+              <h4 className="text-xl font-bold mb-3">{step.title}</h4>
+              <p className="text-muted-foreground text-sm">{step.desc}</p>
             </motion.div>
           ))}
         </div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mt-14"
-        >
-          <a
-            href="#quiz-section"
-            className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-8 py-4 rounded-xl font-bold hover:bg-primary/90 transition-all shadow-lg shadow-primary/20"
-          >
-            Cotizá gratis
-            <ArrowRight className="w-5 h-5" />
-          </a>
-        </motion.div>
       </div>
     </section>
   );
