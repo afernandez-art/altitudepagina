@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { memo } from "react";
-import { ArrowRight, ChevronDown, Ship, FileCheck } from "lucide-react";
+import { ArrowRight, ChevronDown } from "lucide-react";
 import heroImage from "@/assets/hero-canton-fair.jpeg";
 import heroImageMobile from "@/assets/hero-canton-fair-mobile.jpeg";
 
@@ -41,8 +41,8 @@ export const HeroSection = () => {
   const scrollToQuiz = () => {
     document.getElementById("quiz-section")?.scrollIntoView({ behavior: "smooth" });
   };
-  const scrollToServices = () => {
-    document.getElementById("servicios")?.scrollIntoView({ behavior: "smooth" });
+  const scrollToStory = () => {
+    document.getElementById("historia")?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
@@ -55,18 +55,17 @@ export const HeroSection = () => {
         backgroundSize: '60px 60px'
       }} />
 
-      <div className="max-w-4xl mx-auto w-full relative z-10">
-        <div className="text-center space-y-6 sm:space-y-8">
+      <div className="max-w-5xl mx-auto w-full relative z-10">
+        <div className="space-y-6 sm:space-y-8">
           {/* Badge */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.05 }}
-            className="flex justify-center"
           >
             <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/30 bg-primary/5 text-primary text-xs sm:text-sm font-medium">
               <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
-              Forwarder Internacional & Estudio Aduanero
+              Importaciones sin vueltas
             </span>
           </motion.div>
 
@@ -77,42 +76,46 @@ export const HeroSection = () => {
             transition={{ delay: 0.15 }}
             className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight leading-[1.05]"
           >
-            Logística internacional
+            Importaciones
             <br />
-            <span className="text-gradient">para el comercio moderno</span>
+            <span className="text-gradient italic">sin vueltas</span>
           </motion.h1>
 
           {/* Subtitle */}
-          <motion.p
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.25 }}
-            className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed"
+            className="max-w-2xl"
           >
-            Simplificamos la importación y exportación de tu negocio
-            con tecnología y experiencia. Sin burocracia.
-          </motion.p>
-
+            <p className="text-base sm:text-lg lg:text-xl text-muted-foreground leading-relaxed">
+              Somos Agustín y Emanuel.
+            </p>
+            <p className="text-base sm:text-lg lg:text-xl text-muted-foreground leading-relaxed mt-2">
+              Te ayudamos a importar mercadería a Argentina con transparencia real.
+              Olvidate del bardo aduanero y los costos que aparecen a último momento.
+            </p>
+          </motion.div>
 
           {/* CTAs */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.35 }}
-            className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center pt-2"
+            className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-2"
           >
             <button
               onClick={scrollToQuiz}
               className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground px-7 sm:px-8 py-3.5 sm:py-4 rounded-xl text-base sm:text-lg font-semibold transition-all flex items-center justify-center gap-2.5 shadow-lg shadow-primary/20"
             >
-              Cotizar operación
+              Cotizá gratis
               <ArrowRight className="w-5 h-5" />
             </button>
             <button
-              onClick={scrollToServices}
+              onClick={scrollToStory}
               className="w-full sm:w-auto bg-foreground/5 hover:bg-foreground/10 border border-border px-7 sm:px-8 py-3.5 sm:py-4 rounded-xl text-base sm:text-lg font-semibold transition-all flex items-center justify-center gap-2"
             >
-              Conocer más
+              Nuestra historia
               <ChevronDown className="w-5 h-5" />
             </button>
           </motion.div>

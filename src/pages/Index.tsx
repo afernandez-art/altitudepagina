@@ -1,22 +1,20 @@
 import { useEffect, lazy, Suspense } from "react";
 import { Navbar } from "@/components/landing/Navbar";
 import { HeroSection } from "@/components/landing/HeroSection";
-import { ServicesSection } from "@/components/landing/ServicesSection";
-import { WhyAltitudeSection } from "@/components/landing/WhyAltitudeSection";
+import { PainPointsSection } from "@/components/landing/PainPointsSection";
 import { QuizSection } from "@/components/landing/QuizSection";
 import { FloatingCTA } from "@/components/landing/FloatingCTA";
 import { LeadMagnetProvider } from "@/contexts/LeadMagnetContext";
 import { analytics, setupScrollTracking } from "@/lib/analytics";
 
-// Lazy load below-the-fold sections for better initial load
+// Lazy load below-the-fold sections
+const StorySection = lazy(() => import("@/components/landing/StorySection").then(m => ({ default: m.StorySection })));
 const ProcessSection = lazy(() => import("@/components/landing/ProcessSection").then(m => ({ default: m.ProcessSection })));
-const ClientsSection = lazy(() => import("@/components/landing/ClientsSection").then(m => ({ default: m.ClientsSection })));
-const AboutSection = lazy(() => import("@/components/landing/AboutSection").then(m => ({ default: m.AboutSection })));
-
+const B2BOXSection = lazy(() => import("@/components/landing/B2BOXSection").then(m => ({ default: m.B2BOXSection })));
+const TestimonialsSection = lazy(() => import("@/components/landing/TestimonialsSection").then(m => ({ default: m.TestimonialsSection })));
 const CTASection = lazy(() => import("@/components/landing/CTASection").then(m => ({ default: m.CTASection })));
 const Footer = lazy(() => import("@/components/landing/Footer").then(m => ({ default: m.Footer })));
 
-// Minimal loading placeholder
 const SectionLoader = () => (
   <div className="min-h-[300px] flex items-center justify-center">
     <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
@@ -24,7 +22,6 @@ const SectionLoader = () => (
 );
 
 const Index = () => {
-  // Track page view and scroll depth
   useEffect(() => {
     analytics.pageView("landing");
     const cleanup = setupScrollTracking("landing");
@@ -36,31 +33,36 @@ const Index = () => {
       <div className="min-h-screen bg-background text-foreground selection:bg-primary selection:text-primary-foreground">
         <Navbar />
         <main>
-          {/* 1. Hero - Qué hacemos + CTAs (critical - no lazy) */}
+          {/* 1. Hero */}
           <HeroSection />
 
-          {/* 2. Servicios - Conocen el alcance (critical - no lazy) */}
-          <ServicesSection />
+          {/* 2. Pain Points - "Importar es un quilombo" */}
+          <PainPointsSection />
 
-          {/* 3. Por qué ADUANEX - Confían (critical - no lazy) */}
-          <WhyAltitudeSection />
+          {/* 3. Historia */}
+          <Suspense fallback={<SectionLoader />}>
+            <StorySection />
+          </Suspense>
 
-          {/* 4. Quiz - Lead Magnet Dinámico (critical - no lazy) */}
-          <QuizSection />
-
-          {/* Below the fold - lazy loaded */}
+          {/* 4. Proceso - 4 pasos */}
           <Suspense fallback={<SectionLoader />}>
             <ProcessSection />
           </Suspense>
 
+          {/* 5. B2BOX Ecosystem */}
           <Suspense fallback={<SectionLoader />}>
-            <ClientsSection />
+            <B2BOXSection />
           </Suspense>
 
+          {/* 6. Quiz / Cotizador */}
+          <QuizSection />
+
+          {/* 7. Testimonios */}
           <Suspense fallback={<SectionLoader />}>
-            <AboutSection />
+            <TestimonialsSection />
           </Suspense>
 
+          {/* 8. CTA Final */}
           <Suspense fallback={<SectionLoader />}>
             <CTASection />
           </Suspense>
@@ -70,7 +72,6 @@ const Index = () => {
           <Footer />
         </Suspense>
 
-        {/* CTA Flotante */}
         <FloatingCTA />
       </div>
     </LeadMagnetProvider>

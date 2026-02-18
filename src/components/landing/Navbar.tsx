@@ -23,20 +23,20 @@ export const Navbar = () => {
         </a>
 
         <div className="hidden md:flex items-center gap-8">
-          <a href="#servicios" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-            Servicios
-          </a>
-          <a href="#por-que" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-            Por qué Aduanex
+          <a href="#historia" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+            Historia
           </a>
           <a href="#proceso" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-            Proceso
+            Cómo ayudamos
+          </a>
+          <a href="#b2box" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+            B2BOX
           </a>
           <a
             href="#quiz-section"
             className="bg-primary hover:bg-primary/90 text-primary-foreground px-5 py-2 rounded-lg text-sm font-semibold tracking-tight transition-all flex items-center gap-2"
           >
-            Cotizar operación
+            Cotizá gratis
             <ArrowRight className="w-4 h-4" />
           </a>
         </div>
