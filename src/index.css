@@ -16,8 +16,8 @@
     --popover: 222 47% 7%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 160 84% 39%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 110 100% 54%;
+    --primary-foreground: 0 0% 0%;
 
     --secondary: 222 47% 9%;
     --secondary-foreground: 210 40% 98%;
@@ -25,15 +25,15 @@
     --muted: 217 33% 17%;
     --muted-foreground: 215 20% 65%;
 
-    --accent: 160 60% 50%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 110 80% 60%;
+    --accent-foreground: 0 0% 0%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
     --border: 217 33% 17%;
     --input: 217 33% 17%;
-    --ring: 160 84% 39%;
+    --ring: 110 100% 54%;
 
     --radius: 0.75rem;
 
@@ -46,7 +46,7 @@
     --slate-800: 217 33% 12%;
     --slate-900: 222 47% 7%;
 
-    --green-500: 160 84% 39%;
+    --green-500: 110 100% 54%;
 
     --glass-bg: 222 47% 4% / 0.85;
     --glass-border: 217 33% 17% / 0.5;
@@ -84,14 +84,14 @@
   }
 
   .text-gradient {
-    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(160 84% 55%) 100%);
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(110 100% 65%) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
   .text-gradient-accent {
-    background: linear-gradient(135deg, hsl(var(--accent)) 0%, hsl(160 84% 55%) 100%);
+    background: linear-gradient(135deg, hsl(var(--accent)) 0%, hsl(110 100% 65%) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -103,6 +103,6 @@
 
   .bento-item:hover {
     border-color: hsl(var(--primary) / 0.3);
-    box-shadow: 0 0 40px -12px hsl(160 84% 39% / 0.15);
+    box-shadow: 0 0 40px -12px hsl(110 100% 54% / 0.15);
   }
 }
