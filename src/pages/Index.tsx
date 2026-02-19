@@ -32,14 +32,14 @@ const Index = () => {
           {/* Hero + Problem Cards */}
           <HeroSection />
 
+          {/* ¿Qué necesitás? */}
+          <Suspense fallback={<SectionLoader />}>
+            <ProcessSection />
+          </Suspense>
+
           {/* Nuestra Historia */}
           <Suspense fallback={<SectionLoader />}>
             <StorySection />
-          </Suspense>
-
-          {/* 4 Pasos */}
-          <Suspense fallback={<SectionLoader />}>
-            <ProcessSection />
           </Suspense>
 
           {/* B2BOX World */}
