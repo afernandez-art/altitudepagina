@@ -23,7 +23,7 @@ export const Navbar = () => {
 
         <div className="hidden md:flex items-center gap-8 text-sm font-medium">
           <a href="#historia" className="hover:text-primary transition-colors uppercase tracking-widest">
-            Personal
+            Quienes Somos
           </a>
           <a href="#b2box" className="hover:text-secondary transition-colors uppercase tracking-widest">
             B2BOX
@@ -51,7 +51,7 @@ export const Navbar = () => {
           animate={{ opacity: 1, y: 0 }}
           className="md:hidden mt-4 pb-4 flex flex-col gap-4 text-sm font-medium"
         >
-          <a href="#historia" onClick={() => setMobileOpen(false)} className="hover:text-primary transition-colors uppercase tracking-widest">Personal</a>
+          <a href="#historia" onClick={() => setMobileOpen(false)} className="hover:text-primary transition-colors uppercase tracking-widest">Quienes Somos</a>
           <a href="#b2box" onClick={() => setMobileOpen(false)} className="hover:text-secondary transition-colors uppercase tracking-widest">B2BOX</a>
           <a href="#pasos" onClick={() => setMobileOpen(false)} className="hover:text-primary transition-colors uppercase tracking-widest">Cómo trabajamos</a>
           <a href="#quiz-section" onClick={() => setMobileOpen(false)} className="bg-foreground text-background px-6 py-2 rounded-full font-bold text-center hover:bg-primary hover:text-primary-foreground transition-colors">COTIZAR</a>
