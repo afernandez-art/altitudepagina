@@ -26,7 +26,7 @@ export const HeroSection = () => {
 
           IMPORTAR ES UN <br />
           <span className="text-primary italic">DOLOR DE CABEZA</span>,<br />
-          NOSOTROS LO HACEMOS <span className="text-primary">FÁCIL</span>.
+          NOSOTROS LO HACEMOS <span className="text-primary">FÁCIL.</span>
         </motion.h1>
 
         <motion.p
