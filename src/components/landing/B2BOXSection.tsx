@@ -3,7 +3,7 @@ import { Check, ArrowRight } from "lucide-react";
 
 const plans = [
   {
-    name: "B2BOX",
+    name: "B2BOX.APP",
     description: "La solución ideal para quienes buscan máxima previsibilidad. Sabés cuánto pagás de principio a fin, sin asteriscos.",
     features: [
       "Factura nacional en pesos",
