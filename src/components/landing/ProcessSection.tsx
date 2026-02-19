@@ -5,7 +5,7 @@ const services = [
     icon: "🚢",
     title: "Logística y Despacho",
     subtitle: null,
-    desc: "Ya tenés proveedor y sabés lo que querés traer. Nosotros nos encargamos del flete, aduana y entrega.",
+    desc: "Ya tenés proveedor y sabés lo que querés traer. Nosotros nos encargamos de la clasificación, asesoramiento, flete, aduana y entrega.",
     cta: "Cotizá tu operación →",
   },
   {
