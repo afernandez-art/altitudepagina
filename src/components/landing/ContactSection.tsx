@@ -100,7 +100,7 @@ export const ContactSection = () => {
               </span>
               <div>
                 <p className="text-xs uppercase tracking-widest text-primary-foreground/60">Email</p>
-                <p className="font-bold text-lg">info@aduanex.com.ar</p>
+                <p className="font-bold text-lg">contacto@aduanex.com.ar</p>
               </div>
             </div>
           </div>

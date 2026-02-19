@@ -4,7 +4,7 @@ export const Footer = () => {
   return (
     <footer className="py-20 bg-background border-t border-border">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 mb-20">
           {/* Brand */}
           <div className="col-span-1 lg:col-span-2">
             <div className="flex items-center gap-2 mb-6">
@@ -28,16 +28,6 @@ export const Footer = () => {
             </div>
           </div>
 
-          {/* Links */}
-          <div>
-            <h5 className="font-bold mb-6 text-sm uppercase tracking-widest text-muted-foreground">Mundos</h5>
-            <ul className="space-y-4">
-              <li><a className="hover:text-primary transition-colors" href="#mundo1">Personal Brand</a></li>
-              <li><a className="hover:text-secondary transition-colors" href="#b2box">B2BOX Platform</a></li>
-              <li><a className="hover:text-primary transition-colors" href="#pasos">Servicios</a></li>
-              <li><a className="hover:text-primary transition-colors" href="#quiz-section">Cotizar</a></li>
-            </ul>
-          </div>
 
           {/* Contact */}
           <div>
@@ -45,7 +35,7 @@ export const Footer = () => {
             <ul className="space-y-4">
               <li className="flex items-center gap-2 text-muted-foreground">
                 <Mail className="w-4 h-4 text-primary" />
-                hola@aduanex.com
+                contacto@aduanex.com.ar
               </li>
               <li className="flex items-center gap-2 text-muted-foreground">
                 <MapPin className="w-4 h-4 text-primary" />
