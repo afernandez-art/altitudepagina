@@ -9,32 +9,32 @@ const chaosNodes = [
 const simpleNodes = ["Proveedor", "ADUANEX", "Tu depósito"];
 
 const ChaosFlow = () => (
-  <div className="relative flex flex-wrap items-center justify-center gap-1 sm:gap-1.5">
-    {chaosNodes.map((node, i) => (
-      <div key={node} className="flex items-center">
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: i * 0.05 }}
-          className="px-2 py-1 sm:px-3 sm:py-1.5 border border-red-500/30 bg-red-500/5 rounded-md text-[10px] sm:text-xs text-red-300/90 font-medium whitespace-nowrap"
-        >
-          {node}
-        </motion.div>
-        {i < chaosNodes.length - 1 && (
+  <div className="w-full">
+    {/* 2-column grid of nodes with vertical connectors */}
+    <div className="grid grid-cols-2 gap-x-6 gap-y-0">
+      {chaosNodes.map((node, i) => (
+        <div key={node} className="flex flex-col items-center">
           <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
+            initial={{ opacity: 0, scale: 0.8 }}
+            whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            transition={{ delay: i * 0.05 + 0.02 }}
-            className="flex items-center flex-shrink-0 mx-0.5"
+            transition={{ delay: i * 0.05 }}
+            className="px-3 py-1.5 border border-red-500/25 bg-red-500/5 rounded-md text-[10px] sm:text-xs text-red-300/80 font-medium whitespace-nowrap text-center w-full"
           >
-            <div className="h-px w-2 sm:w-3 bg-red-500/30" />
-            <span className="text-red-500/40 text-[10px] sm:text-xs">▶</span>
+            {node}
           </motion.div>
-        )}
-      </div>
-    ))}
+          {i < chaosNodes.length - 2 && (
+            <div className="h-3 w-px bg-red-500/20" />
+          )}
+        </div>
+      ))}
+    </div>
+    {/* Horizontal cross-lines between columns */}
+    <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-15" aria-hidden>
+      <line x1="30%" y1="20%" x2="70%" y2="35%" stroke="rgb(239 68 68)" strokeWidth="1" />
+      <line x1="70%" y1="20%" x2="30%" y2="50%" stroke="rgb(239 68 68)" strokeWidth="1" />
+      <line x1="30%" y1="50%" x2="70%" y2="65%" stroke="rgb(239 68 68)" strokeWidth="1" />
+    </svg>
   </div>
 );
 
@@ -132,7 +132,7 @@ export const HeroSection = () => {
       >
         <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] gap-6 md:gap-0 items-stretch">
           {/* Chaos column */}
-          <div className="rounded-2xl border border-red-500/15 bg-red-500/[0.03] p-6 sm:p-8 flex flex-col items-center justify-between">
+          <div className="rounded-2xl border border-red-500/15 bg-red-500/[0.03] p-6 sm:p-8 flex flex-col items-center justify-between relative overflow-hidden">
             <h3 className="text-sm font-bold uppercase tracking-widest text-red-400/80 mb-6">Cómo importás hoy</h3>
             <ChaosFlow />
             <p className="text-xs sm:text-sm text-red-400/60 mt-6 text-center font-medium">
