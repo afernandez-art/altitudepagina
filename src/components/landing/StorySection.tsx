@@ -76,10 +76,10 @@ export const StorySection = () => {
               <img src={emanuelImg} alt="Emanuel" className="w-full h-full object-cover" />
             </div>
             <div className="p-8">
-              <h4 className="text-3xl font-black mb-1 tracking-tighter">EMANUEL</h4>
-              <p className="text-primary font-bold mb-6">Experto en Logística</p>
+              <h4 className="text-3xl font-black mb-1 tracking-tighter">EMANUEL GALLANO</h4>
+              <p className="text-primary font-bold mb-6">Lic. en Comercio Internacional y Despachante de Aduana</p>
               <p className="text-muted-foreground mb-8">
-                El que mueve los hilos. Emanuel tiene el mapa del mundo en la cabeza y sabe exactamente qué ruta tomar para que pagues menos.
+                Con 10 años de trayectoria global, fundé Aduanex y el Club de Importadores con una misión clara: revolucionar y modernizar un sector que operaba con reglas del pasado. Estoy transformando el comercio exterior argentino, eliminando fricciones y liderando el cambio hacia una operativa digital, ágil y eficiente.
               </p>
               <span className="inline-flex items-center gap-2 bg-muted px-6 py-3 rounded-full text-sm">
                 @despachantedeaduanas
