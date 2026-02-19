@@ -37,7 +37,7 @@ export const PainPointsSection = () => {
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight">
             Importar en Argentina es un
             <br />
-            quilombo. <span className="text-gradient italic">Lo sabemos.</span>
+            dolor de cabeza. <span className="text-gradient italic">Lo sabemos.</span>
           </h2>
           <p className="text-muted-foreground text-lg mt-4 max-w-2xl">
             Llevamos años viendo cómo emprendedores pierden plata por no tener las reglas claras.
