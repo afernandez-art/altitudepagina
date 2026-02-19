@@ -2,7 +2,7 @@ import { useEffect, lazy, Suspense } from "react";
 import { Navbar } from "@/components/landing/Navbar";
 import { HeroSection } from "@/components/landing/HeroSection";
 import { QuizSection } from "@/components/landing/QuizSection";
-import { FloatingCTA } from "@/components/landing/FloatingCTA";
+
 import { analytics, setupScrollTracking } from "@/lib/analytics";
 
 const StorySection = lazy(() => import("@/components/landing/StorySection").then(m => ({ default: m.StorySection })));
@@ -53,7 +53,7 @@ const Index = () => {
         <Footer />
       </Suspense>
 
-      <FloatingCTA />
+      
     </div>
   );
 };
