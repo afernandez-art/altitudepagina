@@ -4,6 +4,7 @@ import { Check, ArrowRight } from "lucide-react";
 const plans = [
   {
     name: "B2BOX.APP",
+    tag: "Importa desde 1.000USD",
     description: "La solución ideal para quienes estan comenzando en importación. Sabés cuánto pagás de principio a fin, sin vueltas.",
     features: [
       "Factura nacional en pesos argentinos",
@@ -27,6 +28,7 @@ const plans = [
   },
   {
     name: "BRANDS",
+    tag: "Expandí tu marca",
     description: "Desarrollamos tu propia línea de productos en China. Desde el concepto hasta el packaging con tu logo.",
     features: [
       "Branding y Packaging personalizado",
