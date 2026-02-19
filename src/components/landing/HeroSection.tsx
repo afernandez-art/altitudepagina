@@ -10,7 +10,7 @@ const simpleNodes = ["Proveedor", "ADUANEX", "Tu depósito"];
 
 const ChaosFlow = () => (
   <div className="w-full">
-    <div className="grid grid-cols-2 gap-x-6 gap-y-2">
+    <div className="grid grid-cols-2 gap-x-4 gap-y-2 px-2">
       {chaosNodes.map((node, i) => (
         <div key={node} className="flex flex-col items-center">
           <motion.div
@@ -18,7 +18,7 @@ const ChaosFlow = () => (
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ delay: i * 0.05 }}
-            className="px-3 py-1.5 border border-red-500/25 bg-red-500/5 rounded-md text-[10px] sm:text-xs text-red-300/80 font-medium whitespace-nowrap text-center w-full"
+            className="px-2 py-1.5 border border-red-500/25 bg-red-500/5 rounded-md text-[10px] sm:text-xs text-red-300/80 font-medium text-center w-full"
           >
             {node}
           </motion.div>
