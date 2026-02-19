@@ -3,7 +3,6 @@ import { Navbar } from "@/components/landing/Navbar";
 import { HeroSection } from "@/components/landing/HeroSection";
 import { QuizSection } from "@/components/landing/QuizSection";
 import { FloatingCTA } from "@/components/landing/FloatingCTA";
-import { LeadMagnetProvider } from "@/contexts/LeadMagnetContext";
 import { analytics, setupScrollTracking } from "@/lib/analytics";
 
 const StorySection = lazy(() => import("@/components/landing/StorySection").then(m => ({ default: m.StorySection })));
@@ -25,39 +24,37 @@ const Index = () => {
   }, []);
 
   return (
-    <LeadMagnetProvider>
-      <div className="min-h-screen bg-background text-foreground selection:bg-primary selection:text-primary-foreground">
-        <Navbar />
-        <main>
-          {/* Hero + Problem Cards */}
-          <HeroSection />
+    <div className="min-h-screen bg-background text-foreground selection:bg-primary selection:text-primary-foreground">
+      <Navbar />
+      <main>
+        {/* Hero + Problem Cards */}
+        <HeroSection />
 
-          {/* ¿Qué necesitás? */}
-          <Suspense fallback={<SectionLoader />}>
-            <ProcessSection />
-          </Suspense>
-
-          {/* Nuestra Historia */}
-          <Suspense fallback={<SectionLoader />}>
-            <StorySection />
-          </Suspense>
-
-          {/* B2BOX World */}
-          <Suspense fallback={<SectionLoader />}>
-            <B2BOXSection />
-          </Suspense>
-
-          {/* Quiz / Cotizador */}
-          <QuizSection />
-        </main>
-
-        <Suspense fallback={null}>
-          <Footer />
+        {/* ¿Qué necesitás? */}
+        <Suspense fallback={<SectionLoader />}>
+          <ProcessSection />
         </Suspense>
 
-        <FloatingCTA />
-      </div>
-    </LeadMagnetProvider>
+        {/* Nuestra Historia */}
+        <Suspense fallback={<SectionLoader />}>
+          <StorySection />
+        </Suspense>
+
+        {/* B2BOX World */}
+        <Suspense fallback={<SectionLoader />}>
+          <B2BOXSection />
+        </Suspense>
+
+        {/* Quiz / Cotizador */}
+        <QuizSection />
+      </main>
+
+      <Suspense fallback={null}>
+        <Footer />
+      </Suspense>
+
+      <FloatingCTA />
+    </div>
   );
 };
 

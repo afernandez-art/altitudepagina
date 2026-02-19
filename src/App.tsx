@@ -8,9 +8,6 @@ import Index from "./pages/Index";
 
 // Lazy load secondary routes for faster initial load
 const Video = lazy(() => import("./pages/Video"));
-const Cotizar = lazy(() => import("./pages/Cotizar"));
-const WhatsAppRedirect = lazy(() => import("./pages/WhatsAppRedirect"));
-const VideoPersonalizado = lazy(() => import("./pages/VideoPersonalizado"));
 const Admin = lazy(() => import("./pages/Admin"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
@@ -46,30 +43,6 @@ const App = () => (
             element={
               <Suspense fallback={<RouteLoader />}>
                 <Video />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/cotizar"
-            element={
-              <Suspense fallback={<RouteLoader />}>
-                <Cotizar />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/whatsapp"
-            element={
-              <Suspense fallback={<RouteLoader />}>
-                <WhatsAppRedirect />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/video-personalizado"
-            element={
-              <Suspense fallback={<RouteLoader />}>
-                <VideoPersonalizado />
               </Suspense>
             }
           />
