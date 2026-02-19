@@ -22,13 +22,13 @@ const ChaosFlow = () => (
           {node}
         </motion.div>
         {i < chaosNodes.length - 1 && (
-          <motion.div
-            initial={{ scaleX: 0 }}
-            whileInView={{ scaleX: 1 }}
+          <motion.span
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ delay: i * 0.05 + 0.02 }}
-            className="h-px w-3 sm:w-4 bg-red-500/30 origin-left flex-shrink-0"
-          />
+            className="text-red-500/40 text-xs mx-0.5 flex-shrink-0"
+          >→</motion.span>
         )}
       </div>
     ))}
@@ -53,13 +53,13 @@ const SimpleFlow = () => (
           {node}
         </motion.div>
         {i < simpleNodes.length - 1 && (
-          <motion.div
-            initial={{ scaleX: 0 }}
-            whileInView={{ scaleX: 1 }}
+          <motion.span
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ delay: i * 0.15 + 0.08 }}
-            className="h-px w-6 sm:w-10 bg-primary/40 origin-left flex-shrink-0"
-          />
+            className="text-primary/50 text-base sm:text-lg mx-1 sm:mx-2 flex-shrink-0"
+          >→</motion.span>
         )}
       </div>
     ))}
