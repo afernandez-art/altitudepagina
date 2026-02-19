@@ -11,7 +11,7 @@ const plans = [
       "Sin trámites aduaneros",
       "Todo incluido: producto, flete, impuestos y entrega",
     ],
-    cta: "Elegir B2BOX",
+    cta: "Quiero saber más",
     highlight: true,
   },
   {
@@ -24,7 +24,7 @@ const plans = [
       "Precio cerrado garantizado",
     ],
     cta: "Consultar PRO",
-    highlight: false,
+    highlight: true,
   },
   {
     name: "BRANDS",
@@ -36,7 +36,7 @@ const plans = [
       "Control de calidad en origen",
     ],
     cta: "Crear mi Marca",
-    highlight: false,
+    highlight: true,
   },
 ];
 
