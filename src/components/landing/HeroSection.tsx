@@ -25,7 +25,7 @@ export const HeroSection = () => {
           className="text-5xl sm:text-6xl md:text-8xl font-black mb-8 leading-[0.9] tracking-tighter">
 
           IMPORTAR ES UN <br />
-          <span className="text-primary italic">QUILOMBO</span>,<br />
+          <span className="text-primary italic">DOLOR DE CABEZA</span>,<br />
           NOSOTROS LO HACEMOS FÁCIL.
         </motion.h1>
 
