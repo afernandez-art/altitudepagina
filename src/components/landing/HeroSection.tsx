@@ -124,9 +124,9 @@ export const HeroSection = () => {
         viewport={{ once: true }}
         className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 pb-20"
       >
-        <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] gap-6 md:gap-0 items-center">
+        <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] gap-6 md:gap-0 items-stretch">
           {/* Chaos column */}
-          <div className="rounded-2xl border border-red-500/15 bg-red-500/[0.03] p-6 sm:p-8 flex flex-col items-center">
+          <div className="rounded-2xl border border-red-500/15 bg-red-500/[0.03] p-6 sm:p-8 flex flex-col items-center justify-between">
             <h3 className="text-sm font-bold uppercase tracking-widest text-red-400/80 mb-6">Cómo importás hoy</h3>
             <ChaosFlow />
             <p className="text-xs sm:text-sm text-red-400/60 mt-6 text-center font-medium">
@@ -148,7 +148,7 @@ export const HeroSection = () => {
           </div>
 
           {/* Simple column */}
-          <div className="rounded-2xl border border-primary/15 bg-primary/[0.03] p-6 sm:p-8 flex flex-col items-center">
+          <div className="rounded-2xl border border-primary/15 bg-primary/[0.03] p-6 sm:p-8 flex flex-col items-center justify-between">
             <h3 className="text-sm font-bold uppercase tracking-widest text-primary/80 mb-6">Con ADUANEX</h3>
             <SimpleFlow />
             <p className="text-xs sm:text-sm text-primary/60 mt-6 text-center font-medium">
