@@ -4,11 +4,11 @@ import { Check, ArrowRight } from "lucide-react";
 const plans = [
   {
     name: "B2BOX.APP",
-    description: "La solución ideal para quienes buscan máxima previsibilidad. Sabés cuánto pagás de principio a fin, sin asteriscos.",
+    description: "La solución ideal para quienes estan comenzando en importación. Sabés cuánto pagás de principio a fin, sin vueltas.",
     features: [
-      "Factura nacional en pesos",
-      "Sin trámites de SIMI/SIRA",
-      "Todo incluido: flete y aduana",
+      "Factura nacional en pesos argentinos",
+      "Sin trámites aduaneros",
+      "Todo incluido: producto, flete, impuestos y entrega",
     ],
     cta: "Elegir B2BOX",
     highlight: true,
@@ -29,7 +29,7 @@ const plans = [
     name: "BRANDS",
     description: "Desarrollamos tu propia línea de productos en China. Desde el concepto hasta el packaging con tu logo.",
     features: [
-      "Branding y Packaging custom",
+      "Branding y Packaging personalizado",
       "Auditoría de fábricas",
       "Control de calidad en origen",
     ],
