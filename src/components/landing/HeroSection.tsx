@@ -9,53 +9,43 @@ const chaosNodes = [
 const simpleNodes = ["Proveedor", "ADUANEX", "Tu depósito"];
 
 const ChaosFlow = () => (
-  <div className="w-full">
-    <div className="grid grid-cols-2 gap-x-4 gap-y-2 px-2">
+  <div className="w-full overflow-hidden">
+    <div className="grid grid-cols-2 gap-2">
       {chaosNodes.map((node, i) => (
-        <div key={node} className="flex flex-col items-center">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.05 }}
-            className="px-2 py-1.5 border border-red-500/25 bg-red-500/5 rounded-md text-[10px] sm:text-xs text-red-300/80 font-medium text-center w-full"
-          >
-            {node}
-          </motion.div>
-        </div>
+        <motion.div
+          key={node}
+          initial={{ opacity: 0, scale: 0.8 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: i * 0.05 }}
+          className="px-2 py-1.5 border border-red-500/25 bg-red-500/5 rounded-md text-[10px] sm:text-xs text-red-300/80 font-medium text-center truncate"
+        >
+          {node}
+        </motion.div>
       ))}
     </div>
   </div>
 );
 
 const SimpleFlow = () => (
-  <div className="relative flex items-center justify-center gap-2 sm:gap-3">
+  <div className="flex items-center justify-center gap-1 sm:gap-2 flex-wrap">
     {simpleNodes.map((node, i) => (
-      <div key={node} className="flex items-center">
+      <div key={node} className="flex items-center gap-1 sm:gap-2">
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: i * 0.15 }}
-          className={`px-3 py-1.5 sm:px-5 sm:py-2.5 rounded-lg text-xs sm:text-sm font-medium whitespace-nowrap ${
+          className={`px-2 py-1.5 sm:px-4 sm:py-2 rounded-lg text-[11px] sm:text-sm font-medium ${
             node === "ADUANEX"
-              ? "border-2 border-primary bg-primary/10 text-primary font-bold text-sm sm:text-base shadow-[0_0_20px_hsl(var(--primary)/0.25)]"
+              ? "border-2 border-primary bg-primary/10 text-primary font-bold text-xs sm:text-base shadow-[0_0_20px_hsl(var(--primary)/0.25)]"
               : "border border-primary/30 bg-primary/5 text-green-300/90"
           }`}
         >
           {node}
         </motion.div>
         {i < simpleNodes.length - 1 && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.15 + 0.08 }}
-            className="flex items-center flex-shrink-0 mx-1 sm:mx-2"
-          >
-            <div className="h-px w-4 sm:w-8 bg-primary/40" />
-            <span className="text-primary/50 text-xs sm:text-sm">▶</span>
-          </motion.div>
+          <span className="text-primary/50 text-[10px] sm:text-xs">▶</span>
         )}
       </div>
     ))}
