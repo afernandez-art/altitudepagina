@@ -10,8 +10,7 @@ const simpleNodes = ["Proveedor", "ADUANEX", "Tu depósito"];
 
 const ChaosFlow = () => (
   <div className="w-full">
-    {/* 2-column grid of nodes with vertical connectors */}
-    <div className="grid grid-cols-2 gap-x-6 gap-y-0">
+    <div className="grid grid-cols-2 gap-x-6 gap-y-2">
       {chaosNodes.map((node, i) => (
         <div key={node} className="flex flex-col items-center">
           <motion.div
@@ -23,18 +22,9 @@ const ChaosFlow = () => (
           >
             {node}
           </motion.div>
-          {i < chaosNodes.length - 2 && (
-            <div className="h-3 w-px bg-red-500/20" />
-          )}
         </div>
       ))}
     </div>
-    {/* Horizontal cross-lines between columns */}
-    <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-15" aria-hidden>
-      <line x1="30%" y1="20%" x2="70%" y2="35%" stroke="rgb(239 68 68)" strokeWidth="1" />
-      <line x1="70%" y1="20%" x2="30%" y2="50%" stroke="rgb(239 68 68)" strokeWidth="1" />
-      <line x1="30%" y1="50%" x2="70%" y2="65%" stroke="rgb(239 68 68)" strokeWidth="1" />
-    </svg>
   </div>
 );
 
