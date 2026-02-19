@@ -9,25 +9,25 @@ const chaosNodes = [
 const simpleNodes = ["Proveedor", "ADUANEX", "Tu depósito"];
 
 const ChaosFlow = () => (
-  <div className="relative flex flex-col items-center gap-2">
+  <div className="relative flex flex-wrap items-center justify-center gap-1 sm:gap-1.5">
     {chaosNodes.map((node, i) => (
-      <div key={node} className="flex flex-col items-center">
+      <div key={node} className="flex items-center">
         <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          whileInView={{ opacity: 1, x: 0 }}
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ delay: i * 0.06 }}
-          className="px-3 py-1.5 sm:px-4 sm:py-2 border border-red-500/30 bg-red-500/5 rounded-lg text-xs sm:text-sm text-red-300/90 font-medium whitespace-nowrap"
+          transition={{ delay: i * 0.05 }}
+          className="px-2 py-1 sm:px-3 sm:py-1.5 border border-red-500/30 bg-red-500/5 rounded-md text-[10px] sm:text-xs text-red-300/90 font-medium whitespace-nowrap"
         >
           {node}
         </motion.div>
         {i < chaosNodes.length - 1 && (
           <motion.div
-            initial={{ scaleY: 0 }}
-            whileInView={{ scaleY: 1 }}
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
             viewport={{ once: true }}
-            transition={{ delay: i * 0.06 + 0.03 }}
-            className="w-px h-4 sm:h-5 bg-red-500/30 origin-top"
+            transition={{ delay: i * 0.05 + 0.02 }}
+            className="h-px w-3 sm:w-4 bg-red-500/30 origin-left flex-shrink-0"
           />
         )}
       </div>
@@ -36,15 +36,15 @@ const ChaosFlow = () => (
 );
 
 const SimpleFlow = () => (
-  <div className="relative flex flex-col items-center gap-2">
+  <div className="relative flex items-center justify-center gap-2 sm:gap-3">
     {simpleNodes.map((node, i) => (
-      <div key={node} className="flex flex-col items-center">
+      <div key={node} className="flex items-center">
         <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          whileInView={{ opacity: 1, x: 0 }}
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: i * 0.15 }}
-          className={`px-4 py-2 sm:px-5 sm:py-2.5 rounded-lg text-xs sm:text-sm font-medium whitespace-nowrap ${
+          className={`px-3 py-1.5 sm:px-5 sm:py-2.5 rounded-lg text-xs sm:text-sm font-medium whitespace-nowrap ${
             node === "ADUANEX"
               ? "border-2 border-primary bg-primary/10 text-primary font-bold text-sm sm:text-base shadow-[0_0_20px_hsl(var(--primary)/0.25)]"
               : "border border-primary/30 bg-primary/5 text-green-300/90"
@@ -54,11 +54,11 @@ const SimpleFlow = () => (
         </motion.div>
         {i < simpleNodes.length - 1 && (
           <motion.div
-            initial={{ scaleY: 0 }}
-            whileInView={{ scaleY: 1 }}
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
             viewport={{ once: true }}
             transition={{ delay: i * 0.15 + 0.08 }}
-            className="w-px h-6 sm:h-8 bg-primary/40 origin-top"
+            className="h-px w-6 sm:w-10 bg-primary/40 origin-left flex-shrink-0"
           />
         )}
       </div>
