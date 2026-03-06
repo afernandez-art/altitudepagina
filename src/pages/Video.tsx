@@ -102,7 +102,7 @@ const Video = () => {
                 ) : (
                   <div className="absolute inset-0">
                     <iframe
-                      src="https://www.youtube.com/embed/NVLgkXylEuQ?autoplay=1&rel=0"
+                      src="https://www.youtube.com/embed/s_TukTshYJ0?autoplay=1&rel=0"
                       className="w-full h-full"
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                       allowFullScreen
