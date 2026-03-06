@@ -76,10 +76,10 @@ export const StorySection = () => {
               <img src={agustinImg} alt="Agustín" className="w-full h-full object-cover" />
             </div>
             <div className="p-8">
-              <h4 className="text-3xl font-black mb-1 tracking-tighter">AGUSTÍN</h4>
-              <p className="text-primary font-bold mb-6">Especialista en Aduana</p>
+              <h4 className="text-3xl font-black mb-1 tracking-tighter">AGUSTÍN FERNÁNDEZ</h4>
+              <p className="text-primary font-bold mb-6">Importador & Tech Builder</p>
               <p className="text-muted-foreground mb-8">
-                Fanático de la eficiencia. Agustín se encarga de que cada documento sea perfecto para que Aduana no sea un problema sino un trámite.
+                Llevo 8 años importando. En ese camino entendí que el problema no era la aduana, sino lo difícil que se lo hacían al que quería importar. Por eso creé un servicio modernizado con tecnología, donde el proceso es simple, transparente y sin vueltas. Tu único trabajo es hacer crecer tu negocio — traer la mercadería es el mío.
               </p>
               <span className="inline-flex items-center gap-2 bg-muted px-6 py-3 rounded-full text-sm">
                 @agusimportador
