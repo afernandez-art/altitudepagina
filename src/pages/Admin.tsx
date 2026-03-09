@@ -211,7 +211,7 @@ const Admin = () => {
       lead.empresa?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       lead.whatsapp.includes(searchTerm);
 
-    const matchesSituacion = !filterSituacion || lead.situacion === filterSituacion;
+    const matchesSituacion = !filterSituacion || lead.nicho === filterSituacion;
     const matchesEstado = !filterEstado || lead.estado === filterEstado;
 
     return matchesSearch && matchesSituacion && matchesEstado;
@@ -221,8 +221,8 @@ const Admin = () => {
   const exportToCSV = () => {
     const headers = [
       "Fecha", "Nombre", "Email", "WhatsApp", "Empresa",
-      "Nicho", "Situación", "Problemática", "Facturación",
-      "Urgencia", "Estado", "Notas"
+      "Perfil", "Necesidad", "Inversión", "Mensaje",
+      "Estado", "Notas"
     ];
 
     const rows = filteredLeads.map(lead => [
@@ -233,9 +233,8 @@ const Admin = () => {
       lead.empresa || "",
       lead.nicho_label,
       lead.situacion_label,
-      lead.problematica_label,
       lead.facturacion_label,
-      lead.urgencia_label,
+      lead.problematica_label || "",
       getEstadoConfig(lead.estado).label,
       lead.notas || ""
     ]);
@@ -844,9 +843,10 @@ const Admin = () => {
                 onChange={(e) => setFilterSituacion(e.target.value)}
                 className="bg-secondary border border-zinc-700 rounded-lg px-3 py-2 text-sm outline-none focus:border-primary"
               >
-                <option value="">Todas las situaciones</option>
-                <option value="mejorar-costos">Mejorar costos</option>
-                <option value="contenedor-compartido">Contenedor compartido</option>
+                <option value="">Todos los perfiles</option>
+                <option value="A">Ya importo y quiero mejorar</option>
+                <option value="B">Quiero empezar a importar</option>
+                <option value="C">Quiero desarrollar mi producto</option>
               </select>
               <select
                 value={filterEstado}
@@ -882,13 +882,13 @@ const Admin = () => {
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
-                <thead className="bg-secondary/50">
+                 <thead className="bg-secondary/50">
                   <tr>
                     <th className="text-left px-4 py-3 font-medium">Fecha</th>
                     <th className="text-left px-4 py-3 font-medium">Contacto</th>
-                    <th className="text-left px-4 py-3 font-medium">Situación</th>
-                    <th className="text-left px-4 py-3 font-medium">Facturación</th>
-                    <th className="text-left px-4 py-3 font-medium">Urgencia</th>
+                    <th className="text-left px-4 py-3 font-medium">Perfil</th>
+                    <th className="text-left px-4 py-3 font-medium">Necesidad</th>
+                    <th className="text-left px-4 py-3 font-medium">Inversión</th>
                     <th className="text-left px-4 py-3 font-medium">Estado</th>
                     <th className="text-left px-4 py-3 font-medium">Acciones</th>
                   </tr>
@@ -917,11 +917,15 @@ const Admin = () => {
                         </td>
                         <td className="px-4 py-3">
                           <span className="text-xs bg-secondary px-2 py-1 rounded">
-                            {lead.situacion_label?.slice(0, 30)}...
+                            {lead.nicho_label}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3">
+                          <span className="text-xs bg-secondary px-2 py-1 rounded">
+                            {lead.situacion_label?.slice(0, 30)}{lead.situacion_label?.length > 30 ? '...' : ''}
                           </span>
                         </td>
                         <td className="px-4 py-3 text-xs">{lead.facturacion_label}</td>
-                        <td className="px-4 py-3 text-xs">{lead.urgencia_label}</td>
                         <td className="px-4 py-3">
                           <span className={`inline-flex items-center gap-1.5 px-2 py-1 rounded-full text-xs font-medium ${estadoConfig.color} text-white`}>
                             {estadoConfig.label}
@@ -1025,21 +1029,23 @@ const Admin = () => {
                   </h3>
                   <div className="bg-secondary/30 rounded-lg p-4 space-y-3 text-sm">
                     <div>
-                      <span className="text-muted-foreground">Nicho:</span>{" "}
+                      <span className="text-muted-foreground">Perfil:</span>{" "}
                       <span className="font-medium">{selectedLead.nicho_label}</span>
                     </div>
                     <div>
-                      <span className="text-muted-foreground">Situación:</span>{" "}
+                      <span className="text-muted-foreground">Necesidad:</span>{" "}
                       <span className="font-medium">{selectedLead.situacion_label}</span>
                     </div>
                     <div>
-                      <span className="text-muted-foreground">Problemática:</span>{" "}
-                      <span className="font-medium">{selectedLead.problematica_label}</span>
-                    </div>
-                    <div>
-                      <span className="text-muted-foreground">Facturación:</span>{" "}
+                      <span className="text-muted-foreground">Inversión:</span>{" "}
                       <span className="font-medium">{selectedLead.facturacion_label}</span>
                     </div>
+                    {selectedLead.problematica_label && (
+                      <div>
+                        <span className="text-muted-foreground">Mensaje:</span>{" "}
+                        <span className="font-medium">{selectedLead.problematica_label}</span>
+                      </div>
+                    )}
                     {selectedLead.experiencia_label && (
                       <div>
                         <span className="text-muted-foreground">Experiencia:</span>{" "}
@@ -1094,10 +1100,12 @@ const Admin = () => {
                         <span className="font-medium">{selectedLead.tercerizar_labels.join(", ")}</span>
                       </div>
                     )}
-                    <div>
-                      <span className="text-muted-foreground">Urgencia:</span>{" "}
-                      <span className="font-medium">{selectedLead.urgencia_label}</span>
-                    </div>
+                    {selectedLead.urgencia_label && (
+                      <div>
+                        <span className="text-muted-foreground">Urgencia:</span>{" "}
+                        <span className="font-medium">{selectedLead.urgencia_label}</span>
+                      </div>
+                    )}
                   </div>
                 </div>
 
