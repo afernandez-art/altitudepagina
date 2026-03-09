@@ -5,17 +5,19 @@ import {
   TrendingUp,
   Clock,
   CheckCircle,
-  XCircle,
   MessageCircle,
   Search,
-  Filter,
   RefreshCw,
   ExternalLink,
+  LogOut,
 } from "lucide-react";
 import { getLeads, updateLeadStatus, Lead } from "@/lib/supabase";
 import { getPerfilLabel, getInversionLabel, generateWhatsAppLink } from "@/contexts/LeadMagnetContext";
+import { useAuth } from "@/hooks/useAuth";
+import { AdminLogin } from "@/components/admin/AdminLogin";
 
 const Admin = () => {
+  const { user, loading: authLoading, signIn, signOut, isAuthenticated } = useAuth();
   const [leads, setLeads] = useState<Lead[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
@@ -32,8 +34,19 @@ const Admin = () => {
   };
 
   useEffect(() => {
-    fetchLeads();
-  }, []);
+    if (isAuthenticated) {
+      fetchLeads();
+    }
+  }, [isAuthenticated]);
+
+  const handleLogin = async (email: string, password: string) => {
+    const { error } = await signIn(email, password);
+    return { error: error as Error | null };
+  };
+
+  const handleLogout = async () => {
+    await signOut();
+  };
 
   const handleStatusChange = async (id: string, estado: string) => {
     setUpdatingId(id);
@@ -48,6 +61,20 @@ const Admin = () => {
     setLeads(leads.map(l => l.id === id ? { ...l, contactado_whatsapp: !current } : l));
     setUpdatingId(null);
   };
+
+  // Show loading while checking auth
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="w-10 h-10 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
+
+  // Show login if not authenticated
+  if (!isAuthenticated) {
+    return <AdminLogin onLogin={handleLogin} />;
+  }
 
   const filteredLeads = leads.filter(lead => {
     const matchesSearch =
@@ -93,9 +120,19 @@ const Admin = () => {
             </span>
             <span className="text-xs bg-zinc-800 px-2 py-1 rounded text-zinc-400">ADMIN</span>
           </div>
-          <a href="/" className="text-sm text-zinc-400 hover:text-white transition-colors">
-            Ver Landing
-          </a>
+          <div className="flex items-center gap-4">
+            <span className="text-xs text-zinc-500 hidden sm:block">{user?.email}</span>
+            <a href="/" className="text-sm text-zinc-400 hover:text-white transition-colors">
+              Ver Landing
+            </a>
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-1.5 text-sm text-zinc-400 hover:text-red-400 transition-colors"
+            >
+              <LogOut className="w-4 h-4" />
+              <span className="hidden sm:inline">Salir</span>
+            </button>
+          </div>
         </div>
       </header>
 
