@@ -5,7 +5,7 @@ import { ArrowLeft, Lock } from "lucide-react";
 import {
   perfilOptions,
   preguntasPorPerfil,
-  inversionOptions,
+  inversionPorPerfil,
   PerfilType,
 } from "@/contexts/LeadMagnetContext";
 import { analytics } from "@/lib/analytics";
@@ -22,10 +22,9 @@ export const QuizSection = () => {
   const hasTrackedStart = useRef(false);
   const stepNames = ["perfil", "necesidad", "inversion"];
 
-  // Get conditional question for selected profile
   const currentQuestion = perfil ? preguntasPorPerfil[perfil] : null;
+  const currentInversion = perfil ? inversionPorPerfil[perfil] : null;
 
-  // Track form start
   useEffect(() => {
     if (!hasTrackedStart.current) {
       analytics.form1.start();
@@ -34,7 +33,6 @@ export const QuizSection = () => {
     }
   }, []);
 
-  // Track step views
   useEffect(() => {
     if (hasTrackedStart.current && quizStep > 0) {
       analytics.form1.stepView(quizStep + 1, stepNames[quizStep]);
@@ -43,7 +41,8 @@ export const QuizSection = () => {
 
   const handlePerfilSelect = (id: PerfilType) => {
     setPerfil(id);
-    setNecesidad(""); // Reset necesidad when profile changes
+    setNecesidad("");
+    setInversion("");
     analytics.form1.stepComplete(1, "perfil", id);
     setTimeout(() => setQuizStep(1), 300);
   };
@@ -58,7 +57,6 @@ export const QuizSection = () => {
     setInversion(id);
     analytics.form1.stepComplete(3, "inversion", id);
     analytics.form1.complete();
-    // Navigate to /video with URL params
     setTimeout(() => {
       navigate(
         `/video?perfil=${perfil}&necesidad=${encodeURIComponent(necesidad)}&inversion=${id}`
@@ -103,9 +101,10 @@ export const QuizSection = () => {
             </div>
             <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
               <div
-                className="h-full bg-primary rounded-full transition-all"
+                className="h-full rounded-full transition-all"
                 style={{
                   width: `${progress}%`,
+                  background: "linear-gradient(90deg, #10b981, #c4f000)",
                   boxShadow: "0 0 10px hsl(72 100% 50% / 0.6)",
                 }}
               />
@@ -139,8 +138,8 @@ export const QuizSection = () => {
                           onClick={() => handlePerfilSelect(option.id)}
                           className={`w-full p-5 sm:p-6 rounded-xl border-2 transition-all text-left ${
                             isSelected
-                              ? "border-primary bg-primary/10"
-                              : "border-zinc-700 hover:border-zinc-500"
+                              ? "border-[#c4f000] bg-[#c4f000]/10"
+                              : "border-border hover:border-muted-foreground/50"
                           }`}
                         >
                           <p className="font-bold text-base sm:text-lg mb-1">
@@ -149,11 +148,6 @@ export const QuizSection = () => {
                           <p className="text-sm text-muted-foreground">
                             {option.descripcion}
                           </p>
-                          {option.bajada && (
-                            <p className="text-xs text-primary mt-2 font-medium">
-                              {option.bajada}
-                            </p>
-                          )}
                         </motion.button>
                       );
                     })}
@@ -176,20 +170,21 @@ export const QuizSection = () => {
 
                   <div className="space-y-2 sm:space-y-3">
                     {currentQuestion.opciones.map((opcion) => {
-                      const isSelected = necesidad === opcion;
+                      const isSelected = necesidad === opcion.label;
                       return (
                         <motion.button
-                          key={opcion}
+                          key={opcion.label}
                           whileHover={{ scale: 1.01 }}
                           whileTap={{ scale: 0.99 }}
-                          onClick={() => handleNecesidadSelect(opcion)}
-                          className={`w-full p-3 sm:p-4 rounded-xl border-2 transition-all text-left text-sm sm:text-base ${
+                          onClick={() => handleNecesidadSelect(opcion.label)}
+                          className={`w-full p-4 sm:p-5 rounded-xl border-2 transition-all text-left ${
                             isSelected
-                              ? "border-primary bg-primary/10 text-primary"
-                              : "border-zinc-700 hover:border-zinc-500"
+                              ? "border-[#c4f000] bg-[#c4f000]/10"
+                              : "border-border hover:border-muted-foreground/50"
                           }`}
                         >
-                          {opcion}
+                          <p className="font-semibold text-sm sm:text-base mb-0.5">{opcion.label}</p>
+                          <p className="text-xs sm:text-sm text-muted-foreground">{opcion.descripcion}</p>
                         </motion.button>
                       );
                     })}
@@ -200,15 +195,15 @@ export const QuizSection = () => {
                       onClick={() => setQuizStep(0)}
                       className="flex items-center gap-1 sm:gap-2 text-muted-foreground hover:text-foreground transition-colors text-sm"
                     >
-                      <ArrowLeft className="w-4 h-4" />{" "}
-                      <span className="hidden sm:inline">Anterior</span>
+                      <ArrowLeft className="w-4 h-4" />
+                      <span>Anterior</span>
                     </button>
                   </div>
                 </motion.div>
               )}
 
-              {/* Step 3: Inversión */}
-              {quizStep === 2 && (
+              {/* Step 3: Inversión condicional */}
+              {quizStep === 2 && currentInversion && (
                 <motion.div
                   key="step3"
                   initial={{ opacity: 0, x: 20 }}
@@ -217,11 +212,11 @@ export const QuizSection = () => {
                   className="space-y-4 sm:space-y-6"
                 >
                   <h3 className="text-lg sm:text-xl font-bold">
-                    ¿Cuánto pensás invertir en tu próxima compra?
+                    {currentInversion.pregunta}
                   </h3>
 
                   <div className="space-y-2 sm:space-y-3">
-                    {inversionOptions.map((option) => {
+                    {currentInversion.opciones.map((option) => {
                       const isSelected = inversion === option.id;
                       return (
                         <motion.button
@@ -229,13 +224,14 @@ export const QuizSection = () => {
                           whileHover={{ scale: 1.01 }}
                           whileTap={{ scale: 0.99 }}
                           onClick={() => handleInversionSelect(option.id)}
-                          className={`w-full p-3 sm:p-4 rounded-xl border-2 transition-all text-left font-medium text-sm sm:text-base ${
+                          className={`w-full p-4 sm:p-5 rounded-xl border-2 transition-all text-left ${
                             isSelected
-                              ? "border-primary bg-primary/10 text-primary"
-                              : "border-zinc-700 hover:border-zinc-500"
+                              ? "border-[#c4f000] bg-[#c4f000]/10"
+                              : "border-border hover:border-muted-foreground/50"
                           }`}
                         >
-                          {option.label}
+                          <p className="font-semibold text-sm sm:text-base">{option.label}</p>
+                          <p className="text-xs sm:text-sm text-muted-foreground">{option.descripcion}</p>
                         </motion.button>
                       );
                     })}
@@ -246,8 +242,8 @@ export const QuizSection = () => {
                       onClick={() => setQuizStep(1)}
                       className="flex items-center gap-1 sm:gap-2 text-muted-foreground hover:text-foreground transition-colors text-sm"
                     >
-                      <ArrowLeft className="w-4 h-4" />{" "}
-                      <span className="hidden sm:inline">Anterior</span>
+                      <ArrowLeft className="w-4 h-4" />
+                      <span>Anterior</span>
                     </button>
                   </div>
 
