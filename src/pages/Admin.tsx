@@ -895,7 +895,7 @@ const Admin = () => {
                 </thead>
                 <tbody className="divide-y divide-zinc-800">
                   {filteredLeads.map((lead) => {
-                    const estadoConfig = getEstadoConfig(lead.estado);
+                    const estadoConfig = getEstadoConfig(lead.estado || "nuevo");
                     return (
                       <tr key={lead.id} className="hover:bg-secondary/30 transition-colors">
                         <td className="px-4 py-3 text-muted-foreground">
