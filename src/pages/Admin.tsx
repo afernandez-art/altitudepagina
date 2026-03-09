@@ -882,13 +882,13 @@ const Admin = () => {
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
-                <thead className="bg-secondary/50">
+                 <thead className="bg-secondary/50">
                   <tr>
                     <th className="text-left px-4 py-3 font-medium">Fecha</th>
                     <th className="text-left px-4 py-3 font-medium">Contacto</th>
-                    <th className="text-left px-4 py-3 font-medium">Situación</th>
-                    <th className="text-left px-4 py-3 font-medium">Facturación</th>
-                    <th className="text-left px-4 py-3 font-medium">Urgencia</th>
+                    <th className="text-left px-4 py-3 font-medium">Perfil</th>
+                    <th className="text-left px-4 py-3 font-medium">Necesidad</th>
+                    <th className="text-left px-4 py-3 font-medium">Inversión</th>
                     <th className="text-left px-4 py-3 font-medium">Estado</th>
                     <th className="text-left px-4 py-3 font-medium">Acciones</th>
                   </tr>
