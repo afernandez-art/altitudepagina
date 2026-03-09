@@ -844,9 +844,10 @@ const Admin = () => {
                 onChange={(e) => setFilterSituacion(e.target.value)}
                 className="bg-secondary border border-zinc-700 rounded-lg px-3 py-2 text-sm outline-none focus:border-primary"
               >
-                <option value="">Todas las situaciones</option>
-                <option value="mejorar-costos">Mejorar costos</option>
-                <option value="contenedor-compartido">Contenedor compartido</option>
+                <option value="">Todos los perfiles</option>
+                <option value="A">Ya importo y quiero mejorar</option>
+                <option value="B">Quiero empezar a importar</option>
+                <option value="C">Quiero desarrollar mi producto</option>
               </select>
               <select
                 value={filterEstado}
