@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Lock } from "lucide-react";
+import { ArrowLeft, Lock, Clock, Users } from "lucide-react";
 import {
   perfilOptions,
   preguntasPorPerfil,
@@ -46,6 +46,24 @@ export const QuizSection = () => {
   return (
     <section id="quiz-section" className="py-24 sm:py-32 px-4 sm:px-6 bg-card/20">
       <div className="max-w-3xl mx-auto">
+        {/* Urgency Banner */}
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="bg-gradient-to-r from-primary/20 to-primary/5 border border-primary/30 rounded-xl p-4 mb-8 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6"
+        >
+          <div className="flex items-center gap-2 text-primary">
+            <Users className="w-5 h-5" />
+            <span className="font-bold">Solo 5 cupos disponibles</span>
+          </div>
+          <div className="hidden sm:block w-px h-6 bg-primary/30" />
+          <div className="flex items-center gap-2 text-muted-foreground text-sm">
+            <Clock className="w-4 h-4" />
+            <span>Este mes ya tomamos 15 clientes nuevos</span>
+          </div>
+        </motion.div>
+
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}

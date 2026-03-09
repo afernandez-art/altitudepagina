@@ -10,6 +10,7 @@ import Index from "./pages/Index";
 const Video = lazy(() => import("./pages/Video"));
 const Formulario = lazy(() => import("./pages/Formulario"));
 const WhatsAppRedirect = lazy(() => import("./pages/WhatsAppRedirect"));
+const Admin = lazy(() => import("./pages/Admin"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 // Route loading placeholder
@@ -60,6 +61,14 @@ const App = () => (
             element={
               <Suspense fallback={<RouteLoader />}>
                 <WhatsAppRedirect />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/admin"
+            element={
+              <Suspense fallback={<RouteLoader />}>
+                <Admin />
               </Suspense>
             }
           />

@@ -2,6 +2,7 @@ import { lazy, Suspense } from "react";
 import { Navbar } from "@/components/landing/Navbar";
 import { HeroSection } from "@/components/landing/HeroSection";
 import { QuizSection } from "@/components/landing/QuizSection";
+import { ExitIntentPopup } from "@/components/landing/ExitIntentPopup";
 
 const StorySection = lazy(() => import("@/components/landing/StorySection").then(m => ({ default: m.StorySection })));
 const ProcessSection = lazy(() => import("@/components/landing/ProcessSection").then(m => ({ default: m.ProcessSection })));
@@ -46,7 +47,8 @@ const Index = () => {
         <Footer />
       </Suspense>
 
-      
+      {/* Exit Intent Popup */}
+      <ExitIntentPopup />
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowLeft, ArrowRight } from "lucide-react";
@@ -19,9 +19,6 @@ const Formulario = () => {
   const [formData, setFormData] = useState({
     nombre: "",
     whatsapp: "",
-    email: "",
-    empresa: "",
-    mensaje: "",
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -34,9 +31,6 @@ const Formulario = () => {
     if (!formData.whatsapp.trim() || !phoneRegex.test(formData.whatsapp)) {
       newErrors.whatsapp = "Ingresá un número válido";
     }
-    if (formData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "Email inválido";
-    }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -46,7 +40,16 @@ const Formulario = () => {
     if (!validateForm()) return;
 
     setIsSubmitting(true);
-    const leadData: LeadFormData = { perfil, necesidad, inversion, ...formData };
+    const leadData: LeadFormData = {
+      perfil,
+      necesidad,
+      inversion,
+      nombre: formData.nombre,
+      whatsapp: formData.whatsapp,
+      email: "",
+      empresa: "",
+      mensaje: "",
+    };
     await submitLead(leadData);
     setIsSubmitting(false);
 
@@ -57,9 +60,6 @@ const Formulario = () => {
     if (inversion) params.set("inversion", inversion);
     params.set("nombre", formData.nombre);
     params.set("whatsapp", formData.whatsapp);
-    if (formData.email) params.set("email", formData.email);
-    if (formData.empresa) params.set("empresa", formData.empresa);
-    if (formData.mensaje) params.set("mensaje", formData.mensaje);
     navigate(`/whatsapp?${params.toString()}`);
   };
 
@@ -93,22 +93,6 @@ const Formulario = () => {
                   <label className="block text-sm font-medium text-zinc-300 mb-2">WhatsApp *</label>
                   <input type="tel" value={formData.whatsapp} onChange={(e) => setFormData({ ...formData, whatsapp: e.target.value })} className={`w-full bg-zinc-800 border ${errors.whatsapp ? "border-red-500" : "border-zinc-700"} rounded-xl px-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:border-primary transition-colors`} placeholder="+54 9 11 1234-5678" />
                   {errors.whatsapp && <p className="text-red-500 text-xs mt-1">{errors.whatsapp}</p>}
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-zinc-300 mb-2">Email <span className="text-zinc-500 font-normal">(opcional)</span></label>
-                  <input type="email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className={`w-full bg-zinc-800 border ${errors.email ? "border-red-500" : "border-zinc-700"} rounded-xl px-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:border-primary transition-colors`} placeholder="tu@email.com" />
-                  {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-zinc-300 mb-2">Empresa <span className="text-zinc-500 font-normal">(opcional)</span></label>
-                  <input type="text" value={formData.empresa} onChange={(e) => setFormData({ ...formData, empresa: e.target.value })} className="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:border-primary transition-colors" placeholder="Nombre de tu empresa" />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-zinc-300 mb-2">¿Qué necesitás?</label>
-                  <textarea value={formData.mensaje} onChange={(e) => setFormData({ ...formData, mensaje: e.target.value })} rows={3} className="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:border-primary transition-colors resize-none" placeholder="Contanos brevemente qué estás buscando..." />
                 </div>
 
                 <button type="submit" disabled={isSubmitting} className="w-full bg-primary text-primary-foreground py-4 rounded-xl font-bold text-base md:text-lg hover:bg-primary/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-xl shadow-primary/20">
