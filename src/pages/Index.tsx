@@ -1,9 +1,7 @@
-import { useEffect, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 import { Navbar } from "@/components/landing/Navbar";
 import { HeroSection } from "@/components/landing/HeroSection";
 import { QuizSection } from "@/components/landing/QuizSection";
-
-import { analytics, setupScrollTracking } from "@/lib/analytics";
 
 const StorySection = lazy(() => import("@/components/landing/StorySection").then(m => ({ default: m.StorySection })));
 const ProcessSection = lazy(() => import("@/components/landing/ProcessSection").then(m => ({ default: m.ProcessSection })));
@@ -17,11 +15,6 @@ const SectionLoader = () => (
 );
 
 const Index = () => {
-  useEffect(() => {
-    analytics.pageView("landing");
-    const cleanup = setupScrollTracking("landing");
-    return cleanup;
-  }, []);
 
   return (
     <div className="min-h-screen bg-background text-foreground selection:bg-primary selection:text-primary-foreground">

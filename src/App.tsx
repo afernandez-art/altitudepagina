@@ -10,7 +10,6 @@ import Index from "./pages/Index";
 const Video = lazy(() => import("./pages/Video"));
 const Formulario = lazy(() => import("./pages/Formulario"));
 const WhatsAppRedirect = lazy(() => import("./pages/WhatsAppRedirect"));
-const Admin = lazy(() => import("./pages/Admin"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 // Route loading placeholder
@@ -24,8 +23,8 @@ const RouteLoader = () => (
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 1000 * 60 * 5, // 5 minutes
-      gcTime: 1000 * 60 * 30, // 30 minutes (formerly cacheTime)
+      staleTime: 1000 * 60 * 5,
+      gcTime: 1000 * 60 * 30,
       retry: 1,
       refetchOnWindowFocus: false,
     },
@@ -64,15 +63,6 @@ const App = () => (
               </Suspense>
             }
           />
-          <Route
-            path="/admin"
-            element={
-              <Suspense fallback={<RouteLoader />}>
-                <Admin />
-              </Suspense>
-            }
-          />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route
             path="*"
             element={

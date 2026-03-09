@@ -13,7 +13,6 @@ import {
   LeadFormData,
   generateWhatsAppLink,
 } from "@/contexts/LeadMagnetContext";
-import { analytics } from "@/lib/analytics";
 
 const WhatsAppRedirect = () => {
   const [searchParams] = useSearchParams();
@@ -39,12 +38,7 @@ const WhatsAppRedirect = () => {
 
   const whatsappLink = generateWhatsAppLink(leadData);
 
-  useEffect(() => {
-    analytics.pageView("whatsapp_redirect");
-  }, []);
-
   const handleWhatsAppClick = () => {
-    analytics.conversion.whatsappClick();
     window.open(whatsappLink, "_blank");
   };
 
