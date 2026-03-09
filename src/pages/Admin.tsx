@@ -212,7 +212,7 @@ const Admin = () => {
       lead.whatsapp.includes(searchTerm);
 
     const matchesSituacion = !filterSituacion || lead.nicho === filterSituacion;
-    const matchesEstado = !filterEstado || lead.estado === filterEstado;
+    const matchesEstado = !filterEstado || (lead.estado || "nuevo") === filterEstado;
 
     return matchesSearch && matchesSituacion && matchesEstado;
   });
