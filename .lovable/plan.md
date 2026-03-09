@@ -1,57 +1,42 @@
 
-## Plan: Contadores Animados en Estadísticas
 
-### Objetivo
-Agregar contadores que animen los números desde 0 hasta su valor final cuando la sección de estadísticas aparece en pantalla, creando un efecto visual impactante.
+## Problem Analysis
 
-### Implementacion
+The lead submission pipeline has a mismatch between the new 3-step funnel (Perfil/Necesidad/Inversión) and the old database column names. While the `submitLead` function maps new fields to old columns, there are two issues:
 
-**1. Crear un custom hook `useCountUp`**
+1. **TypeScript interface mismatch**: The `Lead` interface in `src/lib/supabase.ts` declares `urgencia: string` (non-nullable), but `submitLead` passes `null`. This can cause silent failures.
+2. **Admin display**: The admin panel references old field names and labels inconsistently.
+3. **No error feedback**: If the insert fails, the user is silently redirected to WhatsApp anyway.
 
-Un hook reutilizable que:
-- Detecta cuando el elemento entra en el viewport usando `IntersectionObserver`
-- Anima el número desde 0 hasta el valor objetivo
-- Usa `requestAnimationFrame` para una animación suave
-- Incluye una función de easing para que el contador desacelere al final
+## Plan
 
-**2. Modificar la estructura de datos de stats**
+### 1. Fix the Lead interface in `src/lib/supabase.ts`
+- Make `urgencia`, `urgencia_label`, `estado`, and `contactado_whatsapp` nullable/optional to match the actual DB schema
+- This ensures TypeScript doesn't fight with the null values being passed
 
-Cambiar el formato de los stats para separar:
-- Valor numérico (para animar): `150`, `98`, `500`, `12`
-- Prefijo (opcional): `+`
-- Sufijo (opcional): `%`
+### 2. Add error logging to `submitLead` in `src/contexts/LeadMagnetContext.tsx`
+- Add a visible error alert (sonner toast) when the Supabase insert fails, so the user knows
+- Log the full error details to console for debugging
 
-```text
-Estructura actual:  { value: "+150", label: "Clientes" }
-Estructura nueva:   { value: 150, prefix: "+", suffix: "", label: "Clientes" }
-```
+### 3. Simplify and fix the Admin panel (`src/pages/Admin.tsx`)
+- Map display columns clearly to the new funnel:
+  - `nicho_label` → "Perfil" (was "Ya importo y quiero mejorar", etc.)
+  - `situacion_label` → "Necesidad" (the specific need selected)
+  - `facturacion_label` → "Inversión" (the budget range)
+  - `problematica_label` → "Mensaje" (free text from form)
+- Update the detail modal to show these fields with correct labels
+- Update filters to work with the new field values
 
-**3. Crear componente `AnimatedCounter`**
+### 4. Add a test insert mechanism
+- After fixing, I'll verify the insert works by checking the actual Supabase error response in the code flow
 
-Un componente que:
-- Recibe el valor numérico, prefijo y sufijo
-- Usa el hook `useCountUp` para la animación
-- Renderiza el número animado con sus decoradores
+### Technical Details
 
-**4. Integrar en ClientsSection**
+The column mapping in `submitLead` reuses old DB columns for new data:
+- `nicho` ← perfil ID (A/B/C)
+- `situacion` ← necesidad text
+- `facturacion` ← inversión ID
+- `problematica` ← free-text message
 
-Reemplazar el renderizado estático de stats por el nuevo componente animado.
+This mapping is correct but the TypeScript types need to allow nulls for the many unused legacy columns.
 
-### Detalles Tecnicos
-
-- **Duracion de animacion**: 2 segundos
-- **Easing**: `easeOutExpo` para que el contador sea rapido al inicio y desacelere al final
-- **Trigger**: Una sola vez cuando el elemento entra al viewport (50% visible)
-- **Dependencias**: Solo React hooks nativos (`useState`, `useEffect`, `useRef`)
-- **Compatibilidad**: IntersectionObserver tiene soporte amplio en navegadores modernos
-
-### Archivos a Crear/Modificar
-
-| Archivo | Accion |
-|---------|--------|
-| `src/hooks/useCountUp.ts` | Crear - Custom hook para animacion de conteo |
-| `src/components/landing/ClientsSection.tsx` | Modificar - Integrar contadores animados |
-
-### Resultado Esperado
-
-Cuando el usuario hace scroll hasta la seccion de estadisticas, los numeros comenzaran en 0 y contaran hacia arriba hasta su valor final (+150, 98%, +500, 12) con una animacion fluida que desacelera al llegar al numero objetivo.
