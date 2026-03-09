@@ -87,8 +87,8 @@ export type Database = {
           situacion_label: string
           tercerizar: string[] | null
           tercerizar_labels: string[] | null
-          urgencia: string
-          urgencia_label: string
+          urgencia: string | null
+          urgencia_label: string | null
           volumen: string | null
           volumen_label: string | null
           whatsapp: string
@@ -126,8 +126,8 @@ export type Database = {
           situacion_label: string
           tercerizar?: string[] | null
           tercerizar_labels?: string[] | null
-          urgencia: string
-          urgencia_label: string
+          urgencia?: string | null
+          urgencia_label?: string | null
           volumen?: string | null
           volumen_label?: string | null
           whatsapp: string
@@ -165,8 +165,8 @@ export type Database = {
           situacion_label?: string
           tercerizar?: string[] | null
           tercerizar_labels?: string[] | null
-          urgencia?: string
-          urgencia_label?: string
+          urgencia?: string | null
+          urgencia_label?: string | null
           volumen?: string | null
           volumen_label?: string | null
           whatsapp?: string
