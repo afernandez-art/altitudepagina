@@ -200,7 +200,7 @@ const Admin = () => {
   const handleSelectLead = (lead: Lead) => {
     setSelectedLead(lead);
     setEditingNotas(lead.notas || "");
-    setEditingEstado(lead.estado);
+    setEditingEstado(lead.estado || "nuevo");
   };
 
   // Filter leads
