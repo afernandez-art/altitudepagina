@@ -235,7 +235,7 @@ const Admin = () => {
       lead.situacion_label,
       lead.facturacion_label,
       lead.problematica_label || "",
-      getEstadoConfig(lead.estado).label,
+      getEstadoConfig(lead.estado || "nuevo").label,
       lead.notas || ""
     ]);
 
