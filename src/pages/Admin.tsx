@@ -1029,21 +1029,23 @@ const Admin = () => {
                   </h3>
                   <div className="bg-secondary/30 rounded-lg p-4 space-y-3 text-sm">
                     <div>
-                      <span className="text-muted-foreground">Nicho:</span>{" "}
+                      <span className="text-muted-foreground">Perfil:</span>{" "}
                       <span className="font-medium">{selectedLead.nicho_label}</span>
                     </div>
                     <div>
-                      <span className="text-muted-foreground">Situación:</span>{" "}
+                      <span className="text-muted-foreground">Necesidad:</span>{" "}
                       <span className="font-medium">{selectedLead.situacion_label}</span>
                     </div>
                     <div>
-                      <span className="text-muted-foreground">Problemática:</span>{" "}
-                      <span className="font-medium">{selectedLead.problematica_label}</span>
-                    </div>
-                    <div>
-                      <span className="text-muted-foreground">Facturación:</span>{" "}
+                      <span className="text-muted-foreground">Inversión:</span>{" "}
                       <span className="font-medium">{selectedLead.facturacion_label}</span>
                     </div>
+                    {selectedLead.problematica_label && (
+                      <div>
+                        <span className="text-muted-foreground">Mensaje:</span>{" "}
+                        <span className="font-medium">{selectedLead.problematica_label}</span>
+                      </div>
+                    )}
                     {selectedLead.experiencia_label && (
                       <div>
                         <span className="text-muted-foreground">Experiencia:</span>{" "}
