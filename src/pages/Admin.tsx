@@ -1100,10 +1100,12 @@ const Admin = () => {
                         <span className="font-medium">{selectedLead.tercerizar_labels.join(", ")}</span>
                       </div>
                     )}
-                    <div>
-                      <span className="text-muted-foreground">Urgencia:</span>{" "}
-                      <span className="font-medium">{selectedLead.urgencia_label}</span>
-                    </div>
+                    {selectedLead.urgencia_label && (
+                      <div>
+                        <span className="text-muted-foreground">Urgencia:</span>{" "}
+                        <span className="font-medium">{selectedLead.urgencia_label}</span>
+                      </div>
+                    )}
                   </div>
                 </div>
 
