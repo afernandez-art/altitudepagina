@@ -917,11 +917,15 @@ const Admin = () => {
                         </td>
                         <td className="px-4 py-3">
                           <span className="text-xs bg-secondary px-2 py-1 rounded">
-                            {lead.situacion_label?.slice(0, 30)}...
+                            {lead.nicho_label}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3">
+                          <span className="text-xs bg-secondary px-2 py-1 rounded">
+                            {lead.situacion_label?.slice(0, 30)}{lead.situacion_label?.length > 30 ? '...' : ''}
                           </span>
                         </td>
                         <td className="px-4 py-3 text-xs">{lead.facturacion_label}</td>
-                        <td className="px-4 py-3 text-xs">{lead.urgencia_label}</td>
                         <td className="px-4 py-3">
                           <span className={`inline-flex items-center gap-1.5 px-2 py-1 rounded-full text-xs font-medium ${estadoConfig.color} text-white`}>
                             {estadoConfig.label}
