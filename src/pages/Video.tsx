@@ -20,7 +20,6 @@ import {
   generateWhatsAppLink,
   LeadFormData,
 } from "@/contexts/LeadMagnetContext";
-import { analytics, setupScrollTracking } from "@/lib/analytics";
 
 const Video = () => {
   const [searchParams] = useSearchParams();
@@ -34,12 +33,6 @@ const Video = () => {
   const servicio = derivarServicio(perfil, necesidad, inversion);
   const isNotB2B = servicio === "NOT_B2B";
   const info = !isNotB2B ? servicioInfo[servicio] : null;
-
-  useEffect(() => {
-    analytics.pageView("video");
-    const cleanup = setupScrollTracking("video");
-    return cleanup;
-  }, []);
 
   const handleContinue = () => {
     const params = new URLSearchParams();

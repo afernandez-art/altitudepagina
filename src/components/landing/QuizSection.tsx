@@ -8,7 +8,6 @@ import {
   inversionPorPerfil,
   PerfilType,
 } from "@/contexts/LeadMagnetContext";
-import { analytics } from "@/lib/analytics";
 
 export const QuizSection = () => {
   const navigate = useNavigate();
@@ -19,44 +18,24 @@ export const QuizSection = () => {
 
   const totalSteps = 3;
   const progress = ((quizStep + 1) / totalSteps) * 100;
-  const hasTrackedStart = useRef(false);
-  const stepNames = ["perfil", "necesidad", "inversion"];
 
   const currentQuestion = perfil ? preguntasPorPerfil[perfil] : null;
   const currentInversion = perfil ? inversionPorPerfil[perfil] : null;
-
-  useEffect(() => {
-    if (!hasTrackedStart.current) {
-      analytics.form1.start();
-      analytics.form1.stepView(1, "perfil");
-      hasTrackedStart.current = true;
-    }
-  }, []);
-
-  useEffect(() => {
-    if (hasTrackedStart.current && quizStep > 0) {
-      analytics.form1.stepView(quizStep + 1, stepNames[quizStep]);
-    }
-  }, [quizStep]);
 
   const handlePerfilSelect = (id: PerfilType) => {
     setPerfil(id);
     setNecesidad("");
     setInversion("");
-    analytics.form1.stepComplete(1, "perfil", id);
     setTimeout(() => setQuizStep(1), 300);
   };
 
   const handleNecesidadSelect = (opcion: string) => {
     setNecesidad(opcion);
-    analytics.form1.stepComplete(2, "necesidad", opcion);
     setTimeout(() => setQuizStep(2), 300);
   };
 
   const handleInversionSelect = (id: string) => {
     setInversion(id);
-    analytics.form1.stepComplete(3, "inversion", id);
-    analytics.form1.complete();
     setTimeout(() => {
       navigate(
         `/video?perfil=${perfil}&necesidad=${encodeURIComponent(necesidad)}&inversion=${id}`

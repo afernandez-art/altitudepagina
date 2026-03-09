@@ -7,7 +7,6 @@ import {
   LeadFormData,
   submitLead,
 } from "@/contexts/LeadMagnetContext";
-import { analytics, setupScrollTracking } from "@/lib/analytics";
 
 const Formulario = () => {
   const [searchParams] = useSearchParams();
@@ -25,12 +24,6 @@ const Formulario = () => {
     mensaje: "",
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
-
-  useEffect(() => {
-    analytics.pageView("formulario");
-    const cleanup = setupScrollTracking("formulario");
-    return cleanup;
-  }, []);
 
   const validateForm = (): boolean => {
     const newErrors: Record<string, string> = {};
