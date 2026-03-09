@@ -211,7 +211,7 @@ const Admin = () => {
       lead.empresa?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       lead.whatsapp.includes(searchTerm);
 
-    const matchesSituacion = !filterSituacion || lead.situacion === filterSituacion;
+    const matchesSituacion = !filterSituacion || lead.nicho === filterSituacion;
     const matchesEstado = !filterEstado || lead.estado === filterEstado;
 
     return matchesSearch && matchesSituacion && matchesEstado;
