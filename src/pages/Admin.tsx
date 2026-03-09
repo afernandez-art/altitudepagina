@@ -200,7 +200,7 @@ const Admin = () => {
   const handleSelectLead = (lead: Lead) => {
     setSelectedLead(lead);
     setEditingNotas(lead.notas || "");
-    setEditingEstado(lead.estado);
+    setEditingEstado(lead.estado || "nuevo");
   };
 
   // Filter leads
@@ -212,7 +212,7 @@ const Admin = () => {
       lead.whatsapp.includes(searchTerm);
 
     const matchesSituacion = !filterSituacion || lead.nicho === filterSituacion;
-    const matchesEstado = !filterEstado || lead.estado === filterEstado;
+    const matchesEstado = !filterEstado || (lead.estado || "nuevo") === filterEstado;
 
     return matchesSearch && matchesSituacion && matchesEstado;
   });
@@ -235,7 +235,7 @@ const Admin = () => {
       lead.situacion_label,
       lead.facturacion_label,
       lead.problematica_label || "",
-      getEstadoConfig(lead.estado).label,
+      getEstadoConfig(lead.estado || "nuevo").label,
       lead.notas || ""
     ]);
 
@@ -895,7 +895,7 @@ const Admin = () => {
                 </thead>
                 <tbody className="divide-y divide-zinc-800">
                   {filteredLeads.map((lead) => {
-                    const estadoConfig = getEstadoConfig(lead.estado);
+                    const estadoConfig = getEstadoConfig(lead.estado || "nuevo");
                     return (
                       <tr key={lead.id} className="hover:bg-secondary/30 transition-colors">
                         <td className="px-4 py-3 text-muted-foreground">
