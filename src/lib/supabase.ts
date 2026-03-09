@@ -13,7 +13,7 @@ export interface Lead {
   whatsapp: string;
   empresa: string | null;
 
-  // Form 1
+  // Funnel fields (mapped from old columns)
   nicho: string;
   nicho_label: string;
   situacion: string;
@@ -23,7 +23,7 @@ export interface Lead {
   facturacion: string;
   facturacion_label: string;
 
-  // Form 2 - dynamic fields
+  // Legacy fields (all nullable)
   experiencia: string | null;
   experiencia_label: string | null;
   origen: string | null;
@@ -42,14 +42,12 @@ export interface Lead {
   frecuencia_label: string | null;
   tercerizar: string[] | null;
   tercerizar_labels: string[] | null;
-
-  // Final
-  urgencia: string;
-  urgencia_label: string;
+  urgencia: string | null;
+  urgencia_label: string | null;
 
   // Status tracking
-  estado: string;
-  contactado_whatsapp: boolean;
+  estado: string | null;
+  contactado_whatsapp: boolean | null;
   notas: string | null;
 }
 

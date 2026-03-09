@@ -277,10 +277,15 @@ export const submitLead = async (data: LeadFormData): Promise<boolean> => {
     tercerizar_labels: null,
   };
 
+  console.log("[submitLead] Sending to Supabase:", JSON.stringify(leadData, null, 2));
+
   if (isSupabaseConfigured()) {
     const { error: supabaseError } = await saveLead(leadData);
     if (supabaseError) {
-      console.error("Supabase error:", supabaseError);
+      console.error("[submitLead] Supabase INSERT failed:", supabaseError.message, supabaseError);
+      return false;
+    } else {
+      console.log("[submitLead] Supabase INSERT succeeded");
     }
   }
 
