@@ -221,8 +221,8 @@ const Admin = () => {
   const exportToCSV = () => {
     const headers = [
       "Fecha", "Nombre", "Email", "WhatsApp", "Empresa",
-      "Nicho", "Situación", "Problemática", "Facturación",
-      "Urgencia", "Estado", "Notas"
+      "Perfil", "Necesidad", "Inversión", "Mensaje",
+      "Estado", "Notas"
     ];
 
     const rows = filteredLeads.map(lead => [
@@ -233,9 +233,8 @@ const Admin = () => {
       lead.empresa || "",
       lead.nicho_label,
       lead.situacion_label,
-      lead.problematica_label,
       lead.facturacion_label,
-      lead.urgencia_label,
+      lead.problematica_label || "",
       getEstadoConfig(lead.estado).label,
       lead.notas || ""
     ]);
