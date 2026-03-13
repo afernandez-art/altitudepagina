@@ -52,8 +52,8 @@ export const Footer = () => {
         <div className="pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-muted-foreground">
           <p>© {new Date().getFullYear()} ADUANEX. Todos los derechos reservados.</p>
           <div className="flex gap-6">
-            <a className="hover:text-foreground transition-colors" href="#">Términos y condiciones</a>
-            <a className="hover:text-foreground transition-colors" href="#">Privacidad</a>
+            <a className="hover:text-foreground transition-colors" href="/terminosycondiciones">Términos y condiciones</a>
+            <a className="hover:text-foreground transition-colors" href="/terminosycondiciones">Privacidad</a>
           </div>
         </div>
       </div>
