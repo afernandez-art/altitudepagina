@@ -65,10 +65,10 @@ const App = () => (
             }
           />
           <Route
-            path="/admin"
+            path="/terminosycondiciones"
             element={
               <Suspense fallback={<RouteLoader />}>
-                <Admin />
+                <TerminosYCondiciones />
               </Suspense>
             }
           />
