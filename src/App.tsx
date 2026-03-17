@@ -80,6 +80,7 @@ const App = () => (
                 <Admin />
               </Suspense>
             }
+          />
           <Route
             path="*"
             element={
