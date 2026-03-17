@@ -74,6 +74,13 @@ const App = () => (
             }
           />
           <Route
+            path="/admin"
+            element={
+              <Suspense fallback={<RouteLoader />}>
+                <Admin />
+              </Suspense>
+            }
+          <Route
             path="*"
             element={
               <Suspense fallback={<RouteLoader />}>
