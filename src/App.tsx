@@ -11,6 +11,7 @@ const Video = lazy(() => import("./pages/Video"));
 const Formulario = lazy(() => import("./pages/Formulario"));
 const WhatsAppRedirect = lazy(() => import("./pages/WhatsAppRedirect"));
 const TerminosYCondiciones = lazy(() => import("./pages/TerminosYCondiciones"));
+const Admin = lazy(() => import("./pages/Admin"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 // Route loading placeholder
@@ -69,6 +70,14 @@ const App = () => (
             element={
               <Suspense fallback={<RouteLoader />}>
                 <TerminosYCondiciones />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/admin"
+            element={
+              <Suspense fallback={<RouteLoader />}>
+                <Admin />
               </Suspense>
             }
           />
